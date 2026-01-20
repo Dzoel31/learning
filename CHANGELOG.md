@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.2.0 (2026-01-20)
+
+### Features
+
+- Enhance Git basic command, add IoT documentation and add dynamic icon loader
+  ([#7](https://github.com/IoT-Smart-Hydroponic/learning/pull/7),
+  [`16dc5d3`](https://github.com/IoT-Smart-Hydroponic/learning/commit/16dc5d30dfa0d1b07e0e0a65bd37bd39ad0bb12a))
+
+
 ## v1.1.2 (2026-01-19)
 
 ### Bug Fixes
