@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.3.0 (2026-01-27)
+
+### Features
+
+- Add Git branching concepts, commands for branch management and Hands-On IoT
+  ([#8](https://github.com/IoT-Smart-Hydroponic/learning/pull/8),
+  [`b5956eb`](https://github.com/IoT-Smart-Hydroponic/learning/commit/b5956eb0a310d311191a610b9c8023b9adce98bb))
+
+
 ## v1.2.0 (2026-01-20)
 
 ### Features
