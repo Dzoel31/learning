@@ -34,7 +34,12 @@ void loop() {
     digitalWrite(TRIG_PIN, LOW);
 
     // Baca durasi pantulan
-    long durasi = pulseIn(ECHO_PIN, HIGH);
+    const unsigned long durasi = pulseIn(ECHO_PIN, HIGH, 30000UL);
+    if (durasi == 0) {
+      noTone(BUZZER_PIN);
+      Serial.println("Jarak tidak terbaca");
+      return;
+    }
 
     // Hitung jarak (cm)
     float jarak = durasi * 0.034 / 2;

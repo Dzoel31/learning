@@ -1,5 +1,4 @@
 #include <WiFi.h>
-#include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 
 // ================= WIFI =================
@@ -7,10 +6,10 @@ const char* ssid = "nama wifi";
 const char* password = "pw wifi";
 
 // ================= MQTT =================
-const char* mqtt_server = "url broker mqtt";
-const int mqtt_port = port mqtt;
-const char* mqtt_user = "usd mqtt";
-const char* mqtt_pass = "password mqtt";
+const char* mqtt_server = "192.168.1.10"; // Ganti dengan alamat broker latihan di LAN.
+const int mqtt_port = 1883;
+const char* mqtt_user = "";
+const char* mqtt_pass = "";
 
 // ================= PIN =================
 #define TRIG_PIN 5
@@ -18,7 +17,7 @@ const char* mqtt_pass = "password mqtt";
 #define BUZZER_PIN 19
 
 // ================= MQTT CLIENT =================
-WiFiClientSecure espClient;
+WiFiClient espClient;
 PubSubClient client(espClient);
 
 // ================= PARAMETER =================
@@ -27,7 +26,6 @@ const float JARAK_MINIMUM = 10.0;
 unsigned long sebelumnya = 0;
 const unsigned long intervalPembacaan = 2000;
 bool modeManual = false;
-bool buzzerManualState = false;
 
 // ================= WIFI =================
 void setup_wifi() {
@@ -51,13 +49,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 
   if (String(topic) == "kontrol/buzzer") {
-    modeManual = true;
-
     if (msg == "ON") {
-      buzzerManualState = true;
+      modeManual = true;
       tone(BUZZER_PIN, 500);
     } else if (msg == "OFF") {
-      buzzerManualState = false;
+      modeManual = true;
       noTone(BUZZER_PIN);
     }
   }
@@ -71,13 +67,18 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 // ================= RECONNECT MQTT =================
 void reconnect() {
+  const String clientId = "ESP32-" + WiFi.macAddress();
   while (!client.connected()) {
     Serial.print("Connecting to MQTT...");
 
-    if (client.connect("ESP32Client-123", mqtt_user, mqtt_pass)) {
+    const bool connected = mqtt_user[0]
+      ? client.connect(clientId.c_str(), mqtt_user, mqtt_pass)
+      : client.connect(clientId.c_str());
+    if (connected) {
       Serial.println("Connected!");
 
       client.subscribe("kontrol/buzzer");
+      client.subscribe("kontrol/mode");
 
     } else {
       Serial.print("Failed, rc=");
@@ -97,8 +98,6 @@ void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
 
   setup_wifi();
-
-  espClient.setInsecure();  // untuk TLS tanpa sertifikat (belajar)
 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
@@ -124,8 +123,16 @@ void loop() {
     delayMicroseconds(10);
     digitalWrite(TRIG_PIN, LOW);
 
-    long durasi = pulseIn(ECHO_PIN, HIGH);
-    float jarak = durasi * 0.034 / 2;
+    const unsigned long durasi = pulseIn(ECHO_PIN, HIGH, 30000UL);
+    if (durasi == 0) {
+      Serial.println("Jarak tidak terbaca");
+      if (!modeManual) {
+        noTone(BUZZER_PIN);
+        client.publish("sensor/status", "JARAK TIDAK TERBACA");
+      }
+      return;
+    }
+    const float jarak = durasi * 0.034 / 2;
 
     Serial.print("Jarak: ");
     Serial.print(jarak);
@@ -133,7 +140,7 @@ void loop() {
 
     // ================= MQTT PUBLISH =================
     char msg[10];
-    sprintf(msg, "%.2f", jarak);
+    snprintf(msg, sizeof(msg), "%.2f", jarak);
     client.publish("sensor/jarak", msg);
 
     // ================= LOGIKA BUZZER =================

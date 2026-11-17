@@ -6,15 +6,19 @@ int moisture = 0;
 
 #define MOISTURE_ON 30
 #define MOISTURE_OFF 45
+constexpr int ADC_DRY = 3000; // Contoh: ganti dengan hasil ukur tanah kering.
+constexpr int ADC_WET = 1500; // Contoh: ganti dengan hasil ukur tanah lembap.
+static_assert(ADC_DRY != ADC_WET, "Kalibrasi perlu dua hasil ukur berbeda");
 
 void readMoistureSensor() {
     moistureAnalog = analogRead(MOISTURE_PIN);
-    moisture = 100 - ((moistureAnalog / 4095.0) * 100);
+    moisture = (moistureAnalog - ADC_DRY) * 100L / (ADC_WET - ADC_DRY);
     moisture = constrain(moisture, 0, 100);
 }
 
 void setup() {
     Serial.begin(115200);
+    analogReadResolution(12);
     pinMode(MOISTURE_PIN, INPUT);
     pinMode(RELAY_PIN, OUTPUT);
 
@@ -27,7 +31,7 @@ void loop() {
     readMoistureSensor();
     Serial.print("Moisture Analog: ");
     Serial.print(moistureAnalog);
-    Serial.print(" | Moisture (%): ");
+    Serial.print(" | Skala kalibrasi (%): ");
     Serial.print(moisture);
     Serial.println(" %");
 
