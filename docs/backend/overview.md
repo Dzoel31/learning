@@ -1,57 +1,44 @@
-# Backend Development
+# Backend
 
-Halaman backend berisi jalur belajar terkait pengembangan layanan API untuk sistem AIoT, mulai dari fundamental hingga integrasi lanjutan.
+Bagian ini memakai **JavaScript, Node.js, dan Express.js**, sesuai materi backend di kelas. Kamu akan membuat API untuk menerima kiriman sensor, memeriksa isinya, lalu menyimpan atau mengirim data.
 
-Backend adalah bagian yang menerima data, memproses aturan aplikasi, lalu mengirim response. Dalam AIoT, backend sering menjadi penghubung antara device, database, dashboard, dan layanan AI.
+Python tetap dipelajari pada bagian AI karena banyak alat machine learning dan deep learning menggunakannya. Di proyek KSM, backend yang sudah ada dapat memakai FastAPI. Halaman [Express.js dan FastAPI di KSM](express-fastapi-bridge.md) menunjukkan hubungan keduanya.
 
-## Alur Besar
+## Alur request
 
 ```mermaid
-flowchart LR
-    A["Device atau dashboard"] --> B["Backend API"]
-    B --> C["Validasi data"]
-    C --> D["Logic aplikasi"]
-    D --> E["Database atau service lain"]
-    E --> F["Response JSON"]
-    F --> A
+sequenceDiagram
+    participant Client as Device atau Frontend
+    participant Route as Express route
+    participant Middleware as Validasi dan middleware
+    participant Service as Logic aplikasi
+    participant DB as Database
+    Client->>Route: HTTP request + JSON
+    Route->>Middleware: periksa request
+    Middleware->>Service: data valid
+    Service->>DB: baca atau simpan
+    DB-->>Service: hasil
+    Service-->>Client: HTTP response + JSON
 ```
 
-## Prasyarat
+## Urutan belajar
 
-- Python 3.14+ terpasang
-- Dasar terminal dan virtual environment
-- Paham konsep JSON dasar
+1. [JavaScript Fundamental](javascript-fundamental.md): nilai, fungsi, object, array, dan error.
+2. [Node.js dan HTTP](nodejs-http.md): menjalankan JavaScript di server dan memahami request.
+3. [API dengan Express.js](express-api.md): membuat route, menerima JSON, dan mengirim status serta response.
+4. [Validasi dan Middleware](validation-middleware.md): memeriksa input dan menangani request lintas asal.
+5. [Asynchronous JavaScript](async-javascript.md): menunggu database atau layanan jaringan tanpa menghentikan alur server.
+6. [Struktur Proyek Backend](project-structure.md): memisahkan route, service, dan akses database.
+7. [Express.js dan FastAPI di KSM](express-fastapi-bridge.md): membandingkan pola yang sama di proyek Python.
 
-## Urutan Belajar yang Disarankan
+Setelah API dasar dikenali, jalankan [Backend Mini](../hands-on/backend-mini.md), lalu lanjutkan ke [Dashboard Hands-on](../hands-on/dashboard-hands-on.md) untuk menghubungkan device, database, dan frontend.
 
-1. [Python Fundamental](fundamental.md)
-2. [OOP Python untuk Backend](oop-python.md)
-3. [API dengan FastAPI](api-fastapi.md)
-4. [Struktur Proyek Backend](project-structure.md)
-5. [Backend Mini](../hands-on/backend-mini.md)
+## Hasil yang dituju
 
-## Capaian Belajar
-
-- Menjalankan server FastAPI secara lokal.
-- Membuat endpoint `GET` dan `POST`.
-- Melakukan validasi input sederhana dengan Pydantic.
-- Membaca struktur folder backend tanpa panik.
-- Menangani error dasar dan status code HTTP.
-
-## Pembagian Section
-
-| Section | Fokus |
-| --- | --- |
-| Python Fundamental | bahasa Python yang sering muncul di backend |
-| OOP Python | class, object, method, dan pola class di backend |
-| API dengan FastAPI | endpoint, request, response, validasi |
-| Struktur Proyek Backend | cara membaca folder backend yang lebih besar |
-| Backend Mini | quick win membuat API kecil |
-
-## Tips Membaca
-
-Jangan mulai dari semua file sekaligus.
-
-Mulai dari satu endpoint sederhana, lalu ikuti alurnya: route, schema, service, database.
+- Menjalankan server Node.js dan Express.js.
+- Membuat endpoint GET dan POST.
+- Memeriksa request JSON dan memilih status HTTP yang sesuai.
+- Menghubungkan endpoint dengan database.
+- Mengenali padanan alur Express.js pada backend FastAPI di proyek KSM.
 
 [Kembali ke Home](../index.md)

@@ -1,90 +1,52 @@
 # Struktur Proyek Backend
 
-Saat aplikasi masih kecil, semua kode bisa ditulis di satu file.
+Saat latihan pertama, satu file `main.js` cukup untuk melihat route dan response bersama-sama. Ketika aplikasi bertambah, pisahkan tugas agar aturan API, validasi, dan query database mudah ditemukan.
 
-Namun ketika fitur bertambah, satu file akan cepat penuh. Karena itu backend biasanya dibagi menjadi beberapa folder.
-
-Tujuannya bukan terlihat keren. Tujuannya supaya kita tahu harus mencari kode di mana.
-
-## Peta Folder Umum
+## Contoh susunan folder
 
 ```text
-backend/
-├── main.py
-├── routes/
-├── schemas/
-├── models/
-├── services/
-├── repositories/
-├── migrations/
-└── tests/
+mini_backend/
+├── src/
+│   ├── app.js
+│   ├── server.js
+│   ├── routes/
+│   │   └── sensor-routes.js
+│   ├── controllers/
+│   │   └── sensor-controller.js
+│   ├── services/
+│   │   └── sensor-service.js
+│   └── repositories/
+│       └── sensor-repository.js
+├── .env
+├── .gitignore
+└── package.json
 ```
 
-!!! Note
-    Struktur ini bukan aturan baku. Setiap proyek bisa punya struktur yang berbeda. Yang penting kita tahu fungsi tiap bagian.
+Nama dan jumlah folder dapat berbeda antarproyek. Ini peta untuk membantu membaca kode, bukan aturan yang wajib diikuti.
 
-## Fungsi Tiap Bagian
-
-| Bagian | Fungsi sederhana |
+| Bagian | Tugas |
 | --- | --- |
-| `main.py` | pintu masuk aplikasi |
-| `routes/` | daftar endpoint API |
-| `schemas/` | bentuk data request dan response |
-| `models/` | bentuk data yang disimpan di database |
-| `services/` | logic utama aplikasi |
-| `repositories/` | kode yang berhubungan dengan database |
-| `migrations/` | riwayat perubahan struktur database |
-| `tests/` | kode untuk mengecek aplikasi tetap benar |
+| `server.js` | menyalakan server dan memilih port |
+| `app.js` | membuat aplikasi Express dan memasang middleware |
+| `routes/` | memetakan method dan path ke handler |
+| `controllers/` | membaca request dan membentuk response |
+| `services/` | menjalankan aturan aplikasi |
+| `repositories/` | membaca atau menulis database |
+| `.env` | menyimpan konfigurasi lokal yang tidak dikomit |
 
-## Alur Saat Request Masuk
+## Ikuti satu request
 
 ```mermaid
-flowchart TD
-    A["Request masuk"] --> B["routes/"]
-    B --> C["schemas/: validasi data"]
-    C --> D["services/: aturan aplikasi"]
-    D --> E["repositories/: baca/tulis database"]
-    E --> F["models/: representasi tabel"]
-    F --> G["Response keluar"]
+flowchart LR
+    A[POST /sensors] --> B[Route]
+    B --> C[Validasi]
+    C --> D[Controller]
+    D --> E[Service]
+    E --> F[Repository]
+    F --> G[(PostgreSQL)]
+    G --> H[Response JSON]
 ```
 
-## Kenapa Tidak Langsung Semua di Route?
+Pada [Backend Mini](../hands-on/backend-mini.md), semua langkah masih berada di `main.js`. Saat membaca proyek yang lebih besar, ikuti endpoint `POST /sensors` dari route sampai repository. Jangan menganggap suatu lapisan dipakai sebelum melihat pemanggilannya.
 
-Bisa saja untuk latihan kecil.
-
-Tetapi kalau semua logic ditaruh di route, file endpoint akan sulit dibaca. Route sebaiknya menjawab pertanyaan:
-
-> "Endpoint ini menerima apa dan memanggil proses apa?"
-
-Detail prosesnya lebih enak diletakkan di service.
-
-## Cara Membaca Backend Besar
-
-Jangan mulai dari semua file.
-
-Mulai dari satu endpoint.
-
-1. Cari alamat endpoint di `routes/`.
-2. Lihat schema input dan output di `schemas/`.
-3. Ikuti fungsi yang dipanggil ke `services/`.
-4. Kalau ada database, ikuti ke `repositories/` atau `models/`.
-5. Catat hal yang belum paham, jangan langsung dibongkar semua.
-
-## Menemukan Pola
-
-Ambil endpoint sederhana di proyek nyata.
-
-Tulis catatan singkat:
-
-```text
-Endpoint:
-File route:
-Schema yang dipakai:
-Service yang dipanggil:
-Database yang disentuh:
-Hal yang membuatku penasaran:
-```
-
-Ini latihan membaca kode, bukan ujian hafalan.
-
-[Kembali ke Overview Backend](overview.md)
+Pemisahan ini juga berlaku pada FastAPI, meskipun nama file dan cara validasinya berbeda. Lihat [padanan Express.js dan FastAPI](express-fastapi-bridge.md).
