@@ -35,7 +35,7 @@ Komponen utama yang sering dipakai:
 | Cek versi Docker | `docker --version` |
 | Lihat image lokal | `docker images` |
 | Build image | `docker build -t myapp:latest .` |
-| Jalankan container | `docker run -d -p 8000:8000 --name myapp myapp:latest` |
+| Jalankan container | `docker run -d -p 127.0.0.1:8000:8000 --name myapp myapp:latest` |
 | Lihat container berjalan | `docker ps` |
 | Lihat semua container | `docker ps -a` |
 | Lihat log container | `docker logs -f myapp` |
@@ -54,14 +54,12 @@ Komponen utama yang sering dipakai:
 | Rebuild dan jalankan ulang | `docker compose up -d --build` |
 | Hentikan semua service | `docker compose down` |
 
-## Kenapa relevan untuk AIoT?
+## Periksa container yang menjalankan API
 
-- Environment tim jadi seragam.
-- Setup backend, database, dan dashboard lebih cepat.
-- Lebih mudah dipindah dari development ke production.
+Pada contoh `-p 127.0.0.1:8000:8000`, Docker meneruskan port 8000 di host ke port 8000 dalam container. Jika NGINX berjalan di host, pengaturan ini memungkinkan NGINX menghubungi API lewat localhost.
 
-## Ringkasannya
+1. Jalankan `docker ps -a`. Jika statusnya `Exited`, baca `docker logs myapp` untuk melihat pesan sebelum aplikasi berhenti.
+2. Jika container berjalan, periksa kolom `PORTS` dan pastikan aplikasi mendengarkan di port 8000 pada antarmuka container yang bisa dijangkau.
+3. Dari host, buka `http://127.0.0.1:8000/health`. Jika berhasil, lanjutkan ke [pemeriksaan path NGINX](nginx-basics.md#uji-path-yang-diterima-backend).
 
-- Container memudahkan portabilitas aplikasi.
-- Docker memudahkan manajemen container.
-- Mulai dari command dasar di atas sebelum masuk ke deployment multi-service yang lebih kompleks.
+Rujukan [pemetaan port Docker](https://docs.docker.com/engine/network/port-publishing/).

@@ -193,20 +193,23 @@ Sebelum deploy, pastikan kamu tahu:
 - folder aplikasi di server,
 - command untuk mengecek service.
 
-## Menemukan Pola
+## Bedakan akses SSH dan status NGINX
 
-Saat membaca panduan deployment proyek AIoT, cari bagian yang menyebut:
+Dua pemeriksaan ini menjawab pertanyaan yang berbeda. Contoh keluaran berikut bersifat ilustrasi:
 
 ```text
-ssh
-scp
-VPS
-server
-systemctl
-docker compose
-nginx
+$ ssh ubuntu@server
+ubuntu@server:~$
 ```
 
-Biasanya deployment dimulai dari login SSH, lalu dilanjutkan dengan setup Linux, Docker, dan NGINX.
+Prompt `ubuntu@server` menunjukkan sesi SSH berhasil masuk ke server. Ini belum membuktikan NGINX aktif.
+
+```text
+$ sudo systemctl status nginx
+● nginx.service - A high performance web server
+   Active: active (running)
+```
+
+`Active: active (running)` menunjukkan service NGINX sedang berjalan. Jika tertulis `inactive` atau `failed`, NGINX tidak sedang berjalan dengan normal. Service yang aktif juga belum membuktikan dashboard dapat mencapai backend; untuk itu periksa konfigurasi dan log aplikasi secara terpisah.
 
 [Kembali ke Deployment Overview](overview.md)

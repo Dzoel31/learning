@@ -43,10 +43,10 @@ server {
 
 Penjelasan:
 
-- `listen 80;`: NGINX mendengarkan di port 80 untuk HTTP dan port 443 untuk HTTPS.
+- `listen 80;`: Contoh ini membuka port 80 untuk HTTP. HTTPS memerlukan konfigurasi tersendiri.
 - `server_name iot.example.com;`: Domain yang dilayani.
 - `location /`: Semua request ke root diarahkan ke dashboard di port 3000.
-- `location /api/`: Request ke path /api/ diarahkan ke backend API di port 8000.
+- `location /api/`: Permintaan dengan awalan `/api/` masuk ke backend di port 8000. URI `/` di akhir `proxy_pass` mengganti awalan itu.
 - `proxy_set_header`: Menyertakan header asli dari client untuk backend.
 - `proxy_pass`: Alamat backend yang akan menerima request.
 
@@ -73,8 +73,10 @@ Penjelasan:
 - Simpan backup file config sebelum diubah.
 - Jika akses gagal, cek log NGINX dan status service.
 
-## Ringkasannya
+## Uji path yang diterima backend
 
-- NGINX membantu mempublikasikan backend dengan pola reverse proxy.
-- Konfigurasi yang rapi memudahkan routing API dan dashboard.
-- NGINX menjadi langkah penting sebelum masuk ke setup HTTPS production.
+Jalankan Backend Mini di host NGINX dan buka `http://127.0.0.1:8000/health` dari host. Jika berhasil, buka `http://iot.example.com/api/health` lewat NGINX. Konfigurasi di atas meneruskan path `/health` ke backend.
+
+Jika URI `/` setelah port dihilangkan, backend menerima `/api/health`. Backend Mini hanya punya `/health`, sehingga permintaan itu mendapat 404. Jika NGINX mendapat 502, cek log proxy dan pastikan aplikasi masih menerima koneksi di port 8000.
+
+Rujukan [aturan URI pada proxy_pass](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass).

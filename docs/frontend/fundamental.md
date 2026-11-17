@@ -1,68 +1,11 @@
-# Frontend Fundamental
+# Jalur Praktik Frontend
 
-!!! Note
-    Halaman ini sedang dalam tahap pengembangan. Materi dan struktur masih bisa berubah seiring dengan feedback, kebutuhan peserta, dan kebutuhan proyek.
+Gunakan halaman ini untuk menghubungkan materi frontend dalam urutan praktik.
 
-## Tujuan
+1. Pelajari elemen halaman dan state UI di [Web Basics](web-basics.md).
+2. Kenali object dan tipe data respons di [JavaScript dan TypeScript](javascript-typescript.md).
+3. Jalankan [Frontend Mini](../hands-on/frontend-mini.md) dan cek endpoint `/health` dari browser.
+4. Pelajari component dan data reaktif di [Vue Basics](vue-basics.md).
+5. Ikuti [Integrasi API](api-integration.md), lalu lanjutkan ke [Dashboard Hands-on](../hands-on/dashboard-hands-on.md) untuk membaca data sensor dari database.
 
-Membekali peserta dengan dasar frontend untuk menampilkan data sensor dari backend secara jelas, responsif, dan mudah dipahami.
-
-## Prasyarat
-
-- Dasar HTML, CSS, dan JavaScript
-- Memahami konsep request API sederhana
-- Backend endpoint sudah dapat diakses
-
-## Capaian Belajar
-
-- Membuat halaman dashboard sederhana
-- Mengambil data dari API dengan Fetch API
-- Menampilkan state loading, sukses, dan error
-- Memahami konsep komponen dasar Vue
-
-## Materi Inti
-
-### 1. Struktur Halaman Dasar
-
-- Buat layout dashboard: header, ringkasan, tabel data
-- Styling dasar agar data mudah dibaca
-
-### 2. Ambil Data dari Backend
-
-- Gunakan `fetch` untuk memanggil endpoint sensor
-- Parse response JSON dan render ke tabel
-
-### 3. State Dasar UI
-
-- Loading: tampilkan indikator saat request berjalan
-- Error: tampilkan pesan jika request gagal
-- Empty state: tampilkan pesan jika data kosong
-
-### 4. Pengenalan Vue Fundamental
-
-- Konsep component sederhana
-- Props dan event dasar
-- Re-render data menggunakan state reaktif
-
-## Hands-on
-
-1. Buat dashboard HTML sederhana berisi tabel sensor.
-2. Tambahkan script untuk memanggil endpoint backend.
-3. Render daftar data ke dalam tabel.
-4. Tambahkan tombol refresh manual.
-5. Migrasikan tampilan dasar ke komponen Vue sederhana.
-
-## Error Umum dan Debug
-
-- CORS error: aktifkan CORS middleware di backend
-- Data tidak muncul: cek URL endpoint dan format response JSON
-- JavaScript error di browser: cek console dan perbaiki typo variabel
-
-## Checklist Selesai
-
-- Dashboard menampilkan data dari API
-- Tersedia indikator loading dan error
-- Tombol refresh bekerja
-- Versi Vue dasar berjalan untuk komponen utama
-
-[Kembali ke Overview Frontend](overview.md)
+Pada praktik terakhir, pastikan backend mengizinkan origin frontend melalui CORS. Saat request gagal, periksa alamat API, status response, dan log server.

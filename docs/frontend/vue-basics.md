@@ -58,23 +58,36 @@ Untuk pemula, cukup ingat satu pola:
 
 > Saat halaman dibuka, ambil data awal dari backend.
 
-## Menemukan Pola
+## Ikuti data halaman ke prop komponen
 
-Buka proyek frontend Vue.
+Repo materi ini belum menyertakan aplikasi Vue untuk ditelusuri. Gunakan contoh mini berikut untuk melihat satu nilai diteruskan dari halaman ke komponen.
 
-Cari:
+`Dashboard.vue`:
 
-```text
-src/views/
-src/components/
+```vue
+<script setup lang="ts">
+import SensorCard from "./SensorCard.vue";
+
+const reading = { deviceId: "esp32-01", value: 28.5 };
+</script>
+
+<template>
+  <SensorCard :device-id="reading.deviceId" :value="reading.value" />
+</template>
 ```
 
-Lihat satu file di `views/`, lalu cari component apa saja yang dipakai di dalamnya.
+`SensorCard.vue`:
 
-Pertanyaan kecil:
+```vue
+<script setup lang="ts">
+defineProps<{ deviceId: string; value: number }>();
+</script>
 
-- halaman ini menampilkan apa?
-- component kecil apa yang dipakai?
-- data dari API disimpan di mana?
+<template>
+  <p>{{ deviceId }}: {{ value }} °C</p>
+</template>
+```
+
+Ikuti `reading.value` dari halaman ke prop `value`; komponen menampilkannya sebagai `28.5 °C`. Atribut `:device-id` diterima sebagai prop `deviceId`.
 
 [Kembali ke Overview Frontend](overview.md)

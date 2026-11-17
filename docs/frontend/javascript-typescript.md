@@ -129,7 +129,7 @@ Dengan tipe ini, editor bisa membantu memberi peringatan jika kita salah menulis
 
 TypeScript membantu saat menulis kode frontend.
 
-Namun TypeScript tidak menggantikan validasi backend. Data dari luar tetap harus dicek oleh backend, misalnya dengan Pydantic.
+Namun TypeScript tidak menggantikan validasi backend. Data dari luar tetap harus diperiksa server. Express dapat memakai middleware atau library validasi; backend FastAPI di sejumlah proyek KSM memakai Pydantic.
 
 Pola amannya:
 
@@ -140,35 +140,38 @@ flowchart LR
     C --> D["Database"]
 ```
 
-Frontend memakai TypeScript agar developer lebih cepat menemukan kesalahan.
+Frontend memakai TypeScript agar developer lebih cepat menemukan kesalahan saat menulis kode. Server tetap memvalidasi data saat request diterima.
 
-Backend memakai Pydantic agar data dari luar benar-benar divalidasi.
+## Cocokkan respons API dengan tipe TypeScript
 
-## Menemukan Pola
+Backend Mini mengembalikan respons berikut dari `POST /sensors` saat menerima contoh kiriman:
 
-Buka proyek frontend TypeScript.
-
-Cari file dengan ekstensi:
-
-```text
-.ts
-.vue
+```json
+{
+  "message": "Data sensor diterima",
+  "data": {
+    "device_id": "esp32-01",
+    "sensor_type": "temperature",
+    "value": 28.5,
+    "unit": "celsius"
+  }
+}
 ```
 
-Lalu cari kata:
+Tipe yang cocok dengan respons tersebut:
 
-```text
-type
-interface
-const
-fetch
-axios
+```ts
+type SensorResponse = {
+  message: string;
+  data: {
+    device_id: string;
+    sensor_type: string;
+    value: number;
+    unit: string;
+  };
+};
 ```
 
-Pertanyaan kecil:
-
-- data dari API bentuknya seperti apa?
-- tipe datanya ditulis di mana?
-- apakah nama field frontend sama dengan response backend?
+Periksa pasangan field dan tipenya: `message` adalah teks, `data.value` adalah angka. Perhatikan juga bahwa respons memakai `device_id` dan `sensor_type` dengan garis bawah, sama seperti model Python. Tipe TypeScript membantu saat menulis kode, tetapi tidak memvalidasi JSON saat diterima browser.
 
 [Kembali ke Overview Frontend](overview.md)

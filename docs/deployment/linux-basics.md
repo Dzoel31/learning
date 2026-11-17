@@ -54,10 +54,8 @@ Sebagian besar server deployment berjalan di Linux. Jadi, memahami dasar Linux a
 - Hati-hati dengan `rm -r` karena bisa menghapus banyak file sekaligus.
 - Simpan konfigurasi penting dan lakukan backup sebelum edit.
 
-## Ringkasannya
+## Periksa API dari server
 
-- Linux adalah fondasi penting untuk deployment.
-- Kuasai command dasar file, monitoring, dan service management.
-- Setelah Linux basics, lanjut ke Docker dan NGINX akan jauh lebih mudah.
+Jika dashboard gagal mengambil data, masuk ke server lewat [SSH](ssh-basics.md). Jalankan `ss -tuln` dan cari port 8000. Jika port terlihat, jalankan `curl -i http://127.0.0.1:8000/health`. Port yang terbuka menunjukkan ada proses yang menerima koneksi. Respons HTTP 200 dengan isi yang diharapkan menunjukkan endpoint latihan bisa merespons dari server.
 
-Jika masih bingung, jangan ragu untuk coba langsung di terminal dan bertanya ya! Semangat belajar deployment AIoT!
+Jika API dijalankan di Docker, lanjutkan ke [pemeriksaan container](docker-container.md#periksa-container-yang-menjalankan-api).

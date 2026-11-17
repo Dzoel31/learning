@@ -164,17 +164,14 @@ Contoh state sederhana:
 
 Dashboard yang baik tidak hanya menampilkan data saat sukses. Ia juga memberi tahu ketika data belum ada atau sedang error.
 
-## Menemukan Pola
+## Pisahkan HTML dan JavaScript pada tombol cek server
 
-Buka dashboard proyek AIoT nyata.
+Buka file `index.html` pada [Frontend Mini](../hands-on/frontend-mini.md). Latihan itu memakai HTML dan JavaScript dalam satu file; tidak ada aturan CSS khusus.
 
-Cari:
+- **HTML:** `<button id="refresh">Refresh</button>` membuat tombol, dan `<pre id="output">` menjadi tempat hasil.
+- **JavaScript:** `document.querySelector` mengambil kedua elemen. `button.addEventListener("click", loadHealth)` menghubungkan klik dengan fungsi yang meminta `/health`.
+- **CSS:** contoh ini tidak menetapkan CSS, jadi tampilan tombol mengikuti gaya bawaan browser.
 
-- bagian yang menampilkan angka sensor,
-- bagian yang menampilkan status,
-- bagian yang memanggil API,
-- bagian yang muncul saat error.
-
-Kamu tidak harus langsung memahami framework. Cukup kenali dulu: mana struktur, mana tampilan, mana interaksi.
+Klik **Refresh** saat Backend Mini berjalan. Elemen `<pre>` menampilkan `{"status":"ok"}`. Jika backend tidak dapat dijangkau, fungsi menampilkan `Gagal mengambil data dari backend.`.
 
 [Kembali ke Overview Frontend](overview.md)

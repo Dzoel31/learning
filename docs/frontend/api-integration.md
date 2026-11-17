@@ -12,7 +12,7 @@ sequenceDiagram
     participant API as Backend API
     participant DB as Database
 
-    UI->>API: GET /sensors/latest
+    UI->>API: GET /sensors
     API->>DB: ambil data terbaru
     DB-->>API: hasil query
     API-->>UI: JSON response
@@ -33,11 +33,11 @@ Sebelum frontend memanggil API, pastikan:
 Contoh sederhana:
 
 ```js
-const response = await fetch("http://127.0.0.1:8000/sensors/latest");
+const response = await fetch("http://127.0.0.1:8000/sensors");
 const sensors = await response.json();
 ```
 
-Kode ini mengambil data dari backend, lalu mengubah response menjadi object JavaScript.
+Setelah [Dashboard Hands-on](../hands-on/dashboard-hands-on.md), endpoint `GET /sensors` mengembalikan array pembacaan terbaru. Fetch mengubah response JSON menjadi array JavaScript.
 
 ## Loading, Error, dan Empty
 
@@ -56,24 +56,21 @@ request gagal -> tampilkan error
 
 CORS adalah aturan keamanan browser.
 
-Kalau frontend berjalan di `localhost:5173` dan backend berjalan di `localhost:8000`, browser menganggap keduanya berbeda asal.
+Kalau frontend berjalan di `127.0.0.1:5500` dan backend berjalan di `127.0.0.1:8000`, browser menganggap keduanya berbeda asal.
 
 Jika backend belum mengizinkan frontend, browser bisa menolak request.
 
-## Menemukan Pola
+## Lacak klik sampai pesan tampil
 
-Buka file frontend yang mengambil data dari API.
+Gunakan tombol **Cek Backend** pada [Frontend Mini](../hands-on/frontend-mini.md). Klik memanggil `loadHealth()`, lalu fungsi menjalankan `fetch` ke `http://127.0.0.1:8000/health`.
 
-Cari kata berikut:
+Coba dua keadaan berikut:
 
-```text
-fetch
-axios
-api
-loading
-error
-```
+| Keadaan | Yang terlihat di elemen `output` |
+| --- | --- |
+| Backend Mini berjalan | `{"status":"ok"}` setelah request selesai |
+| Backend tidak berjalan atau alamat tidak bisa dijangkau | `Gagal mengambil data dari backend.` |
 
-Jangan baca semua sekaligus. Ikuti satu alur: tombol diklik, data diminta, data tampil.
+Saat request dimulai, teks berubah menjadi `Mengambil data...`. Contoh ini memeriksa `response.ok`. Sambungan yang gagal dan kode HTTP gagal seperti `404` berakhir di blok `catch`.
 
 [Kembali ke Overview Frontend](overview.md)
