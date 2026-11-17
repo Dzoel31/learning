@@ -8,8 +8,8 @@ Pada hands-on ini, kita akan membuat sistem RAG sederhana yang dapat menjawab pe
 
 Beberapa model yang digunakan adalah:
 
-- LLM: `gpt-oss-120b` via groq atau `Gemma 4 E2B QAT` via llama server di device masing-masing (sesuaikan dengan kemampuan device kalian).
-- Embedding: `sentence-transformers/paraphrase-multilingual-mpnet-base-v2` via SentenceTransformers
+- LLM: `gpt-oss-120b` via groq atau `gemma-4-E2B-it-qat-mobile-transformers` via library transformer pada Python secara lokal (pemilihan model lokal disesuaikan dengan kemampuan device masing-masing).
+- Embedding: `google/embeddinggemma-2` via SentenceTransformers
 
 Tahapan pada hands-on ini akan mengikuti alur RAG yang telah dijelaskan pada [RAG Pipeline](../../ai/ai-systems/rag.md#rag-pipeline). Berikut adalah tahapan-tahapan yang akan dilakukan:
 
@@ -26,17 +26,18 @@ Cekidot!
 ## Instalasi Library
 
 ```bash
-uv pip install docling sentence-transformers openai groq pymupdf chromadb -q
+!uv pip install --upgrade docling sentence-transformers groq pymupdf chromadb accelerate transformers -q
 ```
 
 Penjelasannya:
 
 - `docling`: Library untuk mengekstrak konten dari dokumen.
 - `sentence-transformers`: Library untuk membuat embedding dari potongan-potongan dokumen.
-- `openai`: Library untuk berinteraksi dengan LLM.
 - `groq`: Library untuk berinteraksi dengan LLM Groq.
 - `pymupdf`: Library untuk membaca file PDF.
 - `chromadb`: Library untuk mengelola database vektor.
+- `transformers`: Library untuk mengelola model LLM.
+- `accelerate`: Library untuk mempercepat proses inferensi model.
 
 Mengapa kita menggunakan `docling` dan `pymupdf`? pada modul ini kita akan melihat perbedaan dari 2 tipe ekstraktor.
 
@@ -56,8 +57,12 @@ Atur sumber dokumen:
 import os
 from pathlib import Path
 
+# unduh dokumen
+!curl -L -o "panduan_nutrisi_hidroponik.pdf" \
+  "https://drive.google.com/uc?export=download&id=1SkcgeaFHAH71_YDsgkgw0CyFzVgjPKzC"
+
 # Atur path ke direktori dokumen
-doc_path = Path("path/to/your/documents")
+doc_path = Path("panduan_nutrisi_hidroponik.pdf")
 ```
 
 Untuk dokumennya dapat kalian unduh dari [sini](https://drive.google.com/file/d/1SkcgeaFHAH71_YDsgkgw0CyFzVgjPKzC/view?usp=sharing)
@@ -209,59 +214,96 @@ Menyiapkan model embedding:
 ```python
 from sentence_transformers import SentenceTransformer, util
 
-model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-mpnet-base-v2")
+model_embedding = SentenceTransformer("google/embeddinggemma-2", config_kwargs={"vision_config": None, "audio_config": None})
+
+# Berdasarkan https://ai.google.dev/gemma/docs/embeddinggemma/model_card_2#1_task_instruction_prefixes
+DOC_PREFIX   = "task: search result | text: "
+QUERY_PREFIX = "task: search query | text: "
+TITLE_NONE   = "title: none | text: "
+```
+
+Karena model embedding Gemma2 dilatih menggunakan prefix khusus, maka untuk meningkatkan kualitas embedding, kita perlu menambahkan prefix pada setiap teks yang akan diembedding. Untuk dokumen, kita menggunakan `DOC_PREFIX`, sedangkan untuk query pengguna, kita menggunakan `QUERY_PREFIX`. Untuk mempermudah kita buat fungsi bantuan untuk menambahkan prefix pada teks.
+
+```python
+def build_doc_text(chunk) -> str:
+    """
+    Format dokumen sesuai rekomendasi EmbeddingGemma 2:
+      - Ada judul    : title: {title} | text: {content}
+      - Tidak ada    : title: none | text: {content}
+    Lalu ditambah prefix task: search result
+    """
+    # Ambil judul dari metadata heading (jika ada)
+    headings = getattr(chunk.meta, "headings", None)
+    title = headings[0] if headings else None
+
+    content = chunk.text.strip()
+
+    if title:
+        body = f"title: {title.strip()} | text: {content}"
+    else:
+        body = f"title: none | text: {content}"
+
+    return DOC_PREFIX + body
+
+def build_query_text(query: str) -> str:
+    """Query pakai prefix search query, tanpa title."""
+    return QUERY_PREFIX + query.strip()
 ```
 
 Menyiapkan database vector dan custom embedding menyesuaikan model yang digunakan:
 
 ```python
 import chromadb
-from chromadb import EmbeddingFunction, Documents, Embeddings
-
-# 1. Wrapper Custom Embedding Model
-class MyCustomEmbeddingFunction(EmbeddingFunction):
-    def __init__(self, st_model):
-        self.model = st_model
-
-    def __call__(self, input: Documents) -> Embeddings:
-        # Menghasilkan vektor embedding dalam bentuk list Python
-        return self.model.encode(input).tolist()
-
-# 2. Inisialisasi ChromaDB
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
-
-embedding_fn = MyCustomEmbeddingFunction(model)
 
 collection = chroma_client.get_or_create_collection(
     name="nutrisi_hidroponik",
-    embedding_function=embedding_fn,
-    metadata={"hnsw:space": "cosine"}
+    metadata={"hnsw:space": "cosine"} # menggunakan cosine similarity untuk pencarian berbasis kemiripan
 )
 ```
 
 Setelah database vector siap, kita dapat menyimpan chunk ke dalam database tersebut. Agar setiap chunk dapat diidentifikasi, kita dapat menambahkan metadata seperti `chunk_id`, `source`, dan `headings` dari dokumen.
 
 ```python
-documents = []
+documents = [] # teks asli (untuk display hasil retrieval)
 metadatas = []
 ids = []
+embeddings= []
 
 for idx, chunk in enumerate(chunks):
+    # --- teks asli untuk disimpan ---
     documents.append(chunk.text)
-    # build metadata
-    meta = {}
-    meta["source"] = chunk.meta.origin.filename
-    meta["headings"] = chunk.meta.headings
-    meta["chunk_id"] = f"chunk_{idx}"
+
+    # --- metadata ---
+    meta = {
+        "source":   chunk.meta.origin.filename,
+        "headings": chunk.meta.headings,
+        "chunk_id": f"chunk_{idx}",
+    }
     metadatas.append(meta)
     ids.append(f"doc_chunk_{idx}")
 
-# Simpan ke DB (otomatis melakukan embedding)
+    # --- teks dengan prefix untuk embedding ---
+    doc_with_prefix = build_doc_text(chunk)
+    embeddings.append(doc_with_prefix)
+
+# Encode semua dokumen sekaligus (batch, lebih efisien)
+doc_embeddings = model_embedding.encode(
+    embeddings,
+    batch_size=32,
+    normalize_embeddings=True,
+    show_progress_bar=True,
+).tolist()
+
+
 collection.add(
-    documents=documents,
+    documents=documents,          # teks asli untuk display
+    embeddings=doc_embeddings,    # vektor dari teks ber-prefix
     metadatas=metadatas,
-    ids=ids
+    ids=ids,
 )
+
+print(f"Berhasil menyimpan {len(ids)} chunk ke ChromaDB.")
 ```
 
 Setelah chunk tersimpan, kita dapat masuk ke fase retrieval untuk mengambil informasi yang relevan dari knowledge base berdasarkan query pengguna.
@@ -271,14 +313,24 @@ Setelah chunk tersimpan, kita dapat masuk ke fase retrieval untuk mengambil info
 ```python
 query_text = "tanaman pakcoy butuh target PH dan target PPM berapa"
 
+query_with_prefix = build_query_text(query_text)
+query_embedding = model_embedding.encode(
+    [query_with_prefix],
+    normalize_embeddings=True,
+).tolist()
+
 results = collection.query(
-    query_texts=[query_text],
-    n_results=3 # Mengambil 3 hasil teratas dari database vector yang paling relevan dengan query
+    query_embeddings=query_embedding,
+    n_results=3,
 )
 
 print(f"\n[QUERY]: {query_text}\n")
-for i, (doc_text, meta) in enumerate(zip(results["documents"][0], results["metadatas"][0])):
+for i, (doc_text, meta, dist) in enumerate(zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0])):
     print(f"=== HASIL RETRIEVAL {i+1} ===")
+    print(f"Distance : {dist:.4f}")
     print(f"Metadata : {meta}")
     print(f"Isi Teks :\n{doc_text}\n")
 ```
@@ -287,8 +339,8 @@ Jika kalian ingin menampilkan nilai kemiripan (similarity score) kalian dapat me
 
 ```python
 results = collection.query(
-    query_texts=[query_text],
-    n_results=5
+    query_embeddings=query_embedding,
+    n_results=5,
 )
 
 for i, (doc, meta, distance) in enumerate(
@@ -309,37 +361,20 @@ for i, (doc, meta, distance) in enumerate(
 fase augmentation bertujuan untuk membangun konteks yang akan diberikan kepada LLM.
 
 ```python
-SYSTEM_PROMPT = """Kamu adalah Nexo, Asisten Bot KSM AIoT.
-
-Tugasmu adalah menjawab pertanyaan berdasarkan konteks yang diberikan dengan kalimatmu sendiri secara alami dan mudah dipahami.
-
-Aturan:
-1. Gunakan HANYA informasi yang tersedia dalam konteks.
-2. Jangan menyalin mentah-mentah kalimat dari konteks. Parafrasekan dengan tetap mempertahankan makna.
-3. Semua fakta, angka, satuan, dan parameter teknis HARUS sesuai dengan konteks. Jangan mengarang atau menambahkan informasi dari luar konteks.
-4. Jika informasi yang dibutuhkan tidak tersedia dalam konteks, katakan:
-   "Informasi tidak ditemukan dalam konteks."
-5. Setiap fakta atau informasi yang berasal dari konteks HARUS disertai sitasi menggunakan chunk_id sumbernya, misalnya [chunk_14].
-6. Jangan membuat atau mengubah chunk_id.
-7. Jika beberapa informasi berasal dari chunk yang sama, gunakan satu sitasi [chunk_id] pada akhir klausa atau kalimat yang relevan.
-8. Jangan memberikan sitasi pada informasi yang tidak didukung oleh konteks.
-9. Jawab dalam Bahasa Indonesia."""
-
 def augmented(query, retrieved_docs):
     context = "\n\n".join(
         f"[{d['chunk_id']}]\n{d['text']}"
         for d in retrieved_docs
     )
-# Augmented
-    prompt = f"""Konteks:
-    {context}
-
-    Pertanyaan:
-    {query}
-
-    Jawaban:"""
+    # Augmented
+    prompt = (
+        "Konteks:\n"
+        f"{context}\n\n"
+        f"Pertanyaan: {query}\n\n"
+    )
 
     return prompt
+
 ```
 
 ## [Generation](../../ai/ai-systems/rag.md#generation)
@@ -363,27 +398,36 @@ Jika semua tahapan di atas sudah dilakukan, kalian akan mendapatkan API key yang
 
 ```python
 # Membangun fungsi retrieval
+# ---------- Retrieval ----------
 def retrieve(query, top_k=3):
+    # 1. Tambahkan prefix query
+    prefixed_query = QUERY_PREFIX + query.strip()
+
+    # 2. Embed manual (bukan query_texts)
+    query_embedding = model_embedding.encode(
+        [prefixed_query],
+        normalize_embeddings=True,
+    ).tolist()
+
+    # 3. Query pakai query_embeddings
     results = collection.query(
-        query_texts=[query],
+        query_embeddings=query_embedding,
         n_results=top_k,
-        include=["documents", "metadatas", "distances"]
+        include=["documents", "metadatas", "distances"],
     )
 
     retrieved = []
-
     for doc, meta, distance in zip(
         results["documents"][0],
         results["metadatas"][0],
-        results["distances"][0]
+        results["distances"][0],
     ):
         retrieved.append({
-            "text": doc,
+            "text":     doc,
             "chunk_id": meta["chunk_id"],
-            "source": meta["source"],
-            "distance": distance
+            "source":   meta["source"],
+            "distance": distance,
         })
-
     return retrieved
 ```
 
@@ -399,6 +443,22 @@ from google.colab import userdata
 
 client_groq = Groq(api_key=userdata.get("GROQ_API_KEY"))
 
+SYSTEM_PROMPT = """Kamu adalah Nexo, Asisten Bot KSM AIoT.
+
+Tugasmu adalah menjawab pertanyaan berdasarkan konteks yang diberikan dengan kalimatmu sendiri secara alami dan mudah dipahami.
+
+Aturan:
+1. Gunakan HANYA informasi yang tersedia dalam konteks.
+2. Jangan menyalin mentah-mentah kalimat dari konteks. Parafrasekan dengan tetap mempertahankan makna.
+3. Semua fakta, angka, satuan, dan parameter teknis HARUS sesuai dengan konteks. Jangan mengarang atau menambahkan informasi dari luar konteks.
+4. Jika informasi yang dibutuhkan tidak tersedia dalam konteks, katakan:
+   "Informasi tidak ditemukan dalam konteks."
+5. Setiap fakta atau informasi yang berasal dari konteks HARUS disertai sitasi menggunakan chunk_id sumbernya, misalnya [chunk_14].
+6. Jangan membuat atau mengubah chunk_id.
+7. Jika beberapa informasi berasal dari chunk yang sama, gunakan satu sitasi [chunk_id] pada akhir klausa atau kalimat yang relevan.
+8. Jangan memberikan sitasi pada informasi yang tidak didukung oleh konteks.
+9. Jawab dalam Bahasa Indonesia."""
+
 def generate_groq_answer(prompt):
     response = client_groq.chat.completions.create(
         model="openai/gpt-oss-120b",
@@ -406,7 +466,7 @@ def generate_groq_answer(prompt):
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
         ],
-        temperature=0.5,
+        temperature=0.1,
         max_completion_tokens=1024,
     )
     return response.choices[0].message.content.strip()
@@ -425,51 +485,64 @@ retrieved, answer = rag_groq(query, top_k=3)
 print("Retrieved: ")
 for d in retrieved:
     print(f"  - {d}")
-print("Answer: ", answer) 
+print("Answer: ", answer)
 ```
 
-Jika kalian ingin menggunakan LLM lokal via llama-server, kalian dapat mengikuti kode berikut:
+Jika kalian ingin menggunakan LLM lokal via transformers, kalian dapat mengikuti kode berikut:
 
 ```python
-import asyncio
-from openai import AsyncOpenAI
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-# llama-server default: http://localhost:8080/v1
-LLAMA_BASE_URL = "http://103.147.92.179:9090/v1"
-LLAMA_API_KEY = userdata.get("LLAMA_API_KEY")
-client = AsyncOpenAI(
-    base_url=LLAMA_BASE_URL,
-    api_key=LLAMA_API_KEY,  # llama-server tidak memerlukan API key, jika kalian tidak mengatur API key, kalian bisa menghapus parameter api_key di atas atau diisi "sk-not-required"
+model_id = "google/gemma-4-E2B-it-qat-mobile-transformers" # atau versi QAT BF16
+
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model_llm = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    device_map="auto",
+    torch_dtype=torch.bfloat16
 )
 
-async def generate(prompt):
-    response = await client.chat.completions.create(
-        model="local-model",
-        messages=[
-            {
-                "role": "system",
-                "content": SYSTEM_PROMPT
-            },
-            {
-                "role": "user",
-                "content": prompt
-            },
-        ],
-        temperature=0.3,
-        max_tokens=400,
+def generate(prompt: str) -> str:
+    """
+    Menghasilkan jawaban menggunakan model Gemma lokal.
+    `prompt` diasumsikan sudah berisi SYSTEM_PROMPT + konteks RAG.
+    """
+    # Gemma tidak mendukung peran 'system'; gabungkan semuanya ke peran 'user'
+    # dan gunakan chat template dari tokenizer
+    messages = [{"role": "user", "content": f"{SYSTEM_PROMPT}\n\n{prompt}"}]
+
+    inputs = tokenizer.apply_chat_template(
+        messages,
+        add_generation_prompt=True,
+        tokenize=True,
+        return_dict=True,
+        return_tensors="pt",
+    ).to(model_llm.device)
+
+    outputs = model_llm.generate(
+        **inputs,
+        max_new_tokens=800,
+        temperature=0.1,
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id,
     )
 
-    return response.choices[0].message.content.strip()
+    # Hanya decode token yang baru dihasilkan (abaikan prompt)
+    generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
+    answer = tokenizer.decode(generated_ids, skip_special_tokens=True)
 
-async def rag(query, top_k=3):
+    return answer.strip()
+
+def rag(query, top_k=3):
     retrieved = retrieve(query, top_k=top_k)
     query_context = augmented(query, retrieved)
-    answer = await generate(query_context)
+    answer = generate(query_context)
     return retrieved, answer
 
 # Contoh penggunaan
 query = "tanaman pakcoy butuh target PH dan target PPM berapa"
-retrieved, answer = await rag(query, top_k=3)
+retrieved, answer = rag(query, top_k=3)
 print("Retrieved: ")
 for d in retrieved:
     print(f"  - {d}")

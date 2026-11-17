@@ -1,142 +1,82 @@
-# Backend Mini
+# Backend Mini dengan Express.js
 
-Di modul ini kamu akan membuat API kecil.
+Buat API kecil yang bisa memeriksa status server dan menerima satu pembacaan sensor. Data belum disimpan; penyimpanan PostgreSQL ditambahkan pada [Dashboard Hands-on](dashboard-hands-on.md).
 
-Targetnya bukan menjadi ahli backend. Targetnya: kamu melihat endpoint hidup dan bisa mengirim data sensor sederhana.
+## Endpoint
 
-## Yang Akan Kamu Buat
+| Method | Path | Tugas |
+| --- | --- | --- |
+| `GET` | `/health` | memeriksa server merespons |
+| `POST` | `/sensors` | memeriksa bentuk dasar dan mengembalikan pembacaan |
 
-Kamu akan membuat dua endpoint:
+## Buat proyek
 
-```text
-GET /health
-POST /sensors
+Di PowerShell:
+
+```powershell
+mkdir mini_backend
+Set-Location mini_backend
+npm init -y
+npm install express cors
+New-Item main.js
 ```
 
-`/health` dipakai untuk mengecek apakah server hidup.
+Isi `main.js`:
 
-`/sensors` dipakai untuk menerima data sensor dummy.
+```js
+const express = require("express");
+const cors = require("cors");
 
-## Siapkan File
+const app = express();
+app.use(cors({ origin: "http://127.0.0.1:5500" }));
+app.use(express.json());
 
-Buat file:
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
-```text
-mini_backend/main.py
+app.post("/sensors", (req, res) => {
+  const { device_id, sensor_type, value, unit } = req.body;
+  if (
+    typeof device_id !== "string" ||
+    typeof sensor_type !== "string" ||
+    typeof value !== "number" ||
+    typeof unit !== "string"
+  ) {
+    return res.status(400).json({ error: "Format data sensor tidak valid" });
+  }
+
+  return res.status(201).json({
+    message: "Data sensor diterima",
+    data: { device_id, sensor_type, value, unit },
+  });
+});
+
+app.listen(8000, "127.0.0.1", () => {
+  console.log("API berjalan di http://127.0.0.1:8000");
+});
 ```
 
-Isi dengan kode ini:
+`express.json()` membaca body JSON. `req.body` berisi data yang dikirim client. Status `400` menunjukkan format input ditolak, sedangkan `201` menandai data baru diterima.
 
-```python
-from fastapi import FastAPI
-from pydantic import BaseModel
+## Jalankan server
 
-app = FastAPI()
-
-
-class SensorIn(BaseModel):
-    device_id: str
-    sensor_type: str
-    value: float
-
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.post("/sensors")
-def receive_sensor(data: SensorIn):
-    return {
-        "message": "Data sensor diterima",
-        "data": data,
-    }
+```powershell
+node main.js
 ```
 
-## Jalankan
-
-Dari folder yang berisi `mini_backend`, jalankan:
-
-```bash
-uv run --with fastapi fastapi dev mini_backend/main.py
-```
-
-Kalau server hidup, buka:
-
-```text
-http://127.0.0.1:8000/health
-```
-
-## Quick Win
-
-Kamu harus melihat:
+Buka `http://127.0.0.1:8000/health`. Hasilnya:
 
 ```json
 {"status":"ok"}
 ```
 
-Itu tanda API kecilmu sudah hidup.
+Untuk menguji endpoint POST dari terminal PowerShell:
 
-## Kirim Data Sensor
-
-Buka halaman docs otomatis FastAPI:
-
-```text
-http://127.0.0.1:8000/docs
+```powershell
+curl.exe -X POST http://127.0.0.1:8000/sensors `
+  -H "Content-Type: application/json" `
+  -d '{"device_id":"esp32-01","sensor_type":"temperature","value":28.5,"unit":"celsius"}'
 ```
 
-Coba endpoint `POST /sensors` dengan contoh JSON:
-
-```json
-{
-  "device_id": "esp32-01",
-  "sensor_type": "temperature",
-  "value": 28.5
-}
-```
-
-## Coba Ubah Sedikit
-
-Tambahkan field baru:
-
-```python
-unit: str
-```
-
-Lalu kirim data seperti:
-
-```json
-{
-  "device_id": "esp32-01",
-  "sensor_type": "temperature",
-  "value": 28.5,
-  "unit": "celsius"
-}
-```
-
-Perhatikan: kalau JSON tidak sesuai, FastAPI akan memberi error. Itu bukan gagal. Itu validasi sedang bekerja.
-
-## Menemukan Pola
-
-Kamu baru saja membuat:
-
-- `main.py`
-- endpoint `/health`
-- endpoint `/sensors`
-- model input dengan Pydantic
-
-Sekarang buka repo AIoT nyata. Smart Hydroponic bisa dipakai sebagai contoh pertama:
-
-```text
-backend/main.py
-backend/routes/
-backend/schemas/
-```
-
-Coba cari pola yang mirip:
-
-- Di mana aplikasi FastAPI dibuat?
-- Di mana endpoint dikelompokkan?
-- Di mana bentuk data request dan response ditulis?
-
-Kamu belum harus paham semuanya. Cukup temukan kemiripannya.
+Coba hilangkan `value` atau kirim sebagai teks. Server akan membalas `400`. Jika format benar, respons memuat pesan dan data sensor. Lanjutkan ke [IoT Simulator Mini](iot-simulator-mini.md) untuk mengirim data dari script, lalu [Dashboard Hands-on](dashboard-hands-on.md) untuk menyimpannya.

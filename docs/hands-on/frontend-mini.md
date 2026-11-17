@@ -1,24 +1,19 @@
 # Frontend Mini
 
-Di modul ini kamu akan membuat dashboard kecil.
+Di latihan ini, buat tombol yang memeriksa apakah Backend Mini bisa dihubungi. Hasilnya tampil sebagai JSON atau pesan gagal. Daftar pembacaan sensor dibuat di [Dashboard Hands-on](dashboard-hands-on.md).
 
-Targetnya: frontend bisa mengambil data dari API dan menampilkannya di layar.
+## Isi Halaman
 
-## Yang Akan Kamu Buat
+Tombol **Refresh** menjalankan fungsi `loadHealth`. Elemen `<pre>` menampilkan status pengambilan data, hasil, atau kesalahan.
 
-Satu halaman sederhana dengan:
+## Buat File HTML
 
-- judul,
-- tombol refresh,
-- tabel data sensor,
-- pesan loading atau error.
+Buat folder dan file. Jika folder sudah ada, cukup buat `index.html` di dalamnya.
 
-## Mulai Dari HTML Kecil
-
-Buat file:
-
-```text
-mini_frontend/index.html
+```powershell
+mkdir mini_frontend
+Set-Location mini_frontend
+New-Item index.html
 ```
 
 Isi:
@@ -44,6 +39,7 @@ Isi:
 
         try {
           const response = await fetch("http://127.0.0.1:8000/health");
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const data = await response.json();
           output.textContent = JSON.stringify(data, null, 2);
         } catch (error) {
@@ -57,9 +53,9 @@ Isi:
 </html>
 ```
 
-## Quick Win
+## Jalankan Halaman
 
-Jalankan Backend Mini, lalu buka file HTML ini di browser.
+Jalankan Backend Mini. Di terminal lain, dari folder `mini_frontend`, jalankan `python -m http.server 5500 --bind 127.0.0.1`. Buka `http://127.0.0.1:5500` di browser.
 
 Klik tombol **Refresh**.
 
@@ -71,9 +67,9 @@ Kalau muncul:
 }
 ```
 
-berarti frontend kamu berhasil bicara dengan backend.
+frontend berhasil memeriksa backend. Matikan Backend Mini, lalu klik **Refresh** untuk melihat pesan gagal.
 
-## Coba Ubah Sedikit
+## Ubah Teks Tombol
 
 Ubah teks tombol:
 
@@ -87,32 +83,14 @@ menjadi:
 Cek Backend
 ```
 
-Kecil, tapi penting. Kamu baru saja mengubah UI.
+Perubahan ini mengubah teks yang dilihat pengguna.
 
 ## Menuju Vue
 
 Di proyek asli, dashboard tidak ditulis sebagai satu file HTML saja. Dashboard memakai Vue agar halaman dan komponen lebih rapi.
 
-Tapi polanya tetap sama:
+Alur dasarnya tetap sama:
 
 ```text
 tombol diklik -> frontend fetch API -> data tampil di layar
 ```
-
-## Menemukan Pola
-
-Buka repo AIoT nyata. Smart Hydroponic bisa dipakai sebagai contoh pertama:
-
-```text
-frontend-vue/src/views/
-frontend-vue/src/components/
-frontend-vue/src/api/
-```
-
-Coba cari:
-
-- File mana yang terlihat seperti halaman dashboard?
-- Folder mana yang berisi komponen yang dipakai ulang?
-- Folder mana yang dipakai untuk memanggil backend?
-
-Kamu baru saja membuat versi kecil dari pola itu.

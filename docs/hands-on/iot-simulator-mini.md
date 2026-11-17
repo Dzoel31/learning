@@ -1,20 +1,19 @@
 # IoT Simulator Mini
 
-Di modul ini kamu akan berpura-pura menjadi perangkat sensor.
+Di modul ini kamu akan menggunakan script Python untuk mengirim data sensor ke backend. Tujuan dari script ini menggantikan perangkat ESP32 selama latihan ketika kalian tidak memiliki perangkat fisik.
 
-Kita belum memakai ESP32 dulu. Kita mulai dari script Python kecil yang mengirim data dummy ke backend.
-
-## Yang Akan Kamu Buat
+## Data yang Dikirim
 
 Script yang mengirim data:
 
 ```text
 device_id: esp32-01
 sensor_type: temperature
-value: angka dummy
+value: suhu contoh antara 25 dan 32
+unit: celsius
 ```
 
-## Buat Script
+## Buat Script Python
 
 Buat file:
 
@@ -33,6 +32,7 @@ payload = {
     "device_id": "esp32-01",
     "sensor_type": "temperature",
     "value": round(random.uniform(25, 32), 2),
+    "unit": "celsius",
 }
 
 request = urllib.request.Request(
@@ -46,7 +46,7 @@ with urllib.request.urlopen(request) as response:
     print(response.read().decode("utf-8"))
 ```
 
-## Jalankan
+## Jalankan Script
 
 Pastikan Backend Mini hidup, lalu jalankan:
 
@@ -54,15 +54,9 @@ Pastikan Backend Mini hidup, lalu jalankan:
 uv run python mini_iot/send_sensor.py
 ```
 
-## Quick Win
+Sebelum API dihubungkan ke database, respons berisi pesan “Data sensor diterima”. Setelah [Dashboard Hands-on](dashboard-hands-on.md), pesannya menjadi “Data sensor disimpan” dan respons juga memuat ID serta `recorded_at`.
 
-Kamu akan melihat response dari backend.
-
-Setiap kali script dijalankan, nilai `value` bisa berubah.
-
-Itulah ide dasar simulator: membuat data palsu yang terasa seperti data sensor.
-
-## Coba Ubah Sedikit
+## Kirim Data pH
 
 Ubah `sensor_type`:
 
@@ -82,21 +76,4 @@ Lalu ubah rentang random menjadi:
 random.uniform(5.5, 7.5)
 ```
 
-Sekarang script kamu berpura-pura menjadi sensor pH.
-
-## Menemukan Pola
-
-Buka repo AIoT nyata. Smart Hydroponic bisa dipakai sebagai contoh pertama:
-
-```text
-backend/test/
-esp/
-```
-
-Coba cari:
-
-- Script mana yang mengirim data seperti perangkat?
-- Folder mana yang berisi program ESP32 atau ESP8266?
-- Apa bedanya simulator Python dengan firmware ESP?
-
-Simulator ini bukan pengganti perangkat asli. Simulator adalah latihan agar kamu paham alurnya sebelum menyentuh hardware.
+Ubah juga `unit` dari `"celsius"` menjadi `"pH"`. Periksa bahwa respons menampilkan jenis `ph`, satuan `pH`, dan nilai di rentang contoh.

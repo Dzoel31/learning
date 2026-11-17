@@ -15,7 +15,7 @@ Kalian bisa menggunakan code yang ada di modul RAG sederhana dengan melakukan pe
 ## Instalasi Library Tambahan
 
 ```bash
-!uv pip install docling sentence-transformers openai pymupdf chromadb rank-bm25 ddgs -q
+!uv pip install --upgrade docling sentence-transformers groq chromadb rank-bm25 ddgs accelerate transformers -q
 ```
 
 Sebelum masuk ke proses retrieval, pada modul ini kita akan menggunakan metrik evaluasi Hit@K yang definisinya adalah sebagai berikut:
@@ -25,11 +25,12 @@ Hit@k = apakah minimal satu chunk yang diharapkan muncul di Top-k hasil retrieva
 Kita akan menggunakan metrik tersebut untuk membandingkan beberapa kombinasi teknik retrieval yang berbeda. Kombinasi tersebut antara lain:
 
 1. Retrieval berbasis embedding (default) menggunakan `sentence-transformers`
-2. Retrieval berbasis embedding + BM25
-3. Retrieval berbasis embedding + BM25 + Reranker
-4. HyDE + Retrieval berbasis embedding
-5. HyDE + Retrieval berbasis embedding + BM25
-6. HyDE + Retrieval berbasis embedding + BM25 + Reranker
+2. BM25 (lexical retrieval) menggunakan `rank-bm25`
+3. Retrieval berbasis embedding + BM25
+4. Retrieval berbasis embedding + BM25 + Reranker
+5. HyDE + Retrieval berbasis embedding
+6. HyDE + Retrieval berbasis embedding + BM25
+7. HyDE + Retrieval berbasis embedding + BM25 + Reranker
 
 Penasaran dengan hasil eksperimen? Silakan lanjutkan membaca modul ini.
 
@@ -122,7 +123,7 @@ test_queries = [
 ]
 
 # Fungsi reusable untuk benchmark tiap teknik
-async def check_relevance(test_queries, retrieve_fn):
+def check_relevance(test_queries, retrieve_fn):
     total_expected = len(test_queries)
     total_hit = 0
 
@@ -130,7 +131,7 @@ async def check_relevance(test_queries, retrieve_fn):
         query = test_query["query"]
         expected_chunks = test_query["expected_chunks"]
 
-        retrieved = await retrieve_fn(query, top_k=5)
+        retrieved = retrieve_fn(query, top_k=5)
         retrieved_chunk_ids = [r["chunk_id"] for r in retrieved]
 
         hit = bool(
@@ -153,11 +154,20 @@ Jika sudah, kita lanjut untuk menguji tiap teknik retrieval yang berbeda.
 ## Retrieval Berbasis Embedding (Default)
 
 ```python
-async def retrieve(query, top_k=3):
+def retrieve(query, top_k=3):
+    prefixed_query = QUERY_PREFIX + query.strip()
+
+    # 2. Embed manual (bukan query_texts)
+    query_embedding = model_embedding.encode(
+        [prefixed_query],
+        normalize_embeddings=True,
+    ).tolist()
+
+    # 3. Query pakai query_embeddings
     results = collection.query(
-        query_texts=[query],
+        query_embeddings=query_embedding,
         n_results=top_k,
-        include=["documents", "metadatas", "distances"]
+        include=["documents", "metadatas", "distances"],
     )
 
     retrieved = []
@@ -176,16 +186,16 @@ async def retrieve(query, top_k=3):
 
     return retrieved
 
-await check_relevance(test_queries, retrieve)
+check_relevance(test_queries, retrieve)
 # Output:
 # ==================================================
 # Total expected hit: 20
-# Total hit: 14
-# Accuracy: 70.00%
+# Total hit: 16
+# Accuracy: 80.00%
 # ==================================================
 ```
 
-Berdasarkan pengujian yang dilakukan, retrieval berbasis embedding memiliki akurasi sebesar 70%. Artinya, dari 20 query yang diuji, terdapat 14 query yang berhasil menemukan minimal satu chunk yang diharapkan muncul di Top-5 hasil retrieval.
+Berdasarkan pengujian yang dilakukan, retrieval berbasis embedding memiliki akurasi sebesar 80%. Artinya, dari 20 query yang diuji, terdapat 16 query yang berhasil menemukan minimal satu chunk yang diharapkan muncul di Top-5 hasil retrieval.
 
 ## Retrieval Berbasis Embedding + BM25
 
@@ -232,7 +242,7 @@ print(bm25.corpus_size) # Output 28
 Lalu kita buat fungsi retrieval berbasis BM25. Fungsi ini akan menerima query, melakukan tokenisasi, dan mengembalikan hasil retrieval berdasarkan skor BM25.
 
 ```python
-async def retrieve_bm25(query, top_k=3): # Pencarian masih berbasis lexical search
+def retrieve_bm25(query, top_k=3):
     tokenized_query = tokenize(query)
     doc_scores = bm25.get_scores(tokenized_query)
 
@@ -252,7 +262,9 @@ async def retrieve_bm25(query, top_k=3): # Pencarian masih berbasis lexical sear
 Kemudian kita coba test fungsi retrieval dan juga evaluasi menggunakan metrik Hit@K.
 
 ```python
-results = await retrieve_bm25(query, top_k=5)
+query = "berapa target EC untuk kangkung"
+
+results = retrieve_bm25(query, top_k=5)
 
 for result in results:
     print(result["chunk_id"], result["score"])
@@ -268,8 +280,8 @@ await check_relevance(
 # Output:
 # ==================================================
 # Total expected hit: 20
-# Total hit: 14
-# Accuracy: 70.00%
+# Total hit: 15
+# Accuracy: 75.00%
 # ==================================================
 ```
 
@@ -278,9 +290,9 @@ Skor Dense Retrieval dan BM25 memiliki skala yang berbeda. Skor BM25 juga tidak 
 Berikut adalah implementasi gabungan Dense Retrieval dan BM25 menggunakan RRF. 
 
 ```python
-async def retrieve_hybrid(query, top_k=5, candidate_k=10):
-    dense_results = await retrieve(query, top_k=candidate_k)
-    bm25_results = await retrieve_bm25(query, top_k=candidate_k)
+def retrieve_hybrid(query, top_k=5, candidate_k=10):
+    dense_results = retrieve(query, top_k=candidate_k)
+    bm25_results = retrieve_bm25(query, top_k=candidate_k)
 
     scores = {}
     documents = {}
@@ -334,8 +346,8 @@ await check_relevance(test_queries, retrieve_hybrid)
 # Output:
 #==================================================
 # Total expected hit: 20
-# Total hit: 16
-# Accuracy: 80.00%
+# Total hit: 18
+# Accuracy: 90.00%
 # ==================================================
 ```
 
@@ -354,7 +366,7 @@ cross_encoder = CrossEncoder("BAAI/bge-reranker-v2-m3")
 Membuat fungsi rerank:
 
 ```python
-async def rerank(query, results, top_k=5):
+def rerank(query, results, top_k=5):
     sentence_pairs = [
         [query, result["text"]]
         for result in results
@@ -377,19 +389,19 @@ async def rerank(query, results, top_k=5):
 Membuat fungsi retrieval hybrid + reranker:
 
 ```python
-async def retrieve_hybrid_reranked(query, top_k=5, candidate_k=10):
-    candidates = await retrieve_hybrid(
+def retrieve_hybrid_reranked(query, top_k=5, candidate_k=10):
+    candidates = retrieve_hybrid(
         query,
         top_k=candidate_k
     )
 
-    return await rerank(
+    return rerank(
         query,
         candidates,
         top_k=top_k
     )
 
-rerank_result = await retrieve_hybrid_reranked(query, top_k=5)
+rerank_result = retrieve_hybrid_reranked(query, top_k=5)
 print("Query: ", query)
 for result in rerank_result:
     print(
@@ -401,14 +413,14 @@ await check_relevance(test_queries, retrieve_hybrid_reranked)
 # Output:
 # ==================================================
 # Total expected hit: 20
-# Total hit: 16
-# Accuracy: 80.00%
+# Total hit: 19
+# Accuracy: 95.00%
 # ==================================================
 ```
 
 ## HyDE (Hypothetical Document Embeddings)
 
-HyDE (Hypothetical Document Embeddings) adalah teknik retrieval yang menggunakan LLM untuk membuat jawaban hipotetis dari query terlebih dahulu, kemudian jawaban tersebut digunakan sebagai representasi untuk melakukan retrieval. Tujuannya adalah mengubah query pendek menjadi representasi yang lebih menyerupai isi dokumen yang ingin ditemukan.
+HyDE (Hypothetical Document Embeddings) adalah teknik retrieval yang menggunakan LLM untuk membuat jawaban hipotetis dari query terlebih dahulu, kemudian jawaban tersebut digunakan sebagai representasi untuk melakukan retrieval. Tujuan dari teknik ini adalah mengubah query pendek menjadi representasi yang lebih menyerupai isi dokumen yang ingin ditemukan.
 
 Dalam eksperimen HyDE kalian bisa memilih dan menyesuaikan kode yang ada pada bagian ini (menggunakan `groq` atau `llama-server`). Namun pada bagian ini kita akan menggunakan `groq` untuk membuat jawaban hipotesis.
 
@@ -416,47 +428,99 @@ Dalam eksperimen HyDE kalian bisa memilih dan menyesuaikan kode yang ada pada ba
 
     Jika kalian menggunakan `groq` terdapat batasan jumlah request yang dapat kalian kirim per menit. Kalian dapat melihat informasi tersebut pada halaman [rate limit](https://console.groq.com/docs/rate-limits). Jika kalian menggunakan `llama-server`, pastikan server sudah berjalan dan dapat diakses.
 
+!!! info
+
+    Pada modul ini kita menggunakan model Gemma 4 E2B QAT. Kalian bisa menggunakan model lain yang tersedia di [Hugging Face](https://huggingface.co/models). Model tersebut dijalankan menggunakan library `transformers`.
+
 !!! tip
 
     Kalian bisa mengurangi jumlah request yang dikirim ke LLM dengan menambahkan cache pada fungsi `generate_hyde_answer`. Cache ini akan menyimpan jawaban hipotesis untuk query yang sama sehingga tidak perlu mengirim request ke LLM lagi.
 
 ```python
-from groq import Groq
-from google.colab import userdata
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-client_groq = Groq(api_key=userdata.get("GROQ_API_KEY"))
+model_id = "google/gemma-4-E2B-it-qat-mobile-transformers" # atau versi QAT BF16
 
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model_llm = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    device_map="auto",
+    torch_dtype=torch.bfloat16
+)
+```
+
+Membuat fungsi bantu untuk membuat jawaban hipotesis:
+
+```python
 HYDE_SYSTEM_PROMPT = """
 Buat satu jawaban hipotetis yang mungkin menjawab pertanyaan berikut dalam 1 kalimat. Jangan buat terlalu umum atau generik.
 """
 
-def generate_hyde_answer(prompt):
-    response = client_groq.chat.completions.create(
-        model="openai/gpt-oss-120b",
-        messages=[
-            {"role": "system", "content": HYDE_SYSTEM_PROMPT},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=0.5,
-        max_completion_tokens=1024,
+def hyde_generate(prompt: str) -> str:
+    """
+    Menghasilkan jawaban menggunakan model Gemma lokal.
+    `prompt` diasumsikan sudah berisi SYSTEM_PROMPT + konteks RAG.
+    """
+    # Gemma tidak mendukung peran 'system'; gabungkan semuanya ke peran 'user'
+    # dan gunakan chat template dari tokenizer
+    messages = [{"role": "user", "content": f"{HYDE_SYSTEM_PROMPT}\n\n{prompt}"}]
+
+    inputs = tokenizer.apply_chat_template(
+        messages,
+        add_generation_prompt=True,
+        tokenize=True,
+        return_dict=True,
+        return_tensors="pt",
+    ).to(model_llm.device)
+
+    outputs = model_llm.generate(
+        **inputs,
+        max_new_tokens=800,
+        temperature=0.1,
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id,
     )
-    return response.choices[0].message.content.strip()
+
+    # Hanya decode token yang baru dihasilkan (abaikan prompt)
+    generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
+    answer = tokenizer.decode(generated_ids, skip_special_tokens=True)
+
+    return answer.strip()
+```
+
+Kemudian untuk menghemat waktu, kita buat fungsi untuk membuat hipotesis dan menyimpan hasilnya ke sebuah variabel yang dapat digunakan kembali. Dengan begitu, jika query yang sama diminta lagi, kita tidak perlu mengirim request ke LLM lagi.
+
+```python
+# Cache HyDE per query — LLM hanya dipanggil sekali per query unik
+_HYDE_CACHE: dict[str, str] = {}
+QUERY_HYDE_PAIR_LIST = []
+
+def get_hyde(query: str) -> str:
+    """Ambil (atau generate) teks hipotetis untuk query. Di-cache."""
+    if query not in _HYDE_CACHE:
+        hyde_text = hyde_generate(query)
+        _HYDE_CACHE[query] = hyde_text
+        QUERY_HYDE_PAIR_LIST.append({
+            "query": query,
+            "hyde": hyde_text,
+        })
+    return _HYDE_CACHE[query]
 ```
 
 Lanjut kita buat fungsi retrieval HyDE + Embedding (default):
 
 ```python
-async def retrieve_hyde(query, top_k=5):
-    # print(f"Query: {query}")
-
-    hyde_text = await generate_hyde(query)
-    # print(f"Hipotesis LLM: {hyde_text}")
+def retrieve_hyde(query, top_k=5):
+    hyde_text = get_hyde(query)
     enhanced_query = f"{query}\n {hyde_text}"
 
-    hyde_embedding = model.encode(enhanced_query).tolist()
+    prefixed_query = QUERY_PREFIX + enhanced_query.strip()
+
+    hyde_embedding = model_embedding.encode([prefixed_query], normalize_embeddings=True).tolist()
 
     results = collection.query(
-        query_embeddings=[hyde_embedding],
+        query_embeddings=hyde_embedding,
         n_results=top_k,
         include=["documents", "metadatas", "distances"]
     )
@@ -477,12 +541,12 @@ async def retrieve_hyde(query, top_k=5):
 
     return retrieved
 
-await check_relevance(test_queries, retrieve_hyde)
+check_relevance(test_queries, retrieve_hyde)
 # Output:
 # ==================================================
 # Total expected hit: 20
-# Total hit: 13
-# Accuracy: 65.00%
+# Total hit: 16
+# Accuracy: 80.00%
 # ==================================================
 ```
 
@@ -493,11 +557,11 @@ await check_relevance(test_queries, retrieve_hyde)
 ## HyDE + Retrieval Berbasis Embedding + BM25
 
 ```python
-async def retrieve_hybrid_hyde(query, top_k=5, candidate_k=10):
-    dense_results = await retrieve_hyde(query, top_k=candidate_k)
-    hyde = await generate_hyde(query)
-    enhanced_query = f"{query}\n {hyde}"
-    bm25_results = await retrieve_bm25(enhanced_query, top_k=candidate_k)
+def retrieve_hybrid_hyde(query, top_k=5, candidate_k=10):
+    dense_results = retrieve_hyde(query, top_k=candidate_k)
+    hyde_text = get_hyde(query)
+    enhanced_query = f"{query}\n {hyde_text}"
+    bm25_results = retrieve_bm25(enhanced_query, top_k=candidate_k)
 
     scores = {}
     documents = {}
@@ -538,38 +602,38 @@ async def retrieve_hybrid_hyde(query, top_k=5, candidate_k=10):
 
     return retrieved
 
-await check_relevance(test_queries, retrieve_hybrid_hyde)
+check_relevance(test_queries, retrieve_hybrid_hyde)
 # Output:
 # ==================================================
 # Total expected hit: 20
-# Total hit: 16
-# Accuracy: 80.00%
+# Total hit: 18
+# Accuracy: 90.00%
 # ==================================================
 ```
 
 ## HyDE + Retrieval Berbasis Embedding + BM25 + Reranker
 
 ```python
-async def retrieve_hybrid_hyde_reranked(
+def retrieve_hybrid_hyde_reranked(
     query,
     top_k=5,
     candidate_k=10
 ):
-    candidates = await retrieve_hybrid_hyde(
+    candidates = retrieve_hybrid_hyde(
         query,
         top_k=candidate_k
     )
 
-    hyde = await generate_hyde(query)
-    enhanced_query = f"{query}\n {hyde}"
+    hyde_text = get_hyde(query)
+    enhanced_query = f"{query}\n {hyde_text}"
 
-    return await rerank(
+    return rerank(
         enhanced_query,
         candidates,
         top_k=top_k
     )
 
-await check_relevance(test_queries, retrieve_hybrid_hyde_reranked)
+check_relevance(test_queries, retrieve_hybrid_hyde_reranked)
 # Output:
 # ==================================================
 # Total expected hit: 20
@@ -584,11 +648,12 @@ Dari hasil eksperimen dengan beberapa teknik retrieval, diperoleh hasil sebagai 
 
 | Teknik                         | Hit@5 |
 | ------------------------------ | :---: |
-| Base Retrieval                 |  70%  |
-| Base Retrieval + BM25 (Hybrid) |  80%  |
-| Hybrid + Reranker              |  80%  |
-| HyDE + Base Retrieval          |  65%  |
-| HyDE + Hybrid                  |  75%  |
+| Base Retrieval                 |  80%  |
+| BM25 (Lexical Retrieval)       |  75%  |
+| Base Retrieval + BM25 (Hybrid) |  90%  |
+| Hybrid + Reranker              |  95%  |
+| HyDE + Base Retrieval          |  90%  |
+| HyDE + Hybrid                  |  90%  |
 | HyDE + Hybrid + Reranker       |  90%  |
 
 Hasil eksperimen menunjukkan bahwa penambahan atau kombinasi teknik retrieval tidak selalu meningkatkan performa. Hasilnya bergantung pada beberapa faktor, seperti:
@@ -669,18 +734,36 @@ def augmented(query, retrieved_docs, web_search=False):
 Membuat fungsi retrieval dengan kombinasi teknik terbaik + DDGS:
 
 ```python
+def generate(prompt: str) -> str:
+    """
+    Menghasilkan jawaban menggunakan model Gemma lokal.
+    `prompt` diasumsikan sudah berisi SYSTEM_PROMPT + konteks RAG.
+    """
+    # Gemma tidak mendukung peran 'system'; gabungkan semuanya ke peran 'user'
+    # dan gunakan chat template dari tokenizer
+    messages = [{"role": "user", "content": f"{SYSTEM_PROMPT}\n\n{prompt}"}]
 
-def generate_answer(prompt):
-    response = client_groq.chat.completions.create(
-        model="openai/gpt-oss-120b",
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=0.5,
-        max_completion_tokens=1024,
+    inputs = tokenizer.apply_chat_template(
+        messages,
+        add_generation_prompt=True,
+        tokenize=True,
+        return_dict=True,
+        return_tensors="pt",
+    ).to(model_llm.device)
+
+    outputs = model_llm.generate(
+        **inputs,
+        max_new_tokens=800,
+        temperature=0.1,
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id,
     )
-    return response.choices[0].message.content.strip()
+
+    # Hanya decode token yang baru dihasilkan (abaikan prompt)
+    generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
+    answer = tokenizer.decode(generated_ids, skip_special_tokens=True)
+
+    return answer.strip()
 
 def web_search(query, max_results=5):
     web_search_result = DDGS().text(
@@ -690,34 +773,30 @@ def web_search(query, max_results=5):
     return web_search_result
 
 # Pipeline RAG dengan kombinasi teknik terbaik + DDGS
-async def retrieve_rag_pipeline(query, top_k=5):
-    retrieved_docs = retrieve_hybrid_hyde_reranked(
-        query,
-        top_k=top_k
-    )
-    top_score = retrieved_docs[0]["cross_encoder_score"]
-    if top_score < 0.8: # threshold untuk memutuskan apakah perlu melakukan web search, bisa kalian sesuaikan
-        web_search_results = web_search(query, max_results=5)
-        answer = generate_answer(
-            augmented(query, web_search_results, web_search=True)
-        )
-        return web_search_results, answer
+def rag_pipeline(query, top_k=3):
+    retrieved = retrieve_hybrid_reranked(query, top_k=top_k)
+    top_scores = retrieved[0]['cross_encoder_score']
+    if top_scores < 0.8:
+        web_search_result = web_search(query)
+        prompt = augmented(query, web_search_result, web_search=True)
+        answer = generate(prompt)
+        return web_search_result, answer
 
-    answer = generate_answer(
-        augmented(query, retrieved_docs)
-    )
-    return retrieved_docs, answer
+    prompt = augmented(query, retrieved)
+    answer = generate(prompt)
+    return retrieved, answer
 ```
 
 Lanjut kita coba pipeline RAG tersebut:
 
 ```python
 query = "bagaimana pengaruh pH di atas 7 terhadap zat besi pada tanaman"
-retrieved, answer = retrieve_rag_pipeline(query, top_k=5)
+retrieved, answer = rag_pipeline(query, top_k=5)
 print("Retrieved: ")
 for d in retrieved:
     print(f"  - {d}")
 print("Answer: ", answer)
+```
 
 ## Kesimpulan
 

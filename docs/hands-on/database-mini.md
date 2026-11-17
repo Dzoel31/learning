@@ -1,96 +1,37 @@
 # Database Mini
 
-Di modul ini kamu akan membuat tabel kecil untuk menyimpan data sensor.
+Latihan ini memasukkan dua pembacaan lewat SQL dan membaca hasilnya. Jalankan di database latihan `aiot_learning` dari [SQL Basics](../database/sql-basics.md#membuat-database). Jika tabel sudah dibuat di sana, lanjutkan ke `INSERT`.
 
-Targetnya sederhana: data yang tadinya hanya lewat API bisa disimpan dan dilihat lagi.
-
-## Yang Akan Kamu Buat
-
-Satu tabel:
-
-```text
-sensor_readings
-```
-
-Isinya:
-
-```text
-id
-device_id
-sensor_type
-value
-created_at
-```
-
-## Buat Tabel
-
-Masuk ke PostgreSQL, lalu jalankan:
+## Buat tabel
 
 ```sql
 CREATE TABLE sensor_readings (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     device_id TEXT NOT NULL,
     sensor_type TEXT NOT NULL,
     value DOUBLE PRECISION NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT now()
+    unit TEXT NOT NULL,
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ```
 
-## Quick Win
-
-Masukkan satu data:
+## Simpan dan baca dua pembacaan
 
 ```sql
-INSERT INTO sensor_readings (device_id, sensor_type, value)
-VALUES ('esp32-01', 'temperature', 28.5);
+INSERT INTO sensor_readings (device_id, sensor_type, value, unit)
+VALUES ('esp32-01', 'temperature', 28.5, 'celsius'),
+       ('esp32-01', 'ph', 6.2, 'pH');
+
+SELECT device_id, sensor_type, value, unit, recorded_at
+FROM sensor_readings
+WHERE device_id = 'esp32-01' AND sensor_type = 'ph'
+ORDER BY recorded_at DESC, id DESC;
 ```
 
-Lalu baca:
+Cari baris `esp32-01` dengan nilai `6.2` dan satuan `pH`. Baris suhu tidak ikut hasil filter. Data di latihan ini dimasukkan lewat SQL. Untuk menyimpan pembacaan yang datang dari API, lanjutkan ke [Dashboard Hands-on](dashboard-hands-on.md).
 
-```sql
-SELECT * FROM sensor_readings;
-```
+## Waktu pengukuran dan waktu simpan
 
-Kalau muncul satu baris data, kamu sudah punya database sensor mini.
+`recorded_at` diisi database saat baris dicatat. Jika perangkat menyimpan pembacaan ketika jaringan putus, kiriman bisa tiba jauh setelah pengukuran. Tambahkan kolom `measured_at` pada sistem yang perlu melacak waktu pengukuran sebenarnya.
 
-## Coba Ubah Sedikit
-
-Masukkan data kedua:
-
-```sql
-INSERT INTO sensor_readings (device_id, sensor_type, value)
-VALUES ('esp32-01', 'ph', 6.2);
-```
-
-Lalu cari hanya data `ph`:
-
-```sql
-SELECT * FROM sensor_readings
-WHERE sensor_type = 'ph';
-```
-
-## Pertanyaan Kecil
-
-Kenapa data sensor perlu punya `created_at`?
-
-Karena data sensor tanpa waktu itu seperti foto tanpa tanggal. Kita tahu nilainya, tapi tidak tahu kapan terjadi.
-
-## Menemukan Pola
-
-Kamu baru saja membuat tabel sensor sederhana.
-
-Sekarang buka repo AIoT nyata. Smart Hydroponic bisa dipakai sebagai contoh pertama:
-
-```text
-backend/models/
-backend/migrations/
-backend/config/
-```
-
-Coba cari pola:
-
-- File mana yang menggambarkan tabel?
-- Folder mana yang menyimpan riwayat perubahan tabel?
-- File mana yang mengatur koneksi database?
-
-Di proyek asli, tabel tidak dibuat manual terus-menerus. Perubahannya dicatat agar bisa dijalankan ulang oleh tim.
+Jika aplikasi perlu membuat ID berbasis waktu dengan PostgreSQL 18, fungsi bawaannya adalah [`uuidv7()`](https://www.postgresql.org/docs/18/functions-uuid.html). Latihan ini memakai nomor urut dan kolom waktu.

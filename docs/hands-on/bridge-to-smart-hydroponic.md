@@ -1,85 +1,13 @@
-# The Bridge: Dari Mini Project ke Proyek AIoT Nyata
+# Dari Latihan ke Proyek AIoT Nyata
 
-Kamu sudah membuat potongan kecil.
+Di [Dashboard Hands-on](dashboard-hands-on.md), tombol **Refresh** membaca hasil `GET /sensors`. Di Smart Hydroponic, dashboard membaca data hidroponik terbaru. Ikuti nilai pH dari database sampai muncul pada kartu dashboard.
 
-Sekarang waktunya melihat pola yang sama di proyek asli.
+## Ikuti satu pembacaan pH
 
-Smart Hydroponic dipakai sebagai studi kasus karena repositorinya sudah nyata. Namun pola yang kamu pelajari tetap umum: bisa dipakai untuk smart room, monitoring energi, weather station, sistem parkir, robotika, atau proyek AIoT lain.
+1. Di [route hidroponik](https://github.com/ksm-aiot-upnvj/smart-hydroponic/blob/c747d66fec590d8f6bb4e78660f5f8ac66e18bba/backend/routes/hydroponic_routes.py), temukan `get_latest_hydroponic_data`. Gabungkan awalan router `/hydroponics` dengan rute `/data/latest` untuk mendapat alamat yang dipanggil.
+2. Di [HydroponicService](https://github.com/ksm-aiot-upnvj/smart-hydroponic/blob/c747d66fec590d8f6bb4e78660f5f8ac66e18bba/backend/services/hydroponic_service.py), temukan `get_latest_data`. Query memilih satu baris terakhir dari tabel `hydroponic_data`, berdasarkan urutan `dataid`.
+3. Di [Dashboard.vue](https://github.com/ksm-aiot-upnvj/smart-hydroponic/blob/c747d66fec590d8f6bb4e78660f5f8ac66e18bba/frontend-vue/src/views/Dashboard.vue), cari `refreshLatestMetrics`. Fungsi memanggil API dan memakai `data.ph` untuk memperbarui tampilan dengan dua angka desimal.
 
-## Peta Besar
+## Periksa hasil bacaanmu
 
-```mermaid
-flowchart LR
-    A["Backend Mini"] --> B["Folder backend proyek nyata"]
-    C["Database Mini"] --> D["Model dan migration database"]
-    E["Frontend Mini"] --> F["Dashboard atau aplikasi web"]
-    G["IoT Simulator Mini"] --> H["Firmware, simulator, atau script testing"]
-```
-
-Tujuannya bukan langsung mengubah semua. Tujuannya mengenali: "Oh, yang besar ini ternyata punya pola yang mirip dengan latihan kecil."
-
-## Perbandingan Pola
-
-| Mini Project | Pola di Proyek AIoT | Contoh di Smart Hydroponic |
-| --- | --- |
-| `mini_backend/main.py` | tempat aplikasi backend dimulai | `backend/main.py` |
-| endpoint `/health` | route untuk menerima request | `backend/routes/` |
-| model Pydantic `SensorIn` | schema request dan response | `backend/schemas/` |
-| tabel `sensor_readings` | model dan migration database | `backend/models/` dan `backend/migrations/` |
-| SQL manual | struktur data yang dikelola aplikasi | migration Alembic |
-| `mini_frontend/index.html` | halaman dashboard | `frontend-vue/src/views/` |
-| tombol refresh | komponen UI interaktif | `frontend-vue/src/components/` |
-| script simulator Python | alat kirim data dummy | folder testing atau simulator |
-| data dummy sensor | firmware atau device nyata | folder ESP atau eksperimen perangkat |
-
-## Quick Win
-
-Buka repo studi kasus dan temukan tiga area ini:
-
-```text
-backend/routes/
-backend/schemas/
-frontend-vue/src/views/
-```
-
-Kalau kamu bisa menemukan folder itu, kamu sudah punya peta awal.
-
-## Tugas Kecil Pertama
-
-Pilih satu:
-
-- cari endpoint `/health` di backend,
-- cari halaman dashboard di frontend,
-- cari model data sensor,
-- cari script simulasi sensor.
-
-Jangan ubah dulu. Cukup temukan.
-
-## Coba Ubah Sedikit
-
-Setelah menemukan file yang menarik, tulis:
-
-```text
-File yang aku temukan:
-Menurutku file ini bertugas untuk:
-Bagian yang membuatku penasaran:
-```
-
-Ini latihan membaca proyek nyata.
-
-## Menemukan Pola
-
-Pertanyaan terakhir:
-
-```text
-Kalau aku ingin menambahkan fitur kecil, bagian mana yang paling masuk akal untukku?
-```
-
-Jawabanmu boleh sederhana:
-
-- "Aku mau mulai dari frontend."
-- "Aku mau mulai dari endpoint backend."
-- "Aku mau mulai dari simulator sensor."
-- "Aku mau mulai dari database."
-
-Kamu tidak perlu menguasai semuanya. Pilih satu pintu dulu.
+Jika tabel latihan kosong, `GET /sensors` mengembalikan daftar kosong. Di versi Smart Hydroponic yang ditautkan, apa respons ketika data terbaru belum tersedia? Cari cabang `data is None` pada route. Jawabannya adalah status HTTP **204**, sehingga tidak ada badan respons yang berisi pembacaan pH.
