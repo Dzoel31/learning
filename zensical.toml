@@ -2,8 +2,8 @@
 site_name = "AIoT Learning Hub"
 site_description = "Modul belajar AIoT berbasis tugas mini, quick wins, dan jembatan ke proyek Smart Hydroponic"
 site_author = "KSM AIoT"
-site_url = "https://iot-smart-hydroponic.github.io/learning/"
-repo_url = "https://github.com/IoT-Smart-Hydroponic/learning/"
+site_url = "https://ksm-aiot-upnvj.github.io/learning/"
+repo_url = "https://github.com/ksm-aiot-upnvj/learning/"
 repo_name = "learning"
 copyright = "Copyright &copy; 2026 Kelompok Studi Mahasiswa AIoT"
 

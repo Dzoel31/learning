@@ -1,60 +1,58 @@
 name: Deploy Docs
 
 on:
-  workflow_run:
-    workflows: ["Continuous Delivery"]
-    types:
-      - completed
+  push:
     branches:
-      - main  
+      - main
   workflow_dispatch:
+
+concurrency:
+  group: pages-${{ github.repository }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build-docs:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-            fetch-depth: 0
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
 
       - name: Set up Python
-        run: uv python install
+        run: uv python install 3.13
 
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --locked
 
       - name: Build documentation
-        run: uv run zensical build --clean
+        run: uv run --locked zensical build --clean
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v6
-
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./site
-    
+
   deploy:
+    if: ${{ github.repository == 'ksm-aiot-upnvj/learning' }}
     needs: build-docs
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-
     steps:
-       - name: Deploy to GitHub Pages
-         id: deployment
-         uses: actions/deploy-pages@v5
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
