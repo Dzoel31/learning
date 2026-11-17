@@ -1,70 +1,59 @@
 # Database Fundamental
 
-!!! Note
-    Halaman ini sedang dalam tahap pengembangan. Materi dan struktur masih bisa berubah seiring dengan feedback, kebutuhan peserta, dan kebutuhan proyek.
+PostgreSQL adalah database relasional. Data disimpan dalam tabel yang punya kolom tertentu, dan tabel dapat dihubungkan melalui kunci. Contoh paling sederhana adalah tabel perangkat dan tabel pembacaan sensor.
 
-## Tujuan
+## Tabel, baris, dan kolom
 
-Membekali peserta dengan pondasi database untuk menyimpan data sensor AIoT secara terstruktur menggunakan PostgreSQL.
+Kolom menyatakan jenis informasi. Baris menyimpan satu catatan. Setiap kolom memiliki tipe data agar database tahu nilai apa yang diterima.
 
-## Prasyarat
+| Kolom | Tipe | Contoh nilai | Makna |
+| --- | --- | --- | --- |
+| `device_id` | `UUID` | `019...` | identitas perangkat |
+| `sensor_type` | `TEXT` | `temperature` | jenis sensor |
+| `value` | `DOUBLE PRECISION` | `28.5` | nilai numerik |
+| `measured_at` | `TIMESTAMPTZ` | `2026-11-17 10:00+07` | waktu pengukuran dengan zona waktu |
 
-- Dasar konsep tabel dan baris data
-- PostgreSQL sudah terpasang dan berjalan
-- Dasar SQL (SELECT sederhana)
+Gunakan tipe sesuai makna data. Suhu disimpan sebagai angka, bukan teks; waktu disimpan sebagai tipe waktu, bukan string yang harus diurai setiap kali query.
 
-## Capaian Belajar
+## Kunci dan relasi
 
-- Membuat schema tabel sensor dasar
-- Menjalankan query CRUD
-- Menulis query ringkasan sederhana dengan GROUP BY
-- Memahami indeks dasar untuk performa awal
+**Primary key** mengidentifikasi satu baris. **Foreign key** menghubungkan baris dengan baris pada tabel lain. Misalnya, satu perangkat memiliki banyak pembacaan:
 
-## Materi Inti
+```mermaid
+erDiagram
+    DEVICES ||--o{ SENSOR_READINGS : menghasilkan
+    DEVICES {
+        uuid id PK
+        text name
+    }
+    SENSOR_READINGS {
+        uuid id PK
+        uuid device_id FK
+        text sensor_type
+        double value
+        timestamptz measured_at
+    }
+```
 
-### 1. Desain Tabel Sensor
+`devices.id` adalah primary key. `sensor_readings.device_id` menjadi foreign key yang menunjuk ke perangkat. Dengan pemisahan ini, nama perangkat disimpan sekali dan tidak perlu disalin ke setiap pembacaan.
 
-- Struktur tabel contoh: `sensor_readings`
-- Kolom minimal: `id`, `device_id`, `value`, `recorded_at`
-- Pilih tipe data yang tepat (`text`, `numeric`, `timestamp`)
+## Constraint dan nilai kosong
 
-### 2. CRUD Dasar
+Constraint menjaga agar data yang tidak masuk akal tidak tersimpan.
 
-- INSERT untuk menambah data
-- SELECT untuk membaca data
-- UPDATE untuk koreksi data
-- DELETE untuk menghapus data uji
+```sql
+CREATE TABLE devices (
+  id UUID PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+);
+```
 
-### 3. Query Ringkasan
+`PRIMARY KEY` mewajibkan nilai unik dan tidak kosong. `NOT NULL` mewajibkan kolom terisi. `UNIQUE` mencegah nama perangkat yang sama jika memang aturan sistem mengharuskannya. `NULL` berarti nilai tidak diketahui atau belum tersedia; nilainya berbeda dari angka nol dan teks kosong.
 
-- Hitung rata-rata nilai per device
-- Gunakan GROUP BY device_id
-- Tambahkan filter waktu sederhana
+## Mengapa relasi membantu?
 
-### 4. Indeks Dasar
+Jika data perangkat dan pembacaan dicampur, nama dan lokasi perangkat akan berulang di setiap baris sensor. Perubahan nama harus memperbarui banyak baris. Dengan tabel terpisah, pembacaan menunjuk ke perangkat lewat foreign key. SQL `JOIN` dapat menggabungkan keduanya saat laporan membutuhkan nama perangkat.
 
-- Buat indeks pada kolom yang sering dipakai filter
-- Contoh: `device_id` dan `recorded_at`
-
-## Hands-on
-
-1. Buat database latihan untuk data sensor.
-2. Buat tabel sensor_readings.
-3. Masukkan minimal 20 data contoh.
-4. Jalankan query CRUD dan query ringkasan.
-5. Tambahkan indeks, lalu bandingkan performa query sederhana.
-
-## Error Umum dan Debug
-
-- Gagal koneksi: cek host, port, username, password, dan service PostgreSQL
-- Tipe data tidak cocok: sesuaikan tipe kolom dengan nilai yang disimpan
-- Query lambat: evaluasi filter dan cek apakah indeks sudah dipakai
-
-## Checklist Selesai
-
-- Tabel sensor berhasil dibuat
-- Data contoh berhasil dimasukkan
-- Query ringkasan berjalan benar
-- Indeks dasar sudah diterapkan pada kolom penting
+Materi berikutnya menunjukkan cara membuat database dan menulis query di [SQL Basics](sql-basics.md). Contoh struktur sensor yang lebih lengkap ada di [Desain Data IoT](data-modeling.md).
 
 [Kembali ke Overview Database](overview.md)

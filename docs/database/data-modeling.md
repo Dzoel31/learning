@@ -1,85 +1,71 @@
 # Desain Data IoT
 
-Data IoT biasanya datang berkali-kali dari perangkat.
+Satu perangkat dapat mengirim banyak pembacaan. Simpan informasi perangkat sekali, lalu hubungkan setiap pembacaan ke perangkat itu lewat `device_id`. Pisahkan pula waktu pengukuran dari waktu backend menerima data; keduanya berbeda saat device mengirim ulang data setelah koneksi terputus.
 
-Satu device bisa mengirim data setiap beberapa detik. Kalau device banyak, data cepat membesar.
-
-Karena itu desain tabel perlu dipikirkan sejak awal.
-
-## Pola Data Sensor
+## Contoh tabel perangkat dan pembacaan
 
 ```mermaid
-flowchart LR
-    A["Device"] --> B["Sensor reading"]
-    B --> C["Database table"]
-    C --> D["Dashboard atau analisis"]
+erDiagram
+    DEVICES ||--o{ SENSOR_READINGS : menghasilkan
+    DEVICES {
+        uuid id PK
+        text name
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    SENSOR_READINGS {
+        uuid id PK
+        uuid device_id FK
+        text sensor_type
+        double value
+        text unit
+        timestamptz measured_at
+        timestamptz ingested_at
+    }
 ```
 
-Data sensor biasanya punya:
-
-- identitas device,
-- jenis sensor,
-- nilai sensor,
-- satuan,
-- waktu pencatatan.
-
-## Contoh Tabel
+Tabel perangkat menyimpan nama dan metadata yang berubah jarang. Tabel pembacaan menyimpan nilai peristiwa yang umumnya ditambahkan terus-menerus.
 
 ```sql
+CREATE TABLE devices (
+  id UUID PRIMARY KEY,
+  name TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE sensor_readings (
-  id BIGSERIAL PRIMARY KEY,
-  device_id TEXT NOT NULL,
+  id UUID PRIMARY KEY DEFAULT uuidv7(),
+  device_id UUID NOT NULL REFERENCES devices(id),
   sensor_type TEXT NOT NULL,
   value DOUBLE PRECISION NOT NULL,
-  unit TEXT,
-  recorded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  unit TEXT NOT NULL,
+  measured_at TIMESTAMPTZ NOT NULL,
+  ingested_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ```
 
-## Kenapa Waktu Penting?
+`measured_at` berisi waktu yang dilaporkan perangkat. `ingested_at` diisi server ketika baris diterima. Jangan memakai ID sebagai pengganti waktu pengukuran: UUIDv7 mencatat waktu pembentukan ID, yang bisa terjadi setelah pengukuran.
 
-Dalam AIoT, waktu adalah bagian penting dari data.
-
-Tanpa waktu, kita hanya tahu nilai sensor. Dengan waktu, kita bisa melihat pola:
-
-- nilai naik atau turun,
-- device berhenti mengirim data,
-- ada anomali pada jam tertentu,
-- data berubah setelah aktuator dinyalakan.
-
-## Indeks Dasar
-
-Indeks membantu database mencari data lebih cepat.
-
-Untuk data sensor, indeks yang sering berguna:
+Index berikut membantu query pembacaan satu perangkat dalam urutan waktu:
 
 ```sql
 CREATE INDEX idx_sensor_readings_device_time
-ON sensor_readings (device_id, recorded_at DESC);
+ON sensor_readings (device_id, measured_at DESC);
 ```
 
-Indeks ini membantu query seperti:
+Contoh query terbaru:
 
 ```sql
-SELECT *
+SELECT sensor_type, value, unit, measured_at
 FROM sensor_readings
-WHERE device_id = 'device-01'
-ORDER BY recorded_at DESC
+WHERE device_id = '019535d9-3df7-79fb-b466-fa907fa17f9e'
+ORDER BY measured_at DESC
 LIMIT 10;
 ```
 
-## Menemukan Pola
+Pembacaan sensor biasanya bersifat append-only, jadi kolom `updated_at` tidak diperlukan di tabel pembacaan. Gunakan `updated_at` untuk tabel yang memang dapat diedit, seperti metadata perangkat, jika sistem perlu mengetahui kapan perubahan terakhir terjadi. `DEFAULT now()` hanya mengisi nilai awal; aplikasi atau trigger harus memperbaruinya saat baris berubah.
 
-Buka model database di proyek nyata.
-
-Cari:
-
-- nama tabel,
-- kolom waktu,
-- kolom device,
-- relasi antar tabel,
-- migration yang membuat tabel tersebut.
-
-Kalau belum paham semua kolom, tidak apa-apa. Mulai dari tiga hal: device, nilai, waktu.
+KSM AIoT memakai UUIDv7 sebagai ID unik untuk data time-series. Sebelum mengubah tabel PostgreSQL biasa menjadi hypertable yang dipartisi menurut waktu pengukuran, baca batasan primary key pada [Time-Series dan TimescaleDB](timeseries.md#aturan-unik-dan-primary-key). Aturan TimescaleDB mengharuskan indeks unik menyertakan kolom partisi.
 
 [Kembali ke Overview Database](overview.md)

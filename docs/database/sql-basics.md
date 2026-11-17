@@ -9,6 +9,32 @@ Dokumentasi:
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/current/)
 - [PostgreSQL CREATE DATABASE](https://www.postgresql.org/docs/current/sql-createdatabase.html)
 
+## Mengapa PostgreSQL?
+
+PostgreSQL cocok untuk contoh AIoT di materi ini karena data perangkat, sensor, dan riwayat kontrol memiliki hubungan yang jelas. Tipe data, primary key, foreign key, dan constraint membantu menjaga hubungan itu. Transaksi membuat beberapa perubahan dapat berhasil atau dibatalkan sebagai satu kesatuan. SQL juga dipakai backend untuk menyimpan pembacaan dan dashboard untuk mengambil ringkasan.
+
+PostgreSQL cukup untuk mulai belajar dan menyimpan data sensor. TimescaleDB bukan syarat agar PostgreSQL bisa menyimpan time-series; ekstensi itu dibahas nanti untuk membantu mengelola data dan query saat kebutuhan bertambah.
+
+## Instal PostgreSQL di Windows
+
+Unduh installer Windows dari [halaman unduhan PostgreSQL](https://www.postgresql.org/download/windows/). Installer yang disediakan EDB mencakup server PostgreSQL dan pgAdmin. Pilih PostgreSQL 18 agar contoh UUIDv7 bawaan pada materi ini dapat dijalankan. PostgreSQL 18 menambahkan fungsi `uuidv7()` dan `uuidv4()`. [Catatan rilis PostgreSQL 18](https://www.postgresql.org/docs/18/release-18.html)
+
+Saat wizard berjalan:
+
+1. Pilih komponen PostgreSQL Server dan pgAdmin.
+2. Simpan password untuk pengguna `postgres`; password ini dipakai saat pgAdmin atau `psql` menghubungkan diri.
+3. Gunakan port `5432` jika belum dipakai PostgreSQL lain.
+4. Selesaikan instalasi, buka pgAdmin, lalu hubungkan ke server lokal.
+
+Di pgAdmin, pilih server lokal, buka **Tools → Query Tool**, lalu pastikan server merespons:
+
+```sql
+SELECT version();
+SELECT uuidv7();
+```
+
+Jika `uuidv7()` tidak dikenal, periksa versi server dengan `SELECT version();`. Fungsi bawaan ini tersedia mulai PostgreSQL 18. Installer Windows resmi menyediakan pgAdmin; dokumentasi instalasi dan versi yang didukung tersedia di [PostgreSQL Windows installers](https://www.postgresql.org/download/windows/).
+
 ## Bentuk Data Database
 
 Database relasional menyimpan data dalam tabel.
@@ -66,11 +92,11 @@ Contoh tabel untuk data sensor:
 
 ```sql
 CREATE TABLE sensor_readings (
-  id SERIAL PRIMARY KEY,
+  id BIGSERIAL PRIMARY KEY,
   device_id TEXT NOT NULL,
   sensor_type TEXT NOT NULL,
   value DOUBLE PRECISION NOT NULL,
-  unit TEXT,
+  unit TEXT NOT NULL,
   recorded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ```
@@ -84,7 +110,9 @@ Arti sederhananya:
 | `sensor_type` | jenis sensor |
 | `value` | nilai sensor |
 | `unit` | satuan nilai |
-| `recorded_at` | waktu data dicatat |
+| `recorded_at` | waktu database mencatat baris |
+
+`BIGSERIAL` dipakai di contoh pertama agar fokusnya pada primary key dan query dasar. Untuk data time-series, konvensi KSM AIoT menggunakan UUIDv7; alasan dan batasannya dibahas di [UUIDv4 dan UUIDv7](uuid-identifiers.md).
 
 ## Melihat Tabel
 
@@ -154,25 +182,37 @@ Untuk latihan awal, hati-hati saat memakai `UPDATE` dan `DELETE`. Selalu gunakan
 
 ## Query Ringkasan
 
-Dashboard sering butuh ringkasan, bukan hanya data mentah.
-
-Contoh rata-rata nilai per device:
+Satu perangkat bisa mengirim suhu dan pH. Rata-ratakan hanya baris dengan jenis sensor dan satuan yang sama.
 
 ```sql
-SELECT device_id, AVG(value) AS average_value
+SELECT device_id, AVG(value) AS average_celsius
 FROM sensor_readings
+WHERE sensor_type = 'temperature' AND unit = 'celsius'
 GROUP BY device_id;
 ```
 
-## Menemukan Pola
+## Ambil tiga pembacaan suhu terbaru
 
-Cari tabel atau model database di proyek AIoT nyata.
+Gunakan tabel `sensor_readings` yang didefinisikan pada halaman ini. Untuk memeriksa query, bayangkan tabel berisi baris berikut:
 
-Pertanyaan kecil:
+| device_id | sensor_type | value | unit | recorded_at |
+| --- | --- | ---: | --- | --- |
+| device-01 | temperature | 28.5 | celsius | 2026-05-27 10:00+00 |
+| device-01 | temperature | 28.7 | celsius | 2026-05-27 10:01+00 |
+| device-01 | temperature | 28.6 | celsius | 2026-05-27 10:02+00 |
+| device-01 | humidity | 70 | percent | 2026-05-27 10:03+00 |
 
-- data apa yang disimpan?
-- kolom mana yang menunjukkan waktu?
-- kolom mana yang menunjukkan device?
-- query apa yang cocok untuk dashboard?
+Jalankan query ini untuk mengambil tiga pembacaan suhu terbaru:
+
+```sql
+SELECT device_id, sensor_type, value, unit, recorded_at
+FROM sensor_readings
+WHERE device_id = 'device-01'
+  AND sensor_type = 'temperature'
+ORDER BY recorded_at DESC
+LIMIT 3;
+```
+
+Urutan hasilnya 10:02 (28.6), 10:01 (28.7), lalu 10:00 (28.5). Filter jenis sensor mencegah suhu tercampur dengan kelembapan.
 
 [Kembali ke Overview Database](overview.md)

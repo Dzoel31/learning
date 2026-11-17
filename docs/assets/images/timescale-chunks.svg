@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 500" role="img" aria-labelledby="title desc">
+  <title id="title">Rentang waktu dan pengelolaan chunk TimescaleDB</title>
+  <desc id="desc">Hypertable membagi data menjadi chunk berurutan. Chunk lama dapat disimpan sebagai columnstore, chunk baru sebagai rowstore. Query memilih rentang waktu; kebijakan retensi membuang chunk yang seluruh rentangnya telah kedaluwarsa, dan continuous aggregate menyimpan ringkasan.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52718e"/></marker></defs>
+  <rect width="980" height="500" rx="18" fill="#eff6ff"/>
+  <text x="34" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Hypertable menyimpan data dalam chunk waktu</text>
+  <text x="70" y="87" fill="#526d88" font-family="Arial,sans-serif" font-size="14">Lebih lama</text><text x="850" y="87" fill="#526d88" font-family="Arial,sans-serif" font-size="14">Lebih baru</text>
+  <path d="M75 105H900" stroke="#52718e" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <g stroke="#fff" stroke-width="3">
+    <rect x="80" y="125" width="190" height="100" rx="12" fill="#dce9f6"/><rect x="270" y="125" width="190" height="100" rx="12" fill="#dce9f6"/><rect x="460" y="125" width="190" height="100" rx="12" fill="#dce9f6"/><rect x="650" y="125" width="230" height="100" rx="12" fill="#ccefe2"/>
+  </g>
+  <g fill="#12345a" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="middle"><text x="175" y="160">Chunk A</text><text x="365" y="160">Chunk B</text><text x="555" y="160">Chunk C</text><text x="765" y="160">Chunk terbaru</text></g>
+  <g fill="#526d88" font-family="Arial,sans-serif" font-size="13" text-anchor="middle"><text x="175" y="185">Columnstore</text><text x="365" y="185">Columnstore</text><text x="555" y="185">Columnstore</text><text x="765" y="185">Rowstore</text><text x="175" y="207">data historis</text><text x="365" y="207">data historis</text><text x="555" y="207">data menua</text><text x="765" y="207">insert terbaru</text></g>
+  <path d="M175 225V268M365 225V268M555 225V268M765 225V268" stroke="#52718e" stroke-width="2" stroke-dasharray="5 5"/>
+  <g fill="#fff" stroke="#8aa6c0" stroke-width="2"><rect x="45" y="268" width="210" height="112" rx="12"/><rect x="275" y="268" width="210" height="112" rx="12"/><rect x="505" y="268" width="210" height="112" rx="12"/><rect x="735" y="268" width="210" height="112" rx="12"/></g>
+  <g fill="#12345a" font-family="Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle"><text x="150" y="296">Query historis</text><text x="380" y="296">Query terbaru</text><text x="610" y="296">Retention</text><text x="840" y="296">Continuous aggregate</text></g>
+  <g fill="#526d88" font-family="Arial,sans-serif" font-size="12" text-anchor="middle"><text x="150" y="322"><tspan x="150">Baca chunk lama</tspan><tspan x="150" dy="17">di columnstore</tspan></text><text x="380" y="322"><tspan x="380">Baca chunk terbaru</tspan><tspan x="380" dy="17">di rowstore</tspan></text><text x="610" y="322"><tspan x="610">Hapus hanya chunk</tspan><tspan x="610" dy="17">yang seluruh rentangnya</tspan><tspan x="610" dy="17">sudah kedaluwarsa</tspan></text><text x="840" y="322"><tspan x="840">Simpan ringkasan</tspan><tspan x="840" dy="17">per interval waktu</tspan></text></g>
+  <path d="M60 412H920" stroke="#e0a12d" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="70" y="440" fill="#7c4a00" font-family="Arial,sans-serif" font-size="14" font-weight="700">Retention memakai batas umur; satu chunk tidak dipotong baris demi baris.</text>
+  <text x="70" y="466" fill="#526d88" font-family="Arial,sans-serif" font-size="13">Ukuran interval dan umur kebijakan harus disesuaikan dengan volume serta pola query.</text>
+</svg>
