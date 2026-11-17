@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+  <title id="title">Arsitektur MLP dengan dua hidden layer</title>
+  <desc id="desc">Empat fitur masuk ke dua fully connected hidden layer lalu tiga neuron menghasilkan skor untuk kelas sehat, kering, dan tergenang.</desc>
+  <rect width="900" height="430" rx="18" fill="#eff6ff"/>
+  <text x="34" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">MLP: setiap neuron terhubung ke layer berikutnya</text>
+  <g stroke="#9bb5cd" stroke-width="1.5" opacity="0.8">
+    <path d="M120 112L330 100M120 112L330 165M120 112L330 230M120 112L330 295M120 172L330 100M120 172L330 165M120 172L330 230M120 172L330 295M120 232L330 100M120 232L330 165M120 232L330 230M120 232L330 295M120 292L330 100M120 292L330 165M120 292L330 230M120 292L330 295"/>
+    <path d="M350 100L555 145M350 100L555 215M350 100L555 285M350 165L555 145M350 165L555 215M350 165L555 285M350 230L555 145M350 230L555 215M350 230L555 285M350 295L555 145M350 295L555 215M350 295L555 285"/>
+    <path d="M575 145L775 145M575 145L775 215M575 145L775 285M575 215L775 145M575 215L775 215M575 215L775 285M575 285L775 145M575 285L775 215M575 285L775 285"/>
+  </g>
+  <g fill="#fff" stroke="#0878c9" stroke-width="3"><circle cx="120" cy="112" r="23"/><circle cx="120" cy="172" r="23"/><circle cx="120" cy="232" r="23"/><circle cx="120" cy="292" r="23"/></g>
+  <g fill="#e6f4ff" stroke="#0878c9" stroke-width="3"><circle cx="350" cy="100" r="23"/><circle cx="350" cy="165" r="23"/><circle cx="350" cy="230" r="23"/><circle cx="350" cy="295" r="23"/></g>
+  <g fill="#fff0d7" stroke="#e28a13" stroke-width="3"><circle cx="575" cy="145" r="23"/><circle cx="575" cy="215" r="23"/><circle cx="575" cy="285" r="23"/></g>
+  <g fill="#dcf3e8" stroke="#29966b" stroke-width="3"><circle cx="795" cy="145" r="23"/><circle cx="795" cy="215" r="23"/><circle cx="795" cy="285" r="23"/></g>
+  <g fill="#12345a" font-family="Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle"><text x="120" y="117">x₁</text><text x="120" y="177">x₂</text><text x="120" y="237">x₃</text><text x="120" y="297">x₄</text><text x="350" y="105">h₁</text><text x="350" y="170">h₂</text><text x="350" y="235">h₃</text><text x="350" y="300">h₄</text><text x="575" y="150">h₁</text><text x="575" y="220">h₂</text><text x="575" y="290">h₃</text><text x="795" y="150">c₁</text><text x="795" y="220">c₂</text><text x="795" y="290">c₃</text></g>
+  <g fill="#334e68" font-family="Arial,sans-serif" font-size="15" text-anchor="middle"><text x="120" y="355">Input (4 fitur)</text><text x="350" y="355">Dense + ReLU</text><text x="575" y="355">Dense + ReLU</text><text x="795" y="355">Output (3 kelas)</text></g>
+  <text x="34" y="396" fill="#526d88" font-family="Arial,sans-serif" font-size="14">Garis menunjukkan koneksi; setiap neuron juga memiliki bobot dan bias yang dipelajari.</text>
+</svg>

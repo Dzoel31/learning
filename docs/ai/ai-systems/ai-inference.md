@@ -24,29 +24,9 @@ Setelah mempelajari materi ini, peserta diharapkan memahami bagaimana model AI d
 
 Inference adalah proses penggunaan model AI yang telah tersedia untuk memproses input baru.
 
-Secara sederhana, sebuah sistem AI dapat digambarkan sebagai:
+Satu pola inference yang sama dapat menerima input berbeda, menjalankannya pada model yang sesuai, lalu mengembalikan output yang dibutuhkan sistem.
 
-```mermaid
-flowchart LR
-  A[Input] --> B[Model]
-  B --> C[Output]
-```
-
-Sebagai contoh, sebuah model klasifikasi dapat menerima data sensor:
-
-```mermaid
-flowchart LR
-  A[Data Sensor] --> B[Model]
-  B --> C[Kondisi Tanaman]
-```
-
-Model dapat menghasilkan output seperti:
-
-```mermaid
-flowchart LR
-  A[Model] --> B[Normal]
-  A --> C[Anomaly]
-```
+![Contoh alur inference untuk data sensor, gambar, dan prompt teks](../../assets/images/ai-inference-flow.svg)
 
 Bentuk output bergantung pada tujuan model. Beberapa contoh inference antara lain:
 
@@ -92,14 +72,6 @@ Output yang dihasilkan juga dapat memiliki berbagai bentuk, misalnya:
 - Embedding
 - Keputusan untuk komponen sistem
 
-Secara sederhana:
-
-```mermaid
-flowchart TD
-    A[Input] --> B[Model]
-    B --> C[Output]
-```
-
 Model melakukan sejumlah perhitungan berdasarkan parameter yang telah diperoleh selama proses training. Hasil perhitungan tersebut kemudian digunakan untuk menghasilkan output sesuai dengan kemampuan dan tujuan model.
 
 Namun, model tidak selalu menghasilkan "jawaban yang benar". Output model perlu dipahami dalam konteks jenis model, data yang digunakan, serta tujuan sistem.
@@ -127,13 +99,7 @@ Contoh context:
 }
 ```
 
-Keduanya dapat digabungkan menjadi:
-
-```mermaid
-flowchart LR
-  A[Prompt + Context] --> B[Model]
-  B --> C[Output]
-```
+Prompt dan context menjadi input bagi LLM. Model memproses keduanya lalu menghasilkan output teks, seperti pada alur inference di atas.
 
 Dengan context yang sesuai, model dapat menghasilkan output yang lebih relevan terhadap kondisi yang sedang dianalisis.
 

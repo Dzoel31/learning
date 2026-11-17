@@ -1,5 +1,7 @@
 # LLM (Large Language Model)
 
+[Buka demo interaktif Cara Kerja LLM · Gemma 4](https://gemma.ai/learn/how-llms-work/){ .md-button }
+
 ## Konsep Dasar
 
 ### Apa itu LLM?

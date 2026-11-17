@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+  <title id="title">Regresi linear pada data suhu</title><desc id="desc">Titik data suhu dengan garis regresi yang menunjukkan prediksi rata-rata.</desc>
+  <rect width="720" height="390" rx="18" fill="#eff6ff"/><text x="40" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Regresi linear</text>
+  <path d="M90 315H660M90 315V76" stroke="#334e68" stroke-width="3"/><g stroke="#c9d8e8" stroke-width="1"><path d="M90 255H660M90 195H660M90 135H660M205 76V315M320 76V315M435 76V315M550 76V315"/></g>
+  <path d="M120 282L630 105" stroke="#0878c9" stroke-width="5"/><g fill="#e45454" stroke="#fff" stroke-width="3"><circle cx="145" cy="270" r="9"/><circle cx="220" cy="230" r="9"/><circle cx="300" cy="225" r="9"/><circle cx="370" cy="190" r="9"/><circle cx="460" cy="166" r="9"/><circle cx="545" cy="136" r="9"/><circle cx="605" cy="118" r="9"/></g>
+  <text x="340" y="358" fill="#334e68" font-family="Arial,sans-serif" font-size="16">Suhu saat ini</text><text transform="translate(38 230) rotate(-90)" fill="#334e68" font-family="Arial,sans-serif" font-size="16">Suhu berikutnya</text>
+  <circle cx="490" cy="55" r="6" fill="#e45454"/><text x="505" y="61" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Data</text><path d="M560 55h24" stroke="#0878c9" stroke-width="4"/><text x="590" y="61" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Prediksi model</text>
+</svg>

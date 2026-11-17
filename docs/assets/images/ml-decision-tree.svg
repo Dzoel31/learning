@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+  <title id="title">Contoh decision tree kondisi tanah</title><desc id="desc">Pohon keputusan memeriksa kelembapan tanah lalu suhu untuk mengklasifikasikan kondisi kering atau normal.</desc>
+  <rect width="720" height="390" rx="18" fill="#f3f7fb"/><text x="36" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Decision tree: kondisi tanah</text>
+  <g stroke="#67819a" stroke-width="3" fill="none"><path d="M360 112V155M360 155L200 215M360 155L520 215M200 270V305"/></g>
+  <g font-family="Arial,sans-serif" text-anchor="middle"><rect x="260" y="66" width="200" height="48" rx="12" fill="#d9edff" stroke="#2784c2" stroke-width="2"/><text x="360" y="96" fill="#12345a" font-size="17" font-weight="700">Kelembapan &lt; 30%?</text>
+  <rect x="105" y="215" width="190" height="55" rx="12" fill="#fff0d4" stroke="#e49a22" stroke-width="2"/><text x="200" y="249" fill="#704600" font-size="16" font-weight="700">Suhu &gt; 32 °C?</text>
+  <rect x="425" y="215" width="190" height="55" rx="12" fill="#ddf5e7" stroke="#2f9a67" stroke-width="2"/><text x="520" y="249" fill="#17623f" font-size="16" font-weight="700">Kondisi normal</text>
+  <rect x="100" y="305" width="145" height="48" rx="12" fill="#ffe0df" stroke="#df625b" stroke-width="2"/><text x="172" y="335" fill="#8c2925" font-size="16" font-weight="700">Kering</text>
+  <rect x="255" y="305" width="145" height="48" rx="12" fill="#fff0d4" stroke="#e49a22" stroke-width="2"/><text x="327" y="335" fill="#704600" font-size="16" font-weight="700">Periksa sensor</text>
+  <text x="268" y="180" fill="#334e68" font-size="14">Ya</text><text x="440" y="180" fill="#334e68" font-size="14">Tidak</text><text x="126" y="294" fill="#334e68" font-size="14">Ya</text><text x="272" y="294" fill="#334e68" font-size="14">Tidak</text></g>
+</svg>

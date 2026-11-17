@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+  <title id="title">Perbandingan ReLU dan Leaky ReLU</title>
+  <desc id="desc">Kedua fungsi sama untuk masukan positif. Pada masukan negatif, ReLU bernilai nol sedangkan Leaky ReLU memiliki kemiringan kecil dengan alpha 0,1 agar terlihat di grafik.</desc>
+  <rect width="720" height="390" rx="18" fill="#eff6ff"/>
+  <text x="36" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Leaky ReLU mempertahankan kemiringan kecil</text>
+  <g stroke="#c9d8e8" stroke-width="1"><path d="M100 75H660M100 123H660M100 171H660M100 219H660M100 267H660M100 315H660"/><path d="M100 75V315M170 75V315M240 75V315M310 75V315M380 75V315M450 75V315M520 75V315M590 75V315M660 75V315"/></g>
+  <path d="M100 267H660M380 315V75" stroke="#334e68" stroke-width="2.5"/>
+  <path d="M100 267H380L660 75" fill="none" stroke="#0878c9" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M100 286.2L380 267L660 75" fill="none" stroke="#e28a13" stroke-width="5" stroke-linejoin="round"/>
+  <text x="648" y="345" fill="#334e68" font-family="Arial,sans-serif" font-size="16">z</text>
+  <path d="M396 65h28" stroke="#0878c9" stroke-width="4"/><text x="432" y="70" fill="#334e68" font-family="Arial,sans-serif" font-size="14">ReLU</text>
+  <path d="M500 65h28" stroke="#e28a13" stroke-width="4"/><text x="536" y="70" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Leaky ReLU, α = 0.1</text>
+  <text x="118" y="250" fill="#526d88" font-family="Arial,sans-serif" font-size="14">ReLU: keluaran 0</text>
+  <text x="110" y="307" fill="#a65f00" font-family="Arial,sans-serif" font-size="14">Leaky: αz</text>
+  <text x="370" y="340" fill="#334e68" font-family="Arial,sans-serif" font-size="14">0</text>
+</svg>

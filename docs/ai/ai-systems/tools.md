@@ -1,5 +1,7 @@
 # Tools dan Function Calling
 
+Setelah memahami tool calling, coba [praktik menguji server MCP](mcp.md).
+
 Tools adalah fungsi atau layanan yang dapat dipanggil oleh AI system untuk melakukan pekerjaan di luar kemampuan generation. Contohnya adalah membaca data sensor, mencari dokumen, menghitung nilai, menyimpan data, atau mengirim perintah ke actuator.
 
 ## Konsep Dasar

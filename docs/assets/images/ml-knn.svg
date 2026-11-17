@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+  <title id="title">Klasifikasi K-Nearest Neighbors</title><desc id="desc">Titik baru dikelilingi tiga tetangga terdekat, dua di antaranya termasuk kelas kering.</desc>
+  <rect width="720" height="390" rx="18" fill="#eaf5ff"/><text x="36" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">K-Nearest Neighbors</text>
+  <path d="M86 320H665M86 320V74" stroke="#334e68" stroke-width="3"/><g stroke="#cbd9e8"><path d="M86 260H665M86 200H665M86 140H665M200 74V320M315 74V320M430 74V320M545 74V320"/></g>
+  <circle cx="355" cy="190" r="82" fill="#1387d4" fill-opacity=".08" stroke="#1387d4" stroke-width="2" stroke-dasharray="7 6"/>
+  <g fill="#ee5555" stroke="white" stroke-width="3"><circle cx="180" cy="130" r="12"/><circle cx="240" cy="220" r="12"/><circle cx="310" cy="160" r="12"/><circle cx="145" cy="270" r="12"/><circle cx="270" cy="100" r="12"/></g>
+  <g fill="#f49a24" stroke="white" stroke-width="3"><circle cx="405" cy="225" r="12"/><circle cx="500" cy="155" r="12"/><circle cx="560" cy="260" r="12"/><circle cx="460" cy="295" r="12"/><circle cx="610" cy="205" r="12"/></g>
+  <g stroke="#334e68" stroke-width="2" stroke-dasharray="5 5"><path d="M355 190L310 160M355 190L405 225M355 190L240 220"/></g><circle cx="355" cy="190" r="14" fill="#1688df" stroke="white" stroke-width="4"/><circle cx="355" cy="190" r="20" fill="none" stroke="#12345a" stroke-width="2"/>
+  <text x="392" y="111" fill="#12345a" font-family="Arial,sans-serif" font-size="15" font-weight="700">Titik baru</text><path d="M388 118L370 164" stroke="#12345a" stroke-width="2"/>
+  <text x="305" y="358" fill="#334e68" font-family="Arial,sans-serif" font-size="15">Fitur 1 (setelah skala disamakan)</text><text transform="translate(34 265) rotate(-90)" fill="#334e68" font-family="Arial,sans-serif" font-size="15">Fitur 2</text>
+  <circle cx="490" cy="50" r="8" fill="#ee5555"/><text x="505" y="55" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Kering</text><circle cx="575" cy="50" r="8" fill="#f49a24"/><text x="590" y="55" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Normal</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+  <title id="title">Grafik fungsi aktivasi sigmoid</title>
+  <desc id="desc">Kurva sigmoid berbentuk S, mendekati nol untuk masukan negatif besar, bernilai setengah di nol, dan mendekati satu untuk masukan positif besar.</desc>
+  <rect width="720" height="390" rx="18" fill="#eff6ff"/>
+  <text x="36" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Sigmoid(z) = 1 / (1 + e⁻ᶻ)</text>
+  <g stroke="#c9d8e8" stroke-width="1"><path d="M100 75H660M100 135H660M100 195H660M100 255H660M100 315H660"/><path d="M100 75V315M193 75V315M287 75V315M380 75V315M473 75V315M567 75V315M660 75V315"/></g>
+  <path d="M100 315H660M380 315V75" stroke="#334e68" stroke-width="2.5"/>
+  <path d="M100 314 C165 313 210 307 250 286 C300 260 333 226 380 195 C427 164 460 130 510 104 C550 83 595 77 660 75" fill="none" stroke="#0878c9" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="380" cy="195" r="6" fill="#e45454" stroke="#fff" stroke-width="2"/>
+  <text x="368" y="345" fill="#334e68" font-family="Arial,sans-serif" font-size="16">z</text>
+  <text x="52" y="80" fill="#334e68" font-family="Arial,sans-serif" font-size="14">1</text><text x="52" y="200" fill="#334e68" font-family="Arial,sans-serif" font-size="14">0.5</text><text x="52" y="320" fill="#334e68" font-family="Arial,sans-serif" font-size="14">0</text>
+  <text x="98" y="340" fill="#334e68" font-family="Arial,sans-serif" font-size="14">−6</text><text x="374" y="340" fill="#334e68" font-family="Arial,sans-serif" font-size="14">0</text><text x="648" y="340" fill="#334e68" font-family="Arial,sans-serif" font-size="14">6</text>
+  <text x="402" y="182" fill="#526d88" font-family="Arial,sans-serif" font-size="14">σ(0) = 0.5</text>
+</svg>

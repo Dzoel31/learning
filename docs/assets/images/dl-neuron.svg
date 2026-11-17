@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" role="img" aria-labelledby="title desc">
+  <title id="title">Alur perhitungan satu neuron</title>
+  <desc id="desc">Empat input dikalikan bobot, dijumlahkan dengan bias, diteruskan ke fungsi aktivasi, lalu menghasilkan output.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52718e"/></marker></defs>
+  <rect width="820" height="380" rx="18" fill="#eff6ff"/>
+  <text x="34" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Satu neuron: bobot, bias, dan aktivasi</text>
+  <g fill="#fff" stroke="#4b83b7" stroke-width="3"><circle cx="105" cy="110" r="27"/><circle cx="105" cy="170" r="27"/><circle cx="105" cy="230" r="27"/><circle cx="105" cy="290" r="27"/></g>
+  <g fill="#12345a" font-family="Arial,sans-serif" font-size="16" font-weight="700" text-anchor="middle"><text x="105" y="116">x₁</text><text x="105" y="176">x₂</text><text x="105" y="236">x₃</text><text x="105" y="296">xₙ</text></g>
+  <g stroke="#52718e" stroke-width="2.5" fill="none" marker-end="url(#arrow)"><path d="M133 110L327 163"/><path d="M133 170L327 180"/><path d="M133 230L327 198"/><path d="M133 290L327 215"/><path d="M271 310L327 225"/><path d="M410 190H505"/><path d="M600 190H692"/></g>
+  <g fill="#526d88" font-family="Arial,sans-serif" font-size="14" font-weight="700"><text x="205" y="122">× w₁</text><text x="213" y="161">× w₂</text><text x="213" y="235">× w₃</text><text x="205" y="282">× wₙ</text><text x="265" y="333">bias b</text></g>
+  <circle cx="368" cy="190" r="43" fill="#d9ebfb" stroke="#0878c9" stroke-width="3"/><text x="368" y="198" fill="#12345a" font-family="Arial,sans-serif" font-size="24" font-weight="700" text-anchor="middle">Σ</text>
+  <rect x="505" y="153" width="95" height="74" rx="14" fill="#fff0d7" stroke="#e28a13" stroke-width="3"/><text x="552" y="184" fill="#7c4a00" font-family="Arial,sans-serif" font-size="16" font-weight="700" text-anchor="middle">Aktivasi</text><text x="552" y="207" fill="#7c4a00" font-family="Arial,sans-serif" font-size="16" text-anchor="middle">f(z)</text>
+  <circle cx="728" cy="190" r="34" fill="#dcf3e8" stroke="#29966b" stroke-width="3"/><text x="728" y="198" fill="#176244" font-family="Arial,sans-serif" font-size="20" font-weight="700" text-anchor="middle">a</text>
+  <text x="282" y="85" fill="#334e68" font-family="Arial,sans-serif" font-size="15">z = Σ(wᵢxᵢ) + b</text>
+  <text x="657" y="250" fill="#334e68" font-family="Arial,sans-serif" font-size="15">a = f(z)</text>
+</svg>

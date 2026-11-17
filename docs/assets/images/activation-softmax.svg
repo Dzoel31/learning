@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 390" role="img" aria-labelledby="title desc">
+  <title id="title">Visualisasi Softmax untuk tiga kelas</title>
+  <desc id="desc">Skor model untuk kelas sehat, kering, dan tergenang masing-masing 2, 1, dan 0 diubah menjadi probabilitas sekitar 0,67, 0,24, dan 0,09.</desc>
+  <rect width="820" height="390" rx="18" fill="#eff6ff"/>
+  <text x="34" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Softmax mengubah skor menjadi probabilitas</text>
+  <text x="54" y="84" fill="#334e68" font-family="Arial,sans-serif" font-size="16" font-weight="700">Skor model (logits)</text>
+  <text x="470" y="84" fill="#334e68" font-family="Arial,sans-serif" font-size="16" font-weight="700">Probabilitas setelah softmax</text>
+  <g fill="#526d88" font-family="Arial,sans-serif" font-size="14"><text x="55" y="135">Sehat</text><text x="55" y="205">Kering</text><text x="55" y="275">Tergenang</text><text x="470" y="135">Sehat</text><text x="470" y="205">Kering</text><text x="470" y="275">Tergenang</text></g>
+  <g fill="#d9e6f3"><rect x="130" y="112" width="240" height="28" rx="8"/><rect x="130" y="182" width="240" height="28" rx="8"/><rect x="130" y="252" width="240" height="28" rx="8"/><rect x="550" y="112" width="210" height="28" rx="8"/><rect x="550" y="182" width="210" height="28" rx="8"/><rect x="550" y="252" width="210" height="28" rx="8"/></g>
+  <g fill="#0878c9"><rect x="130" y="112" width="200" height="28" rx="8"/><rect x="130" y="182" width="100" height="28" rx="8"/><rect x="130" y="252" width="0" height="28" rx="8"/><rect x="550" y="112" width="201" height="28" rx="8"/><rect x="550" y="182" width="74" height="28" rx="8"/><rect x="550" y="252" width="27" height="28" rx="8"/></g>
+  <g fill="#12345a" font-family="Arial,sans-serif" font-size="14" font-weight="700"><text x="338" y="132">2</text><text x="238" y="202">1</text><text x="138" y="272">0</text><text x="765" y="132">0.67</text><text x="638" y="202">0.24</text><text x="590" y="272">0.09</text></g>
+  <path d="M390 196h52m-10-10 10 10-10 10" fill="none" stroke="#e28a13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="54" y="330" fill="#526d88" font-family="Arial,sans-serif" font-size="14">Contoh logits: [2, 1, 0]</text><text x="470" y="330" fill="#526d88" font-family="Arial,sans-serif" font-size="14">Jumlah probabilitas ≈ 1</text>
+</svg>

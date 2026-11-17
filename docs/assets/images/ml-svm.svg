@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+  <title id="title">Margin pemisah pada SVM</title><desc id="desc">Dua kelas dipisahkan garis keputusan dengan dua garis margin; support vector berada paling dekat dengan batas.</desc>
+  <rect width="720" height="390" rx="18" fill="#f1f7ff"/><text x="36" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">SVM mencari margin lebar</text>
+  <path d="M80 320H665M80 320V75" stroke="#334e68" stroke-width="3"/><path d="M145 300L590 95" stroke="#225fa3" stroke-width="4"/><path d="M115 266L560 61M175 334L620 129" stroke="#668bb7" stroke-width="2" stroke-dasharray="8 6"/>
+  <g fill="#e45c58" stroke="white" stroke-width="3"><circle cx="150" cy="125" r="11"/><circle cx="220" cy="160" r="11"/><circle cx="290" cy="115" r="11"/><circle cx="340" cy="180" r="11"/><circle cx="260" cy="215" r="11"/></g>
+  <g fill="#2e9b70" stroke="white" stroke-width="3"><circle cx="430" cy="250" r="11"/><circle cx="500" cy="225" r="11"/><circle cx="560" cy="285" r="11"/><circle cx="610" cy="205" r="11"/><circle cx="470" cy="305" r="11"/></g>
+  <circle cx="340" cy="180" r="17" fill="none" stroke="#12345a" stroke-width="2"/><circle cx="430" cy="250" r="17" fill="none" stroke="#12345a" stroke-width="2"/>
+  <text x="360" y="358" fill="#334e68" font-family="Arial,sans-serif" font-size="15">Fitur 1</text><text transform="translate(35 255) rotate(-90)" fill="#334e68" font-family="Arial,sans-serif" font-size="15">Fitur 2</text><text x="400" y="112" fill="#225fa3" font-family="Arial,sans-serif" font-size="15" font-weight="700">Batas keputusan</text><text x="472" y="152" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Margin</text><text x="550" y="55" fill="#334e68" font-family="Arial,sans-serif" font-size="14">Lingkaran = support vector</text>
+</svg>

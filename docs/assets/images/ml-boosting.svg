@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" role="img" aria-labelledby="title desc">
+  <title id="title">Boosting memperbaiki prediksi secara bertahap</title><desc id="desc">Tiga model kecil menambahkan koreksi bertahap sehingga prediksi mendekati target.</desc>
+  <rect width="720" height="340" rx="18" fill="#f2f7ff"/><text x="36" y="42" fill="#12345a" font-family="Arial,sans-serif" font-size="22" font-weight="700">Boosting: koreksi bertahap</text>
+  <path d="M80 255H650" stroke="#334e68" stroke-width="3"/><g stroke="#cbd9e8"><path d="M80 205H650M80 155H650M80 105H650"/></g>
+  <g font-family="Arial,sans-serif" text-anchor="middle"><circle cx="115" cy="215" r="9" fill="#7a8ba0"/><text x="115" y="285" fill="#334e68" font-size="15">Target 30</text>
+  <rect x="190" y="75" width="130" height="150" rx="14" fill="#e2efff" stroke="#4385c4" stroke-width="2"/><text x="255" y="112" fill="#12345a" font-size="16" font-weight="700">Model awal</text><text x="255" y="165" fill="#225fa3" font-size="25" font-weight="700">28,0</text>
+  <rect x="365" y="75" width="130" height="150" rx="14" fill="#fff0d9" stroke="#e0a03c" stroke-width="2"/><text x="430" y="112" fill="#704600" font-size="16" font-weight="700">Tambah koreksi</text><text x="430" y="157" fill="#704600" font-size="18">η × (+2)</text><text x="430" y="187" fill="#704600" font-size="14">η = 0,5</text>
+  <rect x="540" y="75" width="130" height="150" rx="14" fill="#ddf5e7" stroke="#2f9a67" stroke-width="2"/><text x="605" y="112" fill="#17623f" font-size="16" font-weight="700">Prediksi baru</text><text x="605" y="165" fill="#17623f" font-size="25" font-weight="700">29,0</text>
+  <path d="M320 150H356M495 150H531" stroke="#334e68" stroke-width="3"/><path d="M348 142l9 8-9 8M523 142l9 8-9 8" fill="none" stroke="#334e68" stroke-width="3"/></g>
+  <text x="206" y="315" fill="#52677d" font-family="Arial,sans-serif" font-size="14">Model kecil berikutnya melanjutkan dari prediksi sebelumnya.</text>
+</svg>
