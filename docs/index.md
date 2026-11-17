@@ -1,47 +1,24 @@
 # Selamat datang di Modul AIoT
 
-Modul AIoT ini dirancang untuk memberikan pemahaman mendalam tentang konsep dan praktik dalam bidang Artificial Intelligence dan Internet of Things. Melalui modul ini, Kamu akan mempelajari berbagai aspek teknis dan teoritis yang diperlukan untuk mengembangkan sistem AIoT.
+!!! note "AI-generated content — perlu validasi ulang"
+    Pembaruan materi, ilustrasi, contoh kode, dan lab interaktif ini mencakup konten yang dibuat atau disunting dengan bantuan AI. Maintainer atau pengajar perlu memvalidasi ulang ketepatan konsep, referensi, perhitungan, serta contoh kode sebelum digunakan sebagai acuan. Build situs dan simulasi browser tidak menggantikan pengujian contoh secara menyeluruh atau validasi pada hardware nyata.
 
-Repositori: [Repo belajar](https://github.com/IoT-Smart-Hydroponic/learning)
+AIoT menggabungkan Internet of Things (IoT) dan Artificial Intelligence (AI). Di proyek Smart Hydroponic, misalnya, sensor membaca kondisi tanaman dan larutan nutrisi. Backend menerima data itu, lalu dashboard menampilkannya. Jika kamu ingin memperkirakan perubahan suhu air dari riwayat pembacaan, kamu bisa mulai menguji model prediksi.
 
-## Daftar Isi
+Modul KSM AIoT ini membahas cara tiap bagian bekerja dan bagaimana semuanya terhubung, dari perangkat dan komunikasi data sampai aplikasi web dan model AI.
 
-- [Getting Started](getting-started/overview.md)
-- [Internet of Things (IoT)](iot/overview.md)
-- [Protocol](protocol/overview.md)
-- [Version Control](version-control/overview.md)
-- [Backend Development](backend/overview.md)
-- [Frontend Development](frontend/overview.md)
-- [Artificial Intelligence (AI)](ai/overview.md)
-- [Deployment Overview](deployment/overview.md)
-- [Contribute](guide.md)
+## Mulai belajar
 
-## Tentang Modul Ini
+Kalau baru mengenal AIoT, mulai dari [pengantar IoT](iot/overview.md) dan [pengantar AI](ai/overview.md). Saat siap praktik, pilih latihan sesuai minat dan alat yang kamu punya.
 
-Modul ini dibuat untuk membantu Kamu memahami konsep-konsep dasar dan lanjutan dalam AIoT. Setiap bagian modul dirancang untuk memberikan pengetahuan praktis yang dapat langsung diterapkan dalam proyek-proyek nyata. Kami berharap modul ini dapat menjadi sumber belajar yang bermanfaat bagi Kamu yang tertarik dalam bidang AIoT. Selamat belajar! 🚀
+| Saya ingin | Mulai dari | Hasil pertama |
+| --- | --- | --- |
+| Membaca sensor dengan ESP32 | [Siapkan Arduino IDE](getting-started/arduino-ide.md), lalu ikuti [latihan DHT11](hands-on/iot-hands-on.md#rangkaian-pemantau-suhu-dan-kelembapan) | Suhu dan kelembapan muncul di Serial Monitor. |
+| Mengirim data tanpa ESP32 | [Backend Mini](hands-on/backend-mini.md), lalu [IoT Simulator Mini](hands-on/iot-simulator-mini.md) | Terminal menampilkan respons dari kiriman sensor. |
+| Menampilkan data di browser | [Frontend Mini](hands-on/frontend-mini.md), lalu [Dashboard Hands-on](hands-on/dashboard-hands-on.md) | Tombol memeriksa API, lalu halaman menampilkan pembacaan yang tersimpan. |
+| Memilih dan menguji model | [AI Fundamental](ai/fundamental.md), lalu [Machine Learning](ai/machine-learning/overview.md) | Kamu bisa menentukan tujuan prediksi dan menyiapkan cara menilai hasilnya. |
+| Menjalankan aplikasi di server | [Cloud & Deployment](deployment/overview.md) | Kamu bisa memeriksa sambungan ke server dan status aplikasi. |
 
-!!! tip "Tips Belajar"
-    Kamu tidak perlu menguasai semua modul sekaligus. Pilihlah modul yang paling sesuai dengan kebutuhan proyek dan minat Kamu.
+Bab pendamping tersedia di [IoT](iot/overview.md), [Protokol](protocol/overview.md), [Git](version-control/overview.md), [Backend](backend/overview.md), [Frontend](frontend/overview.md), dan [Database](database/overview.md).
 
-    Jika Kamu memiliki pertanyaan atau butuh bantuan, jangan ragu untuk bertanya dan berdiskusi ya! Feel free to ask us anytime.
-
-## Rekomendasi Alur Belajar
-
-```mermaid
-graph TD
-    Start((Mulai)) --> A[Programming Basics<br/>Python/C++]
-    A --> B[Internet of Things<br/>Arduino/ESP32]
-    B --> C[IoT Protocols<br/>MQTT/CoAP/HTTP]
-    
-    C --> D{Version Control<br/>Git & GitHub}
-    
-    D --> E[Backend Development<br/>API, Database, Docker]
-    D --> F[Frontend Development<br/>Web Dashboard/App]
-    
-    E --> G[Deployment<br/>VPS, Cloud, CI/CD]
-    F --> G
-    
-    E --> H[Artificial Intelligence<br/>Data Analysis/ML]
-    
-    H -.-> G
-```
+Lihat [repositori belajar](https://github.com/IoT-Smart-Hydroponic/learning) atau [panduan kontribusi](guide.md).

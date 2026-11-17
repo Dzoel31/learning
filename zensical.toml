@@ -17,6 +17,7 @@ nav = [
     { "Overview" = "iot/overview.md" },
     { "Sensors" = "iot/sensors.md" },
     { "Microcontrollers" = "iot/microcontrollers.md" },
+    { "Lab Pin" = "iot/lab-pin.md" },
     { "Actuators" = "iot/actuators.md" },
   ] },
   { "Protocol" = [
@@ -37,10 +38,13 @@ nav = [
   ] },
   { "Backend" = [
     { "Overview" = "backend/overview.md" },
-    { "Python Fundamental" = "backend/fundamental.md" },
-    { "OOP Python" = "backend/oop-python.md" },
-    { "API dengan FastAPI" = "backend/api-fastapi.md" },
+    { "JavaScript Fundamental" = "backend/javascript-fundamental.md" },
+    { "Node.js dan HTTP" = "backend/nodejs-http.md" },
+    { "API dengan Express.js" = "backend/express-api.md" },
+    { "Validasi dan Middleware" = "backend/validation-middleware.md" },
+    { "Asynchronous JavaScript" = "backend/async-javascript.md" },
     { "Struktur Proyek Backend" = "backend/project-structure.md" },
+    { "Express.js dan FastAPI di KSM" = "backend/express-fastapi-bridge.md" },
   ] },
   { "Frontend" = [
     { "Overview" = "frontend/overview.md" },
@@ -48,44 +52,106 @@ nav = [
     { "JavaScript dan TypeScript" = "frontend/javascript-typescript.md" },
     { "Vue Basics" = "frontend/vue-basics.md" },
     { "Integrasi API" = "frontend/api-integration.md" },
-    { "Fundamental" = "frontend/fundamental.md" },
+    { "Jalur Praktik" = "frontend/fundamental.md" },
   ] },
   { "Database" = [
     { "Overview" = "database/overview.md" },
+    { "Fundamental" = "database/fundamental.md" },
     { "SQL Basics" = "database/sql-basics.md" },
     { "Desain Data IoT" = "database/data-modeling.md" },
+    { "UUIDv4 dan UUIDv7" = "database/uuid-identifiers.md" },
     { "Time-Series dan TimescaleDB" = "database/timeseries.md" },
-    { "Fundamental" = "database/fundamental.md" },
+    { "Database Mini" = "hands-on/database-mini.md" },
   ] },
   { "AI" = [
     { "Overview" = "ai/overview.md" },
     { "Fundamental" = "ai/fundamental.md" },
+    { "Sumber Eksplorasi" = "ai/sumber-eksplorasi.md" },
+    { "Machine Learning" = [
+      { "Overview" = "ai/machine-learning/overview.md" },
+      { "Masalah dan Data" = "ai/machine-learning/masalah-dan-data.md" },
+      { "Preprocessing" = "ai/machine-learning/preprocessing.md" },
+      { "Supervised Learning" = "ai/machine-learning/supervised-learning.md" },
+      { "Unsupervised Learning" = "ai/machine-learning/unsupervised-learning.md" },
+      { "Ensemble Learning" = "ai/machine-learning/ensemble-learning.md" },
+      { "Evaluasi Model" = "ai/machine-learning/evaluasi-model.md" },
+    ]},
+    { "Deep Learning" = [
+      { "Overview" = "ai/deep-learning/overview.md" },
+      { "TensorFlow, Keras, dan PyTorch" = "ai/deep-learning/frameworks.md" },
+      { "Dasar Neural Network" = "ai/deep-learning/dasar-neural-network.md" },
+      { "Fungsi Aktivasi" = "ai/deep-learning/activation-function.md" },
+      { "Forward dan Backward Pass" = "ai/deep-learning/forward-backward.md" },
+      { "Loss Function" = "ai/deep-learning/loss-function.md" },
+      { "Optimasi dan Training" = "ai/deep-learning/optimasi-dan-training.md" },
+      { "Arsitektur MLP" = "ai/deep-learning/arsitektur-mlp.md" },
+      { "CNN" = "ai/deep-learning/cnn.md" },
+      { "Model Sequence" = "ai/deep-learning/model-sequence.md" },
+      { "Lab Pelatihan Neural Network" = "ai/deep-learning/lab-neuron.md" },
+    ]},
+    { "AI Systems" = [
+      { "Overview" = "ai/ai-systems/overview.md" },
+      { "Inference" = "ai/ai-systems/ai-inference.md" },
+      { "LLM" = "ai/ai-systems/llm.md" },
+      { "Embeddings" = "ai/ai-systems/embedding.md" },
+      { "RAG" = "ai/ai-systems/rag.md" },
+      { "Fine-Tuning" = "ai/ai-systems/fine-tuning.md" },
+      { "Tools dan Function Calling" = "ai/ai-systems/tools.md" },
+      { "Model Context Protocol (MCP)" = "ai/ai-systems/mcp.md" },
+      { "AI Agents" = "ai/ai-systems/ai-agent.md" },
+      { "AI Application Architecture" = "ai/ai-systems/architecture.md" },
+      { "Interactive RAG Tour" = "ai/ai-systems/rag-tour.md" },
+    ]},
+    { "AI Dashboard" = [
+      { "Overview" = "ai/ai-dashboard/overview.md" },
+      { "Streamlit" = "ai/ai-dashboard/streamlit.md" },
+      { "Gradio" = "ai/ai-dashboard/gradio.md" },
+    ]},
   ] },
-  { "Hands-on" = [
-    { "Overview" = "hands-on/overview.md" },
-    { "Pilih Jalur Pertamamu" = "hands-on/choose-your-path.md" },
-    { "Backend Mini" = "hands-on/backend-mini.md" },
-    { "Database Mini" = "hands-on/database-mini.md" },
-    { "Frontend Mini" = "hands-on/frontend-mini.md" },
-    { "IoT Simulator Mini" = "hands-on/iot-simulator-mini.md" },
-    { "The Bridge" = "hands-on/bridge-to-smart-hydroponic.md" },
-    { "IoT Hands-on" = "hands-on/iot-hands-on.md" },
-    { "Dashboard Hands-on" = "hands-on/dashboard-hands-on.md" },
-    { "MQTT Hands-on" = "hands-on/mqtt-hands-on.md" },
-  ] },
-  { "Deployment" = [
+  { "Cloud & Deployment" = [
     { "Overview" = "deployment/overview.md" },
     { "Linux Basics for Deployment" = "deployment/linux-basics.md" },
     { "SSH Basics untuk Deployment" = "deployment/ssh-basics.md" },
     { "Docker and Container Basics" = "deployment/docker-container.md" },
     { "NGINX Basics for Reverse Proxy" = "deployment/nginx-basics.md" },
   ] },
+  { "Hands-on" = [
+    { "Overview" = "hands-on/overview.md" },
+    { "Backend Mini" = "hands-on/backend-mini.md" },
+    { "Frontend Mini" = "hands-on/frontend-mini.md" },
+    { "IoT Simulator Mini" = "hands-on/iot-simulator-mini.md" },
+    { "The Bridge" = "hands-on/bridge-to-smart-hydroponic.md" },
+    { "IoT Hands-on" = "hands-on/iot-hands-on.md" },
+    { "Dashboard Hands-on" = "hands-on/dashboard-hands-on.md" },
+    { "MQTT Hands-on" = "hands-on/mqtt-hands-on.md" },
+    { "RAG sederhana" = "hands-on/rag-simple.md" },
+    { "RAG lanjutan dengan HyDE + Browse Tool" = "hands-on/rag-advanced.md" },
+  ] },
   { "Contribute" = "guide.md" },
 ]
 
+extra_css = [
+  "assets/stylesheets/pin-lab.css",
+  "assets/stylesheets/navigation.css",
+  "assets/stylesheets/async-guide.css",
+  "assets/stylesheets/ai-tour.css",
+  "assets/stylesheets/neuron-lab.css",
+  "assets/stylesheets/document-layout.css",
+]
+
 extra_javascript = [
+  "assets/javascripts/markdown-view.mjs",
+  "assets/javascripts/ai-tour.mjs",
+  "assets/javascripts/neuron-lab.mjs",
+  "assets/javascripts/async-guide.mjs",
+  "assets/javascripts/pin-lab.mjs",
+  "assets/javascripts/mathjax.js",
+  "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
   "assets/javascripts/mermaid-icons.mjs",
 ]
+
+[project.plugins.llmstxt.sections]
+"Panduan AIoT" = ["**/*.md"]
 
 [project.theme]
 language = "id"
@@ -118,6 +184,7 @@ toggle.name = "Switch to light mode"
 repo = "fontawesome/brands/github"
 
 [project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
 [project.markdown_extensions.footnotes]
 [project.markdown_extensions.toc]
 permalink = true
@@ -137,3 +204,7 @@ dedent_subsections = true
 custom_fences = [
   { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
 ]
+
+[project.markdown_extensions]
+pymdownx.tasklist = { custom_checkbox = true }
+pymdownx.arithmatex.generic = true
