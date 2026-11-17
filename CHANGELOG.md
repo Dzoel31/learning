@@ -2,6 +2,59 @@
 
 <!-- version list -->
 
+## v1.14.0 (2026-11-17)
+
+### Bug Fixes
+
+- **ci**: Pin uv and Python for locked builds
+  ([`eb77455`](https://github.com/ksm-aiot-upnvj/learning/commit/eb77455979e753013492f88cb0d0817152c6245a))
+
+- **ci**: Remove machine-specific uv lock cutoff
+  ([`fc58e38`](https://github.com/ksm-aiot-upnvj/learning/commit/fc58e3894ca254d5ca39898b08c147c7d2a6b593))
+
+- **firmware**: Calibrate moisture readings and handle sensor timeouts
+  ([`9a1f612`](https://github.com/ksm-aiot-upnvj/learning/commit/9a1f6120a04a77bdc0fd7a6f4d61f13c847c2917))
+
+### Build System
+
+- **deps**: Update Zensical and align dependency cutoff
+  ([`be4fe6c`](https://github.com/ksm-aiot-upnvj/learning/commit/be4fe6c0748b3d0529b59e9fd6bca1c22aeb49f6))
+
+### Documentation
+
+- **ai**: Expand machine learning and AI systems curriculum
+  ([`bf0597d`](https://github.com/ksm-aiot-upnvj/learning/commit/bf0597dff7261121bff23e533171ec9d00b17b40))
+
+- **backend**: Introduce JavaScript and Express learning path
+  ([`a298a52`](https://github.com/ksm-aiot-upnvj/learning/commit/a298a526a138515cdae5a028389c9e552950401a))
+
+- **database**: Refine modeling and time-series lessons
+  ([`62eeaf6`](https://github.com/ksm-aiot-upnvj/learning/commit/62eeaf6826702d9a4e1b2e2d14602b7aa07490ab))
+
+- **git**: Clarify collaboration and conflict workflows
+  ([`1b06a29`](https://github.com/ksm-aiot-upnvj/learning/commit/1b06a2918edf694be814e9ea20ae53fec780b9a4))
+
+- **hands-on**: Align exercises with the revised curriculum
+  ([`49056b2`](https://github.com/ksm-aiot-upnvj/learning/commit/49056b233d90709482e1335b97b583b8896e200c))
+
+- **iot**: Clarify hardware and communication fundamentals
+  ([`d174037`](https://github.com/ksm-aiot-upnvj/learning/commit/d174037796aca705a5ae05a9dc821d43a68517de))
+
+- **learning**: Organize navigation and disclose AI validation status
+  ([`326b8d3`](https://github.com/ksm-aiot-upnvj/learning/commit/326b8d3a9d617e42923a302e9b88ce0417999e84))
+
+- **web**: Refine frontend and deployment guidance
+  ([`0759d7a`](https://github.com/ksm-aiot-upnvj/learning/commit/0759d7a50b3d3180d06efa3d268d6afe5fcae210))
+
+### Features
+
+- Deep learning and ai system documentation
+  ([`0b29bce`](https://github.com/ksm-aiot-upnvj/learning/commit/0b29bcec5dcb56fee094e855ff130b8b53deafaf))
+
+- **labs**: Add interactive simulations and guided practice
+  ([`35876fc`](https://github.com/ksm-aiot-upnvj/learning/commit/35876fcc865384b7b13a02f3f2157eaa3b2c54c9))
+
+
 ## v1.13.0 (2026-07-03)
 
 ### Features
