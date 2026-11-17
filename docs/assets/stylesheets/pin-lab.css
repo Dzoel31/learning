@@ -1,0 +1,334 @@
+.pin-lab {
+  --lab-surface: var(--md-default-bg-color);
+  --lab-line: var(--md-default-fg-color--lightest);
+  --lab-accent: var(--md-typeset-a-color);
+  --lab-tint: color-mix(in srgb, var(--lab-accent) 8%, var(--lab-surface));
+  margin: 1.5em 0 2em;
+  padding: clamp(.65rem, 3vw, 1.4rem);
+  border: 1px solid var(--lab-line);
+  border-radius: 1rem;
+  background: var(--lab-tint);
+}
+
+.pin-lab [hidden] { display: none; }
+
+.pin-lab-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: .55rem 1rem;
+}
+
+.pin-lab-header label {
+  display: grid;
+  gap: .2rem;
+  font-size: .62rem;
+  font-weight: 650;
+  max-width: 100%;
+}
+
+.pin-lab button,
+.pin-lab select {
+  color: var(--md-typeset-color);
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-line);
+  border-radius: .45rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pin-lab select {
+  max-width: 100%;
+  padding: .28rem .44rem;
+  color-scheme: light;
+}
+
+[data-md-color-scheme="slate"] .pin-lab select { color-scheme: dark; }
+
+.pin-lab button:focus-visible,
+.pin-lab select:focus-visible,
+.pin-lab input:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 2px;
+}
+
+.pin-lab button:hover,
+.pin-lab button[aria-pressed="true"] { border-color: var(--lab-accent); }
+
+.pin-lab-switch,
+.pin-lab-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+}
+
+.pin-lab-switch {
+  width: fit-content;
+  margin: .8rem 0 .55rem;
+  padding: .18rem;
+  border: 1px solid var(--lab-line);
+  border-radius: .65rem;
+  background: var(--lab-surface);
+}
+
+.pin-lab-switch button {
+  padding: .3rem .52rem;
+  font-size: .65rem;
+  font-weight: 700;
+  border-color: transparent;
+}
+
+.pin-lab button[aria-pressed="true"] {
+  background: var(--lab-tint);
+  color: var(--lab-accent);
+}
+
+.pin-lab section {
+  padding: clamp(.5rem, 2vw, .9rem);
+  border: 1px solid var(--lab-line);
+  border-radius: .65rem;
+  background: var(--lab-surface);
+}
+
+.pin-lab section > p {
+  margin: 0 0 .55rem;
+  font-size: .69rem;
+}
+
+.pin-lab-chips { margin-bottom: .7rem; }
+
+.pin-lab-chips button {
+  padding: .18rem .36rem;
+  font-size: .57rem;
+  font-weight: 650;
+  border-radius: 2rem;
+}
+
+.pin-lab-columns,
+.pin-lab-plan-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: start;
+  gap: .62rem;
+}
+
+.pin-lab-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: .28rem;
+  padding: clamp(.4rem, 1.5vw, .8rem);
+  background: radial-gradient(circle, #26394e 1px, transparent 1px) 0 0 / 10px 10px, #101c2c;
+  color: #ecf5ff;
+  border-radius: .52rem;
+}
+
+.pin-lab .pin-lab-legend {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem .55rem;
+  margin: 0 0 .3rem;
+  padding: 0 0 .35rem;
+  list-style: none;
+  border-bottom: 1px solid #34475c;
+  font-size: .54rem;
+}
+
+.pin-lab .pin-lab-legend li { margin: 0; }
+.pin-lab-legend li::before {
+  content: "";
+  display: inline-block;
+  width: .33rem;
+  height: .33rem;
+  margin-inline-end: .18rem;
+  border-radius: .06rem;
+  background: var(--pin-ink);
+}
+
+.pin-lab-header-pins { display: grid; align-content: start; gap: .11rem; }
+
+.pin-lab-board [data-tone="power"] { --pin-ink: #ffc1c9; --pin-bg: #502b39; }
+.pin-lab-board [data-tone="ground"] { --pin-ink: #c6d2e0; --pin-bg: #28384c; }
+.pin-lab-board [data-tone="digital"] { --pin-ink: #a8f5d9; --pin-bg: #173c36; }
+.pin-lab-board [data-tone="caution"] { --pin-ink: #ffe3a9; --pin-bg: #483624; }
+.pin-lab-board [data-tone="input"] { --pin-ink: #e4c6ff; --pin-bg: #3a2b54; }
+.pin-lab-board [data-tone="serial"] { --pin-ink: #b7e9ff; --pin-bg: #1e3c53; }
+
+.pin-lab-header-pins button {
+  min-height: 1.34rem;
+  padding: .06rem;
+  background: var(--pin-bg);
+  border-color: color-mix(in srgb, var(--pin-ink) 40%, var(--pin-bg));
+  color: var(--pin-ink);
+  font: 650 .53rem var(--md-code-font-family, monospace);
+}
+
+.pin-lab-header-pins button span { opacity: .82; }
+.pin-lab-header-pins button.is-muted { color: #a6b6c5; background: transparent; border-color: #48627a; }
+.pin-lab-header-pins button:hover,
+.pin-lab-header-pins button[aria-pressed="true"] {
+  background: #dbeaff;
+  border-color: #dbeaff;
+  color: #162f52;
+}
+
+.pin-lab-board-body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  place-items: center;
+  gap: .5rem;
+  padding: .35rem .24rem;
+  text-align: center;
+  font: .49rem var(--md-code-font-family, monospace);
+  background: repeating-linear-gradient(0deg, #1b2e42 0 1px, transparent 1px 18px), #132438;
+  border: 1px solid #48627a;
+  border-radius: .55rem;
+}
+
+.pin-lab-board-body[data-family="uno"] { background-color: #124749; }
+.pin-lab-chip {
+  display: grid;
+  gap: .2rem;
+  width: 100%;
+  padding: .65rem .15rem;
+  border: 1px solid #586d83;
+  border-radius: .3rem;
+  background: linear-gradient(#354861, #1b293a);
+  overflow-wrap: anywhere;
+}
+
+.pin-lab-chip strong { font-size: clamp(.47rem, 1.2vw, .7rem); }
+.pin-lab-chip span { color: #c2d8ef; }
+.pin-lab-board-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: .2rem; }
+.pin-lab-board-controls span { padding: .2rem .24rem; border: 1px solid #48627a; border-radius: .22rem; background: #182639; }
+.pin-lab-port { padding: .11rem .32rem; border-radius: .13rem; color: #142438; background: #afc0d0; }
+
+.pin-lab-board > small {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #b8c9da;
+  font-size: .5rem;
+}
+
+.pin-lab-inspector, .pin-lab-result, .pin-lab fieldset {
+  min-width: 0;
+  padding: .55rem;
+  border: 1px solid var(--lab-line);
+  border-radius: .5rem;
+  background: var(--lab-tint);
+  font-size: .66rem;
+}
+
+.pin-lab .pin-lab-inspector h3 {
+  margin: .12rem 0 .25rem;
+  font: 700 .95rem var(--md-code-font-family, monospace);
+}
+
+.pin-lab-inspector p { margin: .45rem 0; }
+
+.pin-lab .pin-lab-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(7rem, 100%), 1fr));
+  gap: .32rem;
+  margin: .48rem 0;
+}
+
+.pin-lab-facts div { padding: .34rem; border: 1px solid var(--lab-line); border-radius: .32rem; background: var(--lab-surface); }
+.pin-lab-facts dt { font-size: .56rem; color: var(--md-default-fg-color--light); }
+.pin-lab .pin-lab-facts dd { margin: .06rem 0 0; font: 650 .61rem var(--md-code-font-family, monospace); }
+.pin-lab-notes {
+  margin: .45rem 0;
+  padding: .42rem;
+  border-inline-start: .14rem solid #b98026;
+  border-radius: .28rem;
+  background: color-mix(in srgb, #b98026 9%, var(--lab-surface));
+}
+.pin-lab .pin-lab-notes ul { margin: .2rem 0 0; }
+.pin-lab .pin-lab-inspector details { margin: .5rem 0 0; padding: 0 .4rem; }
+.pin-lab .pin-lab-inspector summary { cursor: pointer; }
+.pin-lab-code-controls { padding-block-start: .35rem; margin-bottom: .3rem; }
+.pin-lab .pin-lab-inspector pre { margin: .3rem 0; }
+
+.pin-lab-tags { display: flex; flex-wrap: wrap; gap: .2rem; }
+.pin-lab-tags span {
+  padding: .08rem .28rem;
+  border: 1px solid var(--lab-line);
+  border-radius: .22rem;
+  background: var(--lab-surface);
+  font-size: .56rem;
+}
+
+.pin-lab-plan-grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+
+.pin-lab fieldset {
+  margin: 0;
+  display: grid;
+  gap: .33rem;
+}
+
+.pin-lab legend { padding: 0 .2rem; font-weight: 700; }
+.pin-lab fieldset label { display: flex; gap: .26rem; align-items: baseline; cursor: pointer; }
+.pin-lab fieldset input { accent-color: var(--lab-accent); flex-shrink: 0; }
+
+.pin-lab-assignment {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .2rem;
+  padding: .22rem 0;
+  border-bottom: 1px solid var(--lab-line);
+  font-size: .63rem;
+}
+
+.pin-lab-assignment small { display: block; color: var(--md-default-fg-color--light); }
+.pin-lab-result { margin-top: .5rem; border-inline-start-width: .16rem; }
+.pin-lab-result[data-state="warning"] { border-inline-start-color: #b98026; }
+.pin-lab-result[data-state="error"] { border-inline-start-color: #e16064; }
+.pin-lab-result[data-state="ok"] { border-inline-start-color: #399065; }
+.pin-lab .pin-lab-result ul { margin: .24rem 0 0; }
+.pin-lab-plan-note { display: block; margin-top: .45rem; font-size: .58rem; }
+
+@media (max-width: 37rem) {
+  .pin-lab-columns, .pin-lab-plan-grid { grid-template-columns: 1fr; }
+  .pin-lab-inspector { grid-row: 1; }
+  .pin-lab-header-pins button { min-height: 1.35rem; }
+  .pin-lab-header-pins button span { display: block; }
+}
+/* Component layout follows the board family; headers retain their pin mapping. */
+.pin-lab-board { grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr) minmax(0, 1fr); gap: .35rem; }
+.pin-lab-board-body {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-start;
+  gap: .55rem; min-height: 31rem; padding: .9rem .55rem .6rem;
+  background: #030918; border: 2px solid #34445a; border-radius: 1.2rem;
+  box-shadow: inset 0 0 0 3px #070d1c, 0 8px 20px #0005;
+}
+.pin-lab-board-body[data-family="uno"] { background: #07505b; }
+.pin-lab-board-body[data-family="esp8266"] { background: #101923; }
+.pin-lab-mounts { width: 100%; display: flex; justify-content: space-between; }
+.pin-lab-mounts::before, .pin-lab-mounts::after { content: ''; width: .48rem; height: .48rem; border: 1px solid #bd8628; border-radius: 50%; background: #1e2b3c; }
+.pin-lab-board-body button { font: inherit; color: #91caff; background: #111b2d; border: 1px solid #3b4c63; padding: .4rem .3rem; max-width: 100%; }
+.pin-lab-board-body button:hover, .pin-lab-board-body button[aria-pressed="true"] { color: #fff; background: #214965; border-color: #80d8ff; }
+.pin-lab-board-body .pin-lab-antenna { width: 100%; padding-top: 1.1rem; color: #9eb9d2; background: repeating-linear-gradient(90deg, transparent 0 13%, #b59b43 14% 15%, transparent 16% 25%) center .25rem / 85% .65rem no-repeat, #050b18; border-radius: .4rem .4rem 0 0; letter-spacing: .12em; }
+.pin-lab-chip { padding: .7rem .2rem; background: linear-gradient(135deg, #627388, #28364a 50%, #0b1424); border: 1px solid #778aa0; border-radius: .2rem .2rem .5rem .5rem; box-shadow: inset 0 2px 1px #b1c3d655; }
+.pin-lab-chip strong { color: #6be4ff; font-size: clamp(.5rem, 1vw, .7rem); }
+.pin-lab-chip span:first-child { color: #e4edf8; font-weight: 700; letter-spacing: .08em; }
+.pin-lab-chip span:last-child { border-top: 1px solid #8291a344; margin-top: .2rem; padding-top: .4rem; font-size: .42rem; }
+[data-family="uno"] .pin-lab-chip { width: 80%; border-radius: .15rem; background: repeating-linear-gradient(0deg, #aeb4ba 0 2px, transparent 2px 8px) left / 5px 100% no-repeat, repeating-linear-gradient(0deg, #aeb4ba 0 2px, transparent 2px 8px) right / 5px 100% no-repeat, #141b24; padding: 1.3rem .4rem; }
+.pin-lab-leds { display: flex; justify-content: space-between; width: 100%; font-size: .42rem; }
+.pin-lab-leds span:first-child { color: #ff607f; text-shadow: 0 0 7px #fa325c; }
+.pin-lab-leds span:last-child { color: #7eaaff; }
+.pin-lab-board-body [data-component="bridge"] { padding: .8rem .3rem; width: 58%; font-size: .45rem; }
+.pin-lab-board-body [data-component="regulator"] { font-size: .42rem; border-inline: 4px solid #788593; }
+.pin-lab-board-controls { width: 100%; display: flex; gap: .4rem; }
+.pin-lab-board-controls button { flex: 1; min-height: 2.6rem; }
+.pin-lab-board-controls button::before { content: ''; display: block; margin: 0 auto .25rem; width: .7rem; height: .7rem; border-radius: 50%; background: #35465b; border: 1px solid #71869f; }
+.pin-lab-board-body .pin-lab-port { margin-top: auto; width: 55%; padding: .5rem .3rem .2rem; color: #122238; background: linear-gradient(#c5d1df, #65758c); border: 1px solid #c1cfde; border-radius: 0 0 .4rem .4rem; }
+.pin-lab-port::before { content: ''; display: block; height: .3rem; background: #091122; border-radius: .3rem; margin: 0 .4rem .2rem; }
+[data-family="uno"] .pin-lab-port { width: 40%; min-height: 1.6rem; border-radius: .2rem; }
+.pin-lab-silkscreen { color: #93abc5; font-size: .42rem; line-height: 1.7; letter-spacing: .03em; }
+.pin-lab-header-pins { height: 100%; grid-auto-rows: 1fr; }
+.pin-lab-header-pins button { position: relative; font-size: .5rem; }
+.pin-lab-header-pins button::after { content: ''; position: absolute; width: .13rem; height: .45rem; background: #d4a44a; right: -.22rem; top: calc(50% - .225rem); }
+.pin-lab-header-pins:last-of-type button::after { left: -.22rem; right: auto; }
+@media (max-width: 37rem) { .pin-lab-board-body { min-height: 29rem; } .pin-lab-board { gap: .25rem; } }

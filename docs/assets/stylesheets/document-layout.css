@@ -1,0 +1,107 @@
+@media (min-width: 76.25em) {
+  .md-header .md-grid,
+  .md-tabs .md-grid,
+  .md-main__inner.md-grid {
+    max-width: none;
+    margin-inline: .45rem;
+  }
+
+  .md-main__inner > .md-sidebar--primary {
+    width: clamp(10rem, 17vw, 15rem);
+  }
+
+  .md-main__inner > .md-sidebar--secondary {
+    width: clamp(7.5rem, 13vw, 11rem);
+  }
+
+  .md-main__inner {
+    margin-top: .85rem;
+  }
+
+  .md-main__inner > .md-sidebar--secondary:not(:has(.md-nav__link[href])) {
+    display: none;
+  }
+
+  .md-sidebar--secondary .md-nav {
+    font-size: .66rem;
+  }
+
+  .md-sidebar--secondary .md-nav__link {
+    overflow-wrap: anywhere;
+  }
+}
+
+.md-typeset .md-markdown-view {
+  margin-block: -.5rem 1rem;
+  padding-block-end: .6rem;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset .md-markdown-view a {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .26rem .48rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .35rem;
+  color: var(--md-typeset-a-color);
+  font-size: .68rem;
+  font-weight: 650;
+}
+
+.md-typeset .md-markdown-view a:hover,
+.md-typeset .md-markdown-view a:focus-visible {
+  border-color: var(--md-typeset-a-color);
+}
+
+.md-typeset .md-markdown-view button {
+  display: inline-flex;
+  align-items: center;
+  padding: .26rem .48rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .35rem;
+  color: var(--md-typeset-a-color);
+  font-size: .68rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.md-typeset .md-markdown-view button:hover,
+.md-typeset .md-markdown-view button:focus-visible {
+  border-color: var(--md-typeset-a-color);
+}
+
+.md-markdown-dialog {
+  inset: 0;
+  width: min(45rem, calc(100% - 1.5rem));
+  max-height: 85dvh;
+  margin: auto;
+  padding: .65rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .6rem;
+  color: var(--md-typeset-color);
+  background: var(--md-default-bg-color);
+}
+
+.md-markdown-dialog::backdrop { background: rgb(0 0 0 / .45); }
+.md-markdown-dialog header { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; }
+.md-markdown-dialog header strong { margin-inline-end: auto; }
+.md-typeset .md-markdown-dialog pre { margin-block: .5rem 0; }
+.md-typeset .md-markdown-dialog pre[hidden] { display: none; }
+.md-typeset .md-markdown-dialog pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.md-markdown-dialog [role="status"]:empty { display: none; }
+.lab-practice {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .7rem;
+  background: var(--md-code-bg-color);
+}
+.md-typeset .lab-practice h2 { margin-top: 0; }
+.lab-practice fieldset { border: 0; padding: 0; margin: .7rem 0; min-width: 0; }
+.lab-practice legend { font-weight: 700; }
+.lab-practice label { display: block; padding: .4rem 0; cursor: pointer; }
+.lab-practice input { accent-color: var(--md-typeset-a-color); }
+.lab-practice button { border: 1px solid var(--md-typeset-a-color); border-radius: .3rem; padding: .4rem .7rem; color: var(--md-typeset-a-color); cursor: pointer; }
+.lab-practice button:focus-visible { outline: 2px solid var(--md-typeset-a-color); outline-offset: 3px; }
+.lab-practice [data-practice-progress] { font-weight: 700; }

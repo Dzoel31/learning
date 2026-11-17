@@ -1,0 +1,127 @@
+.async-guide {
+  --guide-border: var(--md-default-fg-color--lightest);
+  --guide-io: #387bdf;
+  --guide-queue: #bd7c15;
+  margin-block: 1em;
+  padding: clamp(.55rem, 2vw, 1rem);
+  border: 1px solid var(--guide-border);
+  border-radius: .8rem;
+  background: var(--md-default-bg-color--light);
+}
+
+.async-guide .async-guide-modes {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  padding: 0;
+  border: 0;
+}
+
+.async-guide-modes legend { margin-bottom: .25rem; font-weight: 700; }
+.async-guide-modes label {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  padding: .24rem .45rem;
+  border: 1px solid var(--guide-border);
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+.async-guide-modes label:has(:checked) {
+  border-color: var(--md-typeset-a-color);
+  color: var(--md-typeset-a-color);
+  font-weight: 700;
+}
+
+.async-guide input { accent-color: var(--md-typeset-a-color); }
+.async-guide-delay {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem;
+  margin-block: .6rem;
+}
+
+.async-guide-delay output { font-weight: 700; }
+.async-guide-delay input { max-width: 100%; }
+.async-guide-panel {
+  padding: .58rem;
+  border: 1px solid var(--guide-border);
+  border-radius: .5rem;
+  background: var(--md-default-bg-color);
+}
+
+.async-guide-panel > p:first-child { margin-top: 0; }
+.async-guide-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--md-code-font-family);
+  font-size: .61rem;
+}
+
+.async-guide-row + .async-guide-row { margin-top: .4rem; }
+.async-guide-row > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .2rem .5rem;
+}
+
+.async-guide-row small { color: var(--md-default-fg-color--light); }
+.async-guide-track {
+  position: relative;
+  height: .55rem;
+  margin-block: .12rem;
+  border-radius: .18rem;
+  background: var(--guide-border);
+}
+
+.async-guide-segment { position: absolute; inset: 0 auto 0 var(--start); width: var(--length); }
+.async-guide [data-kind="queue"] { --segment-color: var(--guide-queue); }
+.async-guide [data-kind="io"] { --segment-color: var(--guide-io); }
+.async-guide-segment, .async-guide-key span::before { background: var(--segment-color); }
+
+.async-guide-marker {
+  position: absolute;
+  inset: -.08rem auto -.08rem var(--guide-position, 0%);
+  width: .1rem;
+  transform: translateX(-50%);
+  background: var(--md-default-fg-color);
+  box-shadow: 0 0 0 1px var(--md-default-bg-color);
+}
+
+.async-guide-key { display: flex; flex-wrap: wrap; gap: .45rem; margin-block: .34rem .55rem; font-size: .61rem; }
+.async-guide-key span::before {
+  content: "";
+  display: inline-block;
+  margin-inline-end: .15rem;
+  width: .36rem;
+  height: .36rem;
+  border-radius: .05rem;
+}
+
+.async-guide-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; }
+.async-guide-actions button {
+  padding: .27rem .47rem;
+  border: 1px solid var(--guide-border);
+  border-radius: .3rem;
+  color: inherit;
+  cursor: pointer;
+}
+
+.async-guide-actions button:first-child {
+  border-color: var(--md-typeset-a-color);
+  color: var(--md-typeset-a-color);
+  font-weight: 700;
+}
+
+.async-guide-actions button:focus-visible {
+  outline: 2px solid var(--md-typeset-a-color);
+  outline-offset: 2px;
+}
+
+.async-guide-actions button:disabled { opacity: .55; cursor: default; }
+.async-guide-panel [data-status] { margin-block: .45rem; }
+.async-guide .async-guide-code { margin: .45rem 0 0; }

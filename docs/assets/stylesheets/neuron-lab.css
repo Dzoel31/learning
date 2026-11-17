@@ -1,0 +1,114 @@
+.neuron-lab {
+  --neuron-border: var(--md-default-fg-color--lightest);
+  --neuron-surface: var(--md-default-bg-color);
+  --neuron-ink: var(--md-typeset-color);
+  --positive: #2866db;
+  --negative: #d13258;
+  --zero: #778299;
+  --derivative: #b56a0e;
+  margin-block: 1.15em;
+  padding: clamp(.45rem, 1.3vw, .85rem);
+  border: 1px solid var(--neuron-border);
+  border-radius: .8rem;
+  background: color-mix(in srgb, var(--md-typeset-a-color) 6%, var(--neuron-surface));
+}
+[data-md-color-scheme="slate"] .neuron-lab { --positive: #87b5ff; --negative: #ff91a8; --derivative: #ffc475; }
+.neuron-grid { display: grid; gap: .55rem; align-items: start; }
+.neuron-stack { display: grid; min-width: 0; gap: .55rem; }
+@media (min-width: 48rem) {
+  .neuron-grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .neuron-stack:last-child { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 85rem) {
+  .neuron-grid { grid-template-columns: minmax(0, .78fr) minmax(0, 1.42fr) minmax(0, 1fr); }
+  .neuron-stack:last-child { grid-column: auto; grid-template-columns: 1fr; }
+}
+.neuron-stack section {
+  min-width: 0;
+  padding: .63rem;
+  border: 1px solid var(--neuron-border);
+  border-radius: .55rem;
+  background: var(--neuron-surface);
+}
+.neuron-lab .neuron-stack h2 { margin: 0 0 .45rem; font-size: .83rem; font-weight: 700; }
+.neuron-presets, .neuron-key { display: flex; flex-wrap: wrap; gap: .25rem; }
+.neuron-key { padding-bottom: .3rem; font-size: .57rem; }
+.neuron-key span::before {
+  display: inline-block;
+  width: .4rem;
+  height: .13rem;
+  margin-inline-end: .14rem;
+  vertical-align: middle;
+  background: var(--edge-color);
+  content: "";
+}
+.neuron-lab [data-sign="positive"] { --edge-color: var(--positive); }
+.neuron-lab [data-sign="negative"] { --edge-color: var(--negative); }
+.neuron-lab [data-sign="zero"] { --edge-color: var(--zero); }
+.neuron-lab [data-sign="derivative"] { --edge-color: var(--derivative); }
+
+.neuron-lab button, .neuron-lab input, .neuron-lab select {
+  max-width: 100%;
+  border: 1px solid var(--neuron-border);
+  border-radius: .32rem;
+  padding: .24rem .34rem;
+  color: var(--neuron-ink);
+  background: var(--neuron-surface);
+  font: inherit;
+}
+.neuron-lab button { font-size: .61rem; font-weight: 650; cursor: pointer; }
+.neuron-lab button[aria-pressed="true"], .neuron-lab button:hover {
+  border-color: var(--md-typeset-a-color);
+  color: var(--md-typeset-a-color);
+}
+.neuron-lab button:disabled { opacity: .5; cursor: default; }
+.neuron-lab :is(button, input, select, [role="button"]):focus-visible {
+  outline: 2px solid var(--md-typeset-a-color);
+  outline-offset: 2px;
+}
+.neuron-lab .neuron-hint { margin: .3rem 0 .55rem; font-size: .65rem; }
+.neuron-hint:empty { display: none; }
+.neuron-stack label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, min(50%, 6rem));
+  align-items: center;
+  gap: .25rem;
+  margin-bottom: .28rem;
+  font-size: .62rem;
+}
+[data-md-color-scheme="slate"] .neuron-lab :is(input,select) { color-scheme: dark; }
+.neuron-stack [data-parameters] { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7.4rem), 1fr)); gap: .24rem .55rem; }
+.neuron-network, .neuron-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--neuron-border);
+  border-radius: .42rem;
+  background: color-mix(in srgb, var(--positive) 4%, var(--neuron-surface));
+}
+.neuron-caption, .neuron-node-title, .neuron-node-value, .neuron-weight {
+  fill: var(--neuron-ink);
+  text-anchor: middle;
+  font: 12px var(--md-code-font-family, monospace);
+}
+.neuron-caption, .neuron-node-title { font-weight: 700; }
+.neuron-weight { fill: var(--edge-color); }
+.neuron-edge { fill: none; stroke: var(--edge-color); }
+.neuron-edge[data-active="false"] { opacity: .24; }
+.neuron-edge[data-sign="zero"] { stroke-dasharray: 4 4; }
+.neuron-node, .neuron-input { fill: var(--neuron-surface); stroke: var(--zero); stroke-width: 1.5; }
+.neuron-input { stroke: #159a76; }
+.neuron-network [role="button"] { cursor: pointer; }
+.neuron-network [aria-pressed="true"] circle, .neuron-network [role="button"]:hover circle {
+  stroke: var(--positive);
+  stroke-width: 3;
+  fill: color-mix(in srgb, var(--positive) 12%, var(--neuron-surface));
+}
+.neuron-chart :is(path, polyline) { fill: none; }
+.neuron-axis { stroke: var(--zero); opacity: .5; }
+.neuron-guide { stroke: var(--zero); stroke-dasharray: 3 3; }
+.neuron-curve { stroke: var(--positive); stroke-width: 2.5; }
+.neuron-derivative { stroke: var(--derivative); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.neuron-point { fill: var(--positive); stroke: var(--neuron-surface); stroke-width: 2; }
+.neuron-lab pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.neuron-lab [data-progress] { margin-block: .35rem 0; font-size: .65rem; }
