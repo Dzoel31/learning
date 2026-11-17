@@ -208,3 +208,14 @@ __marimo__/
 
 # Local planning notes
 learning-roadmap-plan.md
+/Laporan-Improvisasi-Materi.md
+/To-Do.md
+
+# Standalone reference prototypes (published labs live under docs/)
+/esp32_pinout_explorer_interaktif.html
+/neurolab_id_simulasi_interaktif_neuron_bobot.html
+/playground_interaktif_rag_qlora.html
+
+# Local browser verification artifacts
+/.playwright-cli/
+/output/playwright/
