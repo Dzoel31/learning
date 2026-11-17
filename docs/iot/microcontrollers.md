@@ -1,75 +1,31 @@
 # Microcontrollers
 
-Microcontroller adalah sebuah komputer mini yang terintegrasi dalam satu chip, yang dirancang untuk mengontrol perangkat keras dan menjalankan tugas-tugas tertentu dalam sistem tertanam (embedded system). Microcontroller biasanya terdiri dari CPU, memori (RAM/ROM), dan periferal I/O yang memungkinkan untuk berinteraksi dengan sensor, aktuator, dan perangkat lainnya. Alat ini biasanya digunakan di berbagai aplikasi, seperti smart home, otomotif, smart farming, dan banyak lagi, untuk mengumpulkan data, memproses informasi, dan mengendalikan perangkat secara otomatis.
+Microcontroller menggabungkan CPU, memori, dan periferal dalam satu chip. Dalam sistem IoT, microcontroller membaca sensor, mengolah data, lalu mengirim hasil atau mengendalikan aktuator.
+
+[Buka Lab Pin →](lab-pin.md){ .md-button .md-button--primary }
+
+Di lab kamu bisa memilih board, membuka detail tiap pin, dan menguji rancangan sambungan sebelum merangkai rangkaian.
 
 ## ESP32 (DevKit V1)
 
-![ESP32](../images/esp32.png)
+ESP32 klasik memiliki Wi-Fi 2,4 GHz, Bluetooth, GPIO 3,3 V, ADC 12-bit, dan dua kanal DAC. Lab mencakup susunan umum DevKit V1 30-pin dan DevKitC V4 38-pin dengan modul WROOM. Cocokkan label header dengan board yang dipakai, karena DevKit V1 memiliki beberapa varian.
 
-ESP32 adalah sirkuit terpadu (IC) kompak yang berfungsi sebagai komputer mini pada satu chip, mengintegrasikan CPU, memori (RAM/ROM), dan periferal I/O untuk mengendalikan tugas spesifik pada sistem tertanam (embedded system) yang berbiaya rendah dan hemat energi dengan modul Wi-Fi dan Bluetooth mode ganda yang terintegrasi.
+- **ADC dan Wi-Fi.** Gunakan ADC1 untuk pengukuran saat Wi-Fi aktif. GPIO34, 35, 36, dan 39 yang tersedia pada kedua layout hanya bisa menjadi input dan memerlukan resistor eksternal jika butuh pull-up atau pull-down.
+- **Boot dan flash.** Level GPIO0, 2, 5, 12, dan 15 dibaca saat reset. Pada DevKitC WROOM, GPIO6–11 dipakai untuk flash.
+- **Rujukan resmi.** [ESP32 Series Datasheet](https://documentation.espressif.com/esp32_datasheet_en.html) · [Panduan dan susunan pin DevKitC V4](https://docs.espressif.com/projects/esp-idf/en/v4.4.7/esp32/hw-reference/esp32/get-started-devkitc.html)
 
-**Spesifikasi:**
+## ESP8266 (NodeMCU 1.0)
 
-- **Mikrokontroler:** Tensilica Xtensa Dual-Core 32-bit LX6.
-- **Tegangan Operasi:** 3.3V.
-- **Kecepatan Clock:** Hingga 240 MHz.
-- **Konektivitas:** Wi-Fi 802.11 b/g/n & Bluetooth v4.2 BR/EDR dan BLE.
-- **Memori:** 520 KB SRAM, 4 MB Flash (umumnya).
-- **Periferal:** 12-bit ADC (18 channel), 8-bit DAC (2 channel), 10x Capacitive Touch Sensors, 3x UART, 3x SPI, 2x I2C, 16x PWM.
+ESP8266EX menyediakan Wi-Fi 2,4 GHz dan GPIO 3,3 V. NodeMCU memberi nama pin seperti D1 dan D2. D1 terhubung ke GPIO5 dan D2 ke GPIO4.
 
-![ESP32 Pinout](../images/esp32-pinout.png)
-
-!!! Note
-
-    AI Generated ESP32 pinout diagram!
-
-Referensi: [ESP32 Pinout](https://randomnerdtutorials.com/esp32-pinout-reference-gpios/)
-
-**Fungsi Pin Utama:**
-
-1. **VIN / 5V:** Input tegangan eksternal (disarankan 5V jika melalui regulator internal).
-2. **3V3:** Output tegangan 3.3V untuk menyuplai sensor.
-3. **GND:** Ground.
-4. **EN (Enable):** Tombol Reset.
-5. **GPIO (General Purpose Input Output):** Pin digital yang bisa digunakan sebagai input atau output.
-6. **ADC (Analog to Digital Converter):** Digunakan untuk membaca sensor analog seperti Soil Moisture, pH, atau TDS (Gunakan GPIO 32-39 untuk ADC1 agar tidak bentrok dengan WiFi).
-7. **DAC (Digital to Analog Converter):** Menghasilkan sinyal analog murni (GPIO 25 & 26).
-8. **Touch Pins:** Pin sensitif sentuhan (misalnya GPIO 4, 12, 13, 14, 15, 27, 32, 33).
-9. **UART (TX/RX):** Komunikasi serial (misalnya untuk modul GPS atau komunikasi antar mikrokontroler).
-10. **I2C (SDA/SCL):** Komunikasi untuk layar OLED atau sensor BME280 (Default: SDA=GPIO 21, SCL=GPIO 22).
-
----
+- **Analog.** Chip memiliki satu kanal ADC 10-bit. Masukan TOUT pada chip menggunakan rentang 0–1,0 V. NodeMCU 1.0 memiliki pembagi tegangan pada A0. Periksa skema board atau klon sebelum menghubungkan sensor.
+- **Boot.** Untuk boot normal, GPIO0 dan GPIO2 harus tinggi, sedangkan GPIO15 harus rendah saat reset.
+- **Rujukan resmi.** [ESP8266EX Datasheet](https://documentation.espressif.com/0a-esp8266ex_datasheet_en.html) · [Skema NodeMCU DevKit 1.0](https://github.com/nodemcu/nodemcu-devkit-v1.0)
 
 ## Arduino Uno R3
 
-![Arduino Uno](../images/arduino-uno.png)
+Arduino Uno R3 memakai ATmega328P 8-bit pada 16 MHz dengan logika 5 V. Board menyediakan 14 pin digital, enam keluaran PWM, dan enam masukan analog 10-bit.
 
-Arduino Uno adalah papan mikrokontroler berbasis ATmega328P yang sangat populer untuk pemula maupun profesional. Papan ini memiliki ekosistem yang luas dengan berbagai *shield* tambahan untuk memperluas fungsinya secara instan.
-
-**Spesifikasi:**
-
-- **Mikrokontroler:** ATmega328P (8-bit).
-- **Tegangan Operasi:** 5V.
-- **Tegangan Input (Vin):** 7V - 12V.
-- **Kecepatan Clock:** 16 MHz.
-- **Memori:** 32 KB Flash, 2 KB SRAM, 1 KB EEPROM.
-- **Digital I/O:** 14 Pin (6 di antaranya mendukung PWM).
-- **Analog Input:** 6 Pin (ADC 10-bit).
-
-![Arduino Uno Pinout](../images/arduino-uno-pinout.png)
-
-!!! Note
-
-    AI Generated Arduino Uno pinout diagram!
-
-Referensi: [Arduino Uno Pinout](https://lastminuteengineers.com/arduino-pinout/)
-
-**Fungsi Pin:**
-
-1. **Power Pins:** 5V dan 3.3V sebagai output tegangan untuk komponen eksternal, GND sebagai ground, dan Vin sebagai input tegangan eksternal jika tidak menggunakan USB.
-2. **Digital Pins (0-13):** Pin input/output digital. Pin 0 (RX) dan 1 (TX) dipakai untuk komunikasi serial (hindari saat upload kode). Pin bertanda `~` (3, 5, 6, 9, 10, 11) mendukung PWM untuk kontrol kecepatan motor atau intensitas LED.
-3. **Analog In (A0-A5):** Pin khusus untuk membaca input analog dari sensor (resolusi 0-1023).
-4. **I2C Pins:** SDA berada di pin A4 dan SCL di pin A5 (atau pin khusus SDA/SCL di dekat pin AREF).
-5. **SPI Pins:** Pin 10 (SS), 11 (MOSI), 12 (MISO), 13 (SCK).
-6. **AREF:** Analog Reference untuk referensi tegangan input analog.
-7. **Reset:** Untuk mengulang program dari awal.
+- **Pin bersama.** D0/D1 dipakai UART USB, A4/A5 dipakai I²C, dan D10–D13 umum dipakai untuk SPI. Header SDA/SCL tersambung ke A4/A5, sehingga kedua label berbagi jalur fisik.
+- **Level logika.** Saat menghubungkan perangkat 3,3 V, periksa toleransi kedua sisi dan gunakan penyesuai level bila perlu.
+- **Rujukan resmi.** [Datasheet Uno R3](https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf) · [Pinout resmi Uno R3](https://docs.arduino.cc/resources/pinouts/A000066-full-pinout.pdf) · [Datasheet ATmega328P](https://www.microchip.com/content/dam/mchp/documents/MCU08/ProductDocuments/DataSheets/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf)

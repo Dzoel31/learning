@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Arsitektur dasar sistem IoT</title>
+  <desc id="desc">Device mengirim pembacaan ke backend. Backend mengirim perintah ke device, menyimpan atau membaca database, serta menerima request dan mengirim respons ke dashboard.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#52718e"/></marker></defs>
+  <rect width="960" height="560" rx="20" fill="#eff6ff"/>
+  <g font-family="Arial,sans-serif" fill="#12345a">
+    <text x="36" y="48" font-size="25" font-weight="700">Data bergerak dari device ke aplikasi</text>
+    <text x="36" y="78" font-size="15" fill="#526d88">Pembacaan sensor, penyimpanan data, dan kontrol melalui backend</text>
+    <rect x="36" y="140" width="210" height="170" rx="16" fill="#fff" stroke="#0878c9" stroke-width="3"/>
+    <rect x="370" y="140" width="220" height="170" rx="16" fill="#e6f4ff" stroke="#0878c9" stroke-width="3"/>
+    <rect x="714" y="140" width="210" height="170" rx="16" fill="#fff0d7" stroke="#e28a13" stroke-width="3"/>
+    <rect x="370" y="426" width="220" height="100" rx="16" fill="#dcf3e8" stroke="#29966b" stroke-width="3"/>
+    <g fill="none" stroke-width="2.5">
+      <g stroke="#0878c9"><rect x="121" y="164" width="40" height="34" rx="5"/><path d="M130 174h22v14h-22zM113 172h8m-8 12h8m40-12h8m-8 12h8"/></g>
+      <g stroke="#0878c9"><rect x="455" y="163" width="50" height="36" rx="4"/><path d="M455 181h50M462 172h4m-4 18h4"/></g>
+      <g stroke="#e28a13"><path d="M795 169v27c0 12 48 12 48 0v-27M795 182c0 12 48 12 48 0"/><ellipse cx="819" cy="169" rx="24" ry="8" fill="#ffe0a6"/></g>
+    </g>
+    <g text-anchor="middle" font-size="21" font-weight="700">
+      <text x="141" y="239">Device IoT</text><text x="480" y="239">Backend / API</text><text x="819" y="239">Database</text><text x="480" y="466">Dashboard</text>
+    </g>
+    <g text-anchor="middle" font-size="15">
+      <text x="141" y="270">sensor dan aktuator</text><text x="480" y="270">validasi · aturan aplikasi</text><text x="819" y="270">data dan riwayat</text><text x="480" y="495">status · grafik · kontrol</text>
+    </g>
+    <g fill="none" stroke="#52718e" stroke-width="2.5" marker-end="url(#arrow)">
+      <path d="M247 205H367"/><path d="M369 270H249"/>
+      <path d="M591 205H711"/><path d="M713 270H593"/>
+      <path d="M425 425V313"/><path d="M535 311V423"/>
+    </g>
+    <g fill="#526d88" font-size="13" text-anchor="middle">
+      <text x="308" y="191">pembacaan</text><text x="308" y="293">perintah</text>
+      <text x="652" y="191">simpan / query</text><text x="652" y="293">hasil query</text>
+      <text x="410" y="368" text-anchor="end">request data</text><text x="410" y="386" text-anchor="end">/ kontrol</text>
+      <text x="550" y="377" text-anchor="start">respons</text>
+    </g>
+  </g>
+</svg>

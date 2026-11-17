@@ -1,27 +1,6 @@
 # Belajar HTTP untuk IoT
 
-## Model client dan server
-
-Dalam skenario IoT, biasanya ada dua pihak utama:
-
-- Client: perangkat atau aplikasi yang minta/mengirim data (ESP32, browser, mobile app).
-- Server: layanan yang menerima request, proses data, lalu kirim response.
-
-Contoh alur sederhana:
-
-1. ESP32 membaca suhu dan kelembapan.
-2. ESP32 kirim data ke server dengan HTTP.
-3. Server simpan data ke database.
-4. Dashboard ambil data terbaru dari server.
-
-## Apa itu HTTP?
-
-HTTP (Hypertext Transfer Protocol) adalah aturan komunikasi di layer aplikasi untuk pertukaran data antara client dan server.
-
-Dua konsep pentingnya:
-
-- Stateless: tiap request berdiri sendiri. Server tidak otomatis ingat request sebelumnya.
-- Request-Response: client kirim request, server balas response.
+ESP32 mengirim pembacaan ke server. Server membalas dengan kode status dan, bila ada, isi respons. Jika pengiriman gagal, mulai dari metode, alamat, dan data yang benar-benar diterima server.
 
 ## Struktur dasar request HTTP
 
@@ -131,6 +110,20 @@ Contoh penggunaan di AIoT:
 
 - ESP32 kirim pembacaan sensor periodik ke endpoint server.
 
+Contoh request:
+
+```http
+POST /sensor-data HTTP/1.1
+Content-Type: application/json
+{
+  "device_id": "esp32-01",
+  "suhu": 26.7,
+  "kelembapan": 56.3
+}
+```
+
+Browser akan mengirim request tersebut ke server, lalu server akan memproses data dan menyimpannya ke database.
+
 ### PUT (Update)
 
 Dipakai untuk memperbarui data yang sudah ada.
@@ -138,6 +131,18 @@ Dipakai untuk memperbarui data yang sudah ada.
 Contoh:
 
 - Update konfigurasi ambang batas suhu perangkat.
+
+Contoh request:
+
+```http
+PUT /sensor/123 HTTP/1.1
+Content-Type: application/json
+
+{
+  "suhu": 27.1,
+  "kelembapan": 60.2
+}
+```
 
 ### DELETE (Delete)
 
@@ -147,7 +152,13 @@ Contoh:
 
 - Hapus data sensor duplikat atau data uji.
 
-## Siklus request-response dalam proyek AIoT
+Contoh request:
+
+```http
+DELETE /sensor/123 HTTP/1.1
+```
+
+## Siklus request-response dalam proyek IoT
 
 1. Client mengirim request ke endpoint API.
 2. Server validasi data (format, token, nilai wajib).
@@ -183,16 +194,15 @@ Contoh status code yang sering muncul:
 - 401 Unauthorized: butuh autentikasi.
 - 500 Internal Server Error: ada error di sisi server.
 
+Untuk melihat lebih lengkap, kalian bisa mengunjungi situs: [Status Code Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status)
+
 ## Tips praktik
 
 - Selalu set Content-Type: application/json untuk payload JSON.
 - Validasi nilai sensor sebelum dikirim (hindari data kosong/aneh).
 - Cek status code di sisi client sebelum parsing response.
-- Simpan endpoint API dalam variabel konfigurasi, jangan hardcode di banyak tempat.
+- Simpan endpoint API dalam variabel konfigurasi, jangan hardcode langsung di kode proyek, gunakan `.env` untuk menyimpan data penting seperti URL server, API Key, dan sebagainya.
 
-## Ringkasannya
+## Telusuri permintaan sensor yang gagal
 
-- HTTP adalah fondasi komunikasi data client-server pada sistem AIoT berbasis web.
-- GET/POST/PUT/DELETE mewakili pola CRUD yang paling umum.
-- Untuk data sensor, POST adalah method yang paling sering dipakai untuk pengiriman data dari device ke server.
-- Memahami request, header, body, dan status code akan sangat membantu saat debugging integrasi device dan backend.
+Jalankan [Backend Mini](../hands-on/backend-mini.md#jalankan-server). Kirim contoh JSON lengkap ke `POST /sensors` dan periksa kode 201 serta nilai yang dikembalikan. Hapus `value` lalu kirim ulang. Pada respons 400, baca pesan validasi. Jika alamatnya diganti ke rute yang tidak terdaftar, periksa respons 404.

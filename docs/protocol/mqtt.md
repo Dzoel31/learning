@@ -1,28 +1,6 @@
 # Belajar MQTT untuk IoT
 
-## Publisher, broker, dan subscriber
-
-Dalam skenario IoT, MQTT memakai pola komunikasi **publish-subscribe**.
-
-- Publisher: perangkat/aplikasi yang mengirim pesan.
-- Broker: server perantara yang menerima dan mendistribusikan pesan.
-- Subscriber: perangkat/aplikasi yang berlangganan topik tertentu.
-
-Contoh alur sederhana:
-
-1. ESP32 membaca kelembapan media tanam.
-2. ESP32 publish data ke broker MQTT.
-3. Dashboard subscribe topik sensor dan menerima data real-time.
-4. Sistem kontrol subscribe topik yang sama untuk memutuskan nyala/mati pompa.
-
-## Apa itu MQTT?
-
-MQTT (Message Queuing Telemetry Transport) adalah protokol komunikasi ringan di layer aplikasi yang dirancang untuk perangkat dengan resource terbatas dan jaringan yang tidak selalu stabil.
-
-Dua konsep pentingnya:
-
-- Publish-Subscribe: pengirim dan penerima tidak saling terikat langsung.
-- Lightweight: payload kecil, overhead rendah, cocok untuk IoT.
+ESP32 mengirim pesan ke broker, lalu broker meneruskannya ke perangkat atau aplikasi yang berlangganan topik itu. Pengirim disebut publisher dan penerima disebut subscriber. Kita akan melihat apa yang diterima dashboard saat baru terhubung.
 
 ## Struktur dasar pesan MQTT
 
@@ -164,9 +142,8 @@ sequenceDiagram
 - Gunakan retained message untuk state terakhir (misal status pompa).
 - Tambahkan LWT agar sistem cepat mendeteksi device offline.
 
-## Ringkasannya
+## Apa yang diterima subscriber yang baru terhubung?
 
-- MQTT cocok untuk komunikasi IoT real-time dan dua arah.
-- Pola publish-subscribe membuat publisher dan subscriber tidak saling bergantung langsung.
-- Komponen pentingnya adalah broker, topik, payload, dan QoS.
-- Untuk AIoT, MQTT sangat efektif untuk streaming data sensor dan kontrol aktuator secara cepat.
+Bayangkan perangkat menerbitkan status terbaru ke `sensor/status` ketika dashboard belum terhubung. Jika status dikirim dengan QoS 1 dan penanda retained, broker menyimpannya dan mengirimkannya saat dashboard membuat langganan yang cocok. Tanpa status yang tersimpan, dashboard menunggu terbitan berikutnya.
+
+Periksa perbedaannya dengan satu topik baru dalam latihan, supaya pesan retained dari percobaan lain tidak ikut terbaca. Rujukan [spesifikasi MQTT 3.1.1 §3.3.1.3](https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html).

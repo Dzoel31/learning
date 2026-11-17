@@ -1,43 +1,12 @@
 # Belajar CoAP untuk IoT
 
-## Protokol ringan untuk perangkat terbatas
-
-Pada beberapa skenario IoT, perangkat berjalan dengan memori kecil, daya rendah, dan jaringan tidak stabil. CoAP sengaja dirancang untuk kondisi seperti ini.
-
-Contoh alur sederhana:
-
-1. Node sensor membaca nilai kelembapan.
-2. Node mengirim data ke server CoAP menggunakan pesan ringan.
-3. Server menyimpan data dan memberi respons singkat.
-4. Sistem monitoring mengambil data dari backend untuk ditampilkan.
-
-## Apa itu CoAP?
-
-CoAP (Constrained Application Protocol) adalah protokol aplikasi ringan untuk perangkat constrained dan jaringan low-power. CoAP umumnya berjalan di atas UDP.
-
-Dua konsep pentingnya:
-
-- Resource-oriented: mirip konsep URI pada HTTP (`/sensor/temp`).
-- Lightweight over UDP: overhead kecil dan efisien untuk IoT.
+CoAP (Constrained Application Protocol) dipakai oleh perangkat terbatas untuk meminta atau mengubah resource, misalnya `coap://iot-gateway.local/sensor/moisture`. Bab ini memakai CoAP lewat UDP. Pilihan tipe pesan menentukan apakah pengirim menunggu konfirmasi penerimaan.
 
 ## Struktur dasar request CoAP
 
-CoAP tetap memakai pola request-response, tetapi format pesannya lebih ringkas.
+CoAP punya metode GET, POST, PUT, dan DELETE. Metode menentukan tindakan yang diminta. Tipe pesan menentukan cara pesan dikirim dan dikonfirmasi.
 
-Komponen utama:
-
-- Method: GET, POST, PUT, DELETE.
-- URI-Path: resource tujuan.
-- Payload: data yang dikirim (opsional).
-- Message Type: CON, NON, ACK, RST.
-
-Contoh resource:
-
-```text
-coap://iot-gateway.local/sensor/moisture
-```
-
-Contoh payload JSON:
+Contoh isi permintaan `POST /sensor/moisture`:
 
 ```json
 {
@@ -48,62 +17,53 @@ Contoh payload JSON:
 
 ## Tipe pesan pada CoAP
 
-| Tipe | Fungsi | Kapan dipakai |
-| --- | --- | --- |
-| Confirmable (CON) | Pesan yang butuh ACK dari penerima. | Untuk data penting yang perlu konfirmasi penerimaan. |
-| Non-confirmable (NON) | Pesan tanpa ACK. | Untuk telemetri periodik yang toleran kehilangan paket. |
-| Acknowledgement (ACK) | Balasan untuk pesan CON sebagai tanda pesan diterima. | Saat penerima mengonfirmasi pesan CON. |
-| Reset (RST) | Menandakan pesan diterima tapi konteks tidak dikenali. | Saat pesan tidak bisa diproses sesuai konteks sesi/resource. |
-
-## Fitur CoAP yang paling sering dipakai
-
-### Observe
-
-Client dapat subscribe perubahan resource, sehingga server mengirim update saat nilai berubah.
-
-### Block-wise transfer
-
-Membagi payload besar menjadi blok kecil agar tetap efisien pada jaringan terbatas.
-
-### DTLS (opsional keamanan)
-
-CoAP dapat diamankan dengan DTLS saat butuh enkripsi dan autentikasi.
+| Tipe | Arti |
+| --- | --- |
+| Confirmable (CON) | Pengirim menunggu ACK. Jika ACK belum tiba, pengirim dapat mengirim ulang sampai batas percobaan. |
+| Non-confirmable (NON) | Pesan dikirim tanpa menunggu ACK. Bila ada hasil aplikasi, server dapat mengirimkannya sebagai pesan terpisah. |
+| Acknowledgement (ACK) | Mengonfirmasi penerimaan pesan CON. ACK bisa kosong atau membawa hasil permintaan. |
+| Reset (RST) | Penerima melihat pesan tetapi tidak punya konteks untuk memprosesnya. |
 
 ## Siklus request-response CoAP dalam proyek AIoT
 
-1. Device mengirim request CoAP ke resource gateway/server.
-2. Server memproses payload sensor.
-3. Jika request CON, server membalas ACK.
-4. Data diteruskan ke backend/database.
-5. Dashboard membaca data dari backend.
+Anggap gateway menyimpan pembacaan sensor ke basis data. Bandingkan dua cara gateway menangani satu pesan CON.
 
-### Diagram alur komunikasi CoAP
+### ACK membawa respons
+
+Gateway selesai menyimpan pembacaan sebelum perlu mengirim ACK. Gateway menggabungkan ACK dan kode hasil `2.01 Created` dalam satu pesan. Ini disebut *piggybacked response*.
 
 ```mermaid
 sequenceDiagram
-  participant N as Sensor Node
-  participant G as CoAP Gateway
-  participant DB as Database
-  participant W as Web Dashboard
-
-  N->>G: CON POST /sensor/moisture\n{ moisture: 48.5 }
+  participant N as Sensor
+  participant G as Gateway
+  participant D as Database
+  N->>G: CON POST /sensor/moisture
+  G->>D: Simpan pembacaan
+  D-->>G: Baris tersimpan
   G-->>N: ACK 2.01 Created
-  G->>DB: Simpan data sensor
-  DB-->>G: OK
-
-  W->>G: GET /sensor/latest (via backend bridge)
-  G-->>W: Data terbaru
 ```
 
-## Tips praktik
+### ACK kosong dan respons terpisah
 
-- Gunakan CoAP saat perangkat benar-benar constrained.
-- Jaga payload tetap kecil dan sederhana.
-- Pertimbangkan DTLS jika data sensitif.
-- Jika dashboard berbasis web, gunakan gateway/bridge ke HTTP atau WebSocket.
+Jika penyimpanan butuh lebih lama, gateway dapat mengirim ACK kosong dulu. Saat ACK kosong tiba, sensor tahu pesan diterima dan berhenti mengulang permintaan. Hasil penyimpanan menyusul. Di contoh ini gateway mengirim hasil sebagai CON, sehingga sensor mengirim ACK untuk pesan baru itu.
 
-## Ringkasannya
+```mermaid
+sequenceDiagram
+  participant N as Sensor
+  participant G as Gateway
+  N->>G: CON POST /sensor/moisture
+  G-->>N: ACK 0.00
+  Note over G: Simpan pembacaan
+  G-->>N: CON 2.01 Created
+  N->>G: ACK 0.00
+```
 
-- CoAP adalah protokol ringan berbasis UDP untuk perangkat IoT terbatas.
-- Modelnya mirip HTTP (resource + method) tetapi lebih hemat overhead.
-- Sangat cocok untuk jaringan low-power atau lingkungan dengan bandwidth terbatas.
+Untuk telemetri berkala yang masih berguna ketika satu pembacaan hilang, coba bandingkan dengan `NON POST /sensor/moisture`. Sensor tidak menunggu ACK. Jika pesan hilang, lapisan pesan CoAP tidak mengirim ulang pesan NON itu.
+
+Rujukan [RFC 7252 §4 tentang tipe pesan](https://www.rfc-editor.org/rfc/rfc7252.html#section-4) dan [§5.2 tentang respons](https://www.rfc-editor.org/rfc/rfc7252.html#section-5.2).
+
+## Beberapa fitur tambahan CoAP
+
+- **Observe** memungkinkan client meminta pemberitahuan ketika representasi resource berubah. [RFC 7641](https://www.rfc-editor.org/rfc/rfc7641.html).
+- **Block-wise transfer** mengirim data besar dalam beberapa blok. [RFC 7959](https://www.rfc-editor.org/rfc/rfc7959.html).
+- **DTLS** menyediakan pengamanan transport CoAP lewat UDP. [RFC 7252 §9](https://www.rfc-editor.org/rfc/rfc7252.html#section-9).

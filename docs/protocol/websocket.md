@@ -1,24 +1,6 @@
 # Belajar WebSocket untuk IoT
 
-## Koneksi persisten dua arah
-
-Dalam skenario IoT, kadang komunikasi perlu berlangsung terus-menerus tanpa membuka koneksi baru berulang kali.
-
-Contoh alur sederhana:
-
-1. Dashboard membuka koneksi WebSocket ke server.
-2. Server mengirim data sensor terbaru tanpa diminta ulang.
-3. Dashboard menampilkan update real-time (misalnya setiap detik).
-4. Dashboard juga bisa kirim command kontrol ke server lewat koneksi yang sama.
-
-## Apa itu WebSocket?
-
-WebSocket adalah protokol komunikasi full-duplex di atas TCP yang memungkinkan client dan server saling kirim data kapan saja setelah koneksi terbentuk.
-
-Dua konsep pentingnya:
-
-- Persistent Connection: koneksi tetap terbuka.
-- Full-Duplex: client dan server bisa kirim pesan secara dua arah secara real-time.
+Dashboard membuka koneksi WebSocket ke server. Selama koneksi terbuka, kedua pihak bisa mengirim pesan. Server bisa mengirim suhu terbaru tanpa menunggu dashboard meminta ulang. Perhatikan apa yang tampil ketika koneksi putus.
 
 ## Struktur dasar komunikasi WebSocket
 
@@ -106,8 +88,6 @@ sequenceDiagram
 - Batasi frekuensi update jika data sangat tinggi agar dashboard tetap ringan.
 - Pisahkan channel untuk data sensor dan command kontrol.
 
-## Ringkasannya
+## Apa yang tampil saat koneksi putus?
 
-- WebSocket cocok untuk komunikasi real-time dua arah antara dashboard dan server.
-- Koneksi persisten membuat update lebih cepat dibanding polling HTTP berulang.
-- Sangat berguna untuk monitoring live dan kontrol aktuator dari antarmuka web.
+Jika pembacaan terakhir 28,5 °C, lalu koneksi putus, dashboard bisa tetap menampilkan 28,5 °C dengan keterangan “koneksi putus” dan waktu pembacaan. Saat tersambung lagi, perbarui nilai setelah menerima data baru. Dengan begitu, peserta bisa membedakan pembacaan lama dari sambungan yang sudah pulih.

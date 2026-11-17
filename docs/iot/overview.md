@@ -6,14 +6,4 @@ Internet of Things (IoT) merupakan sebuah konsep yang merujuk pada sekelompok pe
 - **Pemantauan Jarak Jauh**: Perangkat IoT memungkinkan pemantauan kondisi dan status perangkat dari jarak jauh, seperti memantau kondisi tanaman saat bepergian atau mengawasi sistem keamanan rumah.
 - **Pengumpulan Data**: Perangkat IoT dapat mengumpulkan data secara real-time, yang dapat digunakan untuk analisis lebih lanjut guna meningkatkan efisiensi operasional atau membuat keputusan yang lebih baik.
 
-```mermaid
-architecture-beta
-    service sensor(material-symbols:motion-sensor-active)[Sensor IoT]
-    service server(carbon:ibm-cloud-bare-metal-server)[Server Cloud]
-    service database(material-symbols:database)[Database]
-    service dashboard(material-symbols:analytics)[Dashboard Monitoring]
-
-    sensor:R --> L:server
-    server:B <--> T:database
-    server:R --> L:dashboard
-```
+![Arsitektur IoT: device mengirim data ke backend, backend berhubungan dengan database dan dashboard](../assets/images/iot-architecture.svg)
