@@ -60,20 +60,15 @@ git remote -v
     git push origin <nama_cabang>
     ```
 
-3. **Melakukan Pull dari Remote Repository**
+3. **Memeriksa perubahan dari remote**
 
-    Untuk mengambil perubahan terbaru dari remote repository dan menggabungkannya ke repository lokal, gunakan perintah:
+    Mulai dari `git status`, lalu ambil riwayat remote dengan:
 
     ```bash
-    git pull origin <nama_cabang>
+    git fetch origin
     ```
 
-    ??? Warning "Konflik Merge"
-        Saat melakukan `pull`, terkadang dapat terjadi konflik merge jika ada perubahan yang bertentangan antara repository lokal dan remote. Jika hal ini terjadi, kamu perlu menyelesaikan konflik tersebut secara manual sebelum melanjutkan proses merge.
-
-4. **Melakukan sinkronisasi dengan Remote Repository**
-
-    Untuk memastikan repository lokal selalu up-to-date dengan remote repository, disarankan untuk sering melakukan `pull` sebelum memulai pekerjaan baru. Hal ini dapat membantu mengurangi kemungkinan terjadinya konflik saat melakukan `push` nanti.
+    Bandingkan cabang lokal dan remote sebelum memilih cara menyelaraskannya. Contohnya ada di bagian berikut.
 
 ## Menghapus Remote Repository
 
@@ -85,7 +80,23 @@ git remote remove <nama_remote>
 
 ## Perbedaan antara `git fetch` dan `git pull`
 
-Terdapat dua perintah yang sering digunakan untuk mengambil perubahan dari remote repository, yaitu `git fetch` dan `git pull`. Berikut adalah perbedaan antara keduanya:
+Mulai dengan `git status` untuk melihat cabang aktif dan perubahan yang belum disimpan. Anggap kamu berada di cabang `main` dan baru saja membuat commit C. Rekanmu sudah mendorong commit D ke remote.
 
-- `git fetch`: Perintah ini digunakan untuk mengambil perubahan terbaru dari remote repository tanpa menggabungkannya ke branch lokal. Setelah melakukan `fetch`, kamu perlu melakukan merge secara manual untuk menggabungkan perubahan tersebut ke branch lokal.
-- `git pull`: Perintah ini digunakan untuk mengambil perubahan terbaru dari remote repository dan langsung menggabungkannya ke branch lokal. `git pull` pada dasarnya merupakan kombinasi dari `git fetch` diikuti dengan `git merge`.
+```text
+Sebelum fetch               Setelah git fetch origin
+A---B---C  main              A---B---C  main
+    ^                            \
+    origin/main                   D    origin/main
+```
+
+`git fetch origin` memperbarui `origin/main`. Cabang lokal `main` tetap di C. Sekarang kamu bisa membandingkan kedua cabang dengan `git log --oneline --left-right main...origin/main`.
+
+`git pull` mengambil perubahan lalu mencoba menyelaraskannya dengan cabang aktif. Pilih cara yang sesuai dengan kebiasaan tim.
+
+- `git pull --ff-only origin main` hanya memajukan cabang jika tidak ada commit lokal yang membuat jalurnya bercabang. Pada contoh C dan D, perintah ini berhenti.
+- `git pull --no-rebase origin main` menggabungkan riwayat kedua cabang lewat merge.
+- `git pull --rebase origin main` menerapkan ulang commit lokal di atas remote. Koordinasikan dengan tim sebelum mengubah riwayat commit yang sudah dibagikan.
+
+Jika operasi berhenti karena konflik, baca [Konflik pada Git](git-conflict.md).
+
+Rujukan [dokumentasi git pull](https://git-scm.com/docs/git-pull).

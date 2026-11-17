@@ -144,17 +144,19 @@ git checkout <main / master>
 
 4. **Melakukan Pull dari Remote Repository**
 
-    Untuk mengambil perubahan terbaru dari remote repository dan menggabungkannya ke repository lokal, gunakan perintah:
+    Periksa cabang aktif dan perubahan lokal dengan `git status`. Untuk menyelaraskan cabang tanpa membuat merge commit, gunakan fast-forward saja:
 
     ```bash
-    git pull origin <nama_cabang>
+    git pull --ff-only origin <nama_cabang>
     ```
 
     Contoh untuk mengambil perubahan dari cabang utama (main/master):
 
     ```bash
-    git pull origin main
+    git pull --ff-only origin main
     ```
+
+    Jika cabang lokal dan remote punya commit masing-masing, perintah berhenti. Baca [perbedaan fetch dan pull](remote-repositories.md#perbedaan-antara-git-fetch-dan-git-pull) sebelum memilih cara menggabungkannya.
 
 ## Mengatur `git log`
 
