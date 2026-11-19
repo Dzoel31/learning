@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.14.3 (2026-11-19)
+
+### Documentation
+
+- **hands-on**: Add RAG Colab notebooks
+  ([`375836a`](https://github.com/ksm-aiot-upnvj/learning/commit/375836ac04ca1f29e05e09fd186dd83b8e78984f))
+
+
 ## v1.14.2 (2026-11-19)
 
 ### Bug Fixes
