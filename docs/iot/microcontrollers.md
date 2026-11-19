@@ -2,7 +2,7 @@
 
 Microcontroller menggabungkan CPU, memori, dan periferal dalam satu chip. Dalam sistem IoT, microcontroller membaca sensor, mengolah data, lalu mengirim hasil atau mengendalikan aktuator.
 
-[Buka Lab Pin →](lab-pin.md){ .md-button .md-button--primary }
+[Buka Lab Pin →](../labs/iot-pin.md){ .md-button .md-button--primary }
 
 Di lab kamu bisa memilih board, membuka detail tiap pin, dan menguji rancangan sambungan sebelum merangkai rangkaian.
 

@@ -90,6 +90,22 @@
 .md-typeset .md-markdown-dialog pre[hidden] { display: none; }
 .md-typeset .md-markdown-dialog pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
 .md-markdown-dialog [role="status"]:empty { display: none; }
+.md-typeset a.md-button {
+  border-radius: .45rem;
+  color: #fff !important;
+  background: #0e7490 !important;
+  border-color: #22d3ee !important;
+}
+.md-typeset a.md-button:hover,
+.md-typeset a.md-button:focus-visible {
+  color: #fff !important;
+  background: #155e75 !important;
+  border-color: #67e8f9 !important;
+}
+.md-typeset a.md-button:focus-visible {
+  outline: 2px solid #a5f3fc;
+  outline-offset: 3px;
+}
 .lab-practice {
   margin: 1.5rem 0;
   padding: 1rem;

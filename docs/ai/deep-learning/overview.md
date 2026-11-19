@@ -17,7 +17,7 @@ Ikuti [Masalah dan Data](../machine-learning/masalah-dan-data.md), [Preprocessin
 
 Gunakan [TensorFlow, Keras, dan PyTorch](frameworks.md) untuk mengenali library yang dipakai pada contoh model. Jika tugasnya membaca pola lokal pada gambar atau sinyal, lanjutkan ke [CNN](cnn.md). Jika prediksi bergantung pada beberapa pembacaan sebelumnya, baca [Model Sequence](model-sequence.md).
 
-Setelah menyelesaikan materi, coba [Lab Pelatihan Neural Network](lab-neuron.md) untuk mengubah bobot dan melihat pengaruhnya pada prediksi.
+Setelah menyelesaikan materi, coba [Lab Pelatihan Neural Network](../../labs/neuron-training.md) untuk mengubah bobot dan melihat pengaruhnya pada prediksi.
 
 ## Topik lanjutan
 

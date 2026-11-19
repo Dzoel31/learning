@@ -18,13 +18,7 @@ async function loadSensors() {
 
 ## Lab antrean dan event loop
 
-Bandingkan dua request pada satu event loop. A masuk pada detik 0; B datang pada detik 1 dan membutuhkan satu detik I/O. Ubah durasi A, jalankan satu detik demi satu detik, lalu bandingkan waktu selesai B.
-
-<div class="async-guide" data-async-guide>
-  <noscript>Aktifkan JavaScript untuk mencoba simulator. I/O nonblocking memberi event loop kesempatan menangani request lain.</noscript>
-</div>
-
-Garis waktu adalah model sederhana: biaya CPU handler diabaikan dan mode blocking menirukan waktu tunggu yang menahan event loop. Potongan kode hanya ditampilkan, bukan dieksekusi di halaman.
+Bandingkan dua request pada satu event loop dengan mengubah durasi operasi I/O. Buka [Lab Async vs Sync](../labs/async-vs-sync.md){ .md-button } untuk menjalankan simulasi dan membandingkan waktu selesai setiap request.
 
 ## Tangani kegagalan
 

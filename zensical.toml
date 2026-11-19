@@ -17,7 +17,6 @@ nav = [
     { "Overview" = "iot/overview.md" },
     { "Sensors" = "iot/sensors.md" },
     { "Microcontrollers" = "iot/microcontrollers.md" },
-    { "Lab Pin" = "iot/lab-pin.md" },
     { "Actuators" = "iot/actuators.md" },
   ] },
   { "Protocol" = [
@@ -87,7 +86,6 @@ nav = [
       { "Arsitektur MLP" = "ai/deep-learning/arsitektur-mlp.md" },
       { "CNN" = "ai/deep-learning/cnn.md" },
       { "Model Sequence" = "ai/deep-learning/model-sequence.md" },
-      { "Lab Pelatihan Neural Network" = "ai/deep-learning/lab-neuron.md" },
     ]},
     { "AI Systems" = [
       { "Overview" = "ai/ai-systems/overview.md" },
@@ -100,7 +98,6 @@ nav = [
       { "Model Context Protocol (MCP)" = "ai/ai-systems/mcp.md" },
       { "AI Agents" = "ai/ai-systems/ai-agent.md" },
       { "AI Application Architecture" = "ai/ai-systems/architecture.md" },
-      { "Interactive RAG Tour" = "ai/ai-systems/rag-tour.md" },
     ]},
     { "AI Dashboard" = [
       { "Overview" = "ai/ai-dashboard/overview.md" },
@@ -120,12 +117,20 @@ nav = [
     { "Backend Mini" = "hands-on/backend-mini.md" },
     { "Frontend Mini" = "hands-on/frontend-mini.md" },
     { "IoT Simulator Mini" = "hands-on/iot-simulator-mini.md" },
-    { "The Bridge" = "hands-on/bridge-to-smart-hydroponic.md" },
     { "IoT Hands-on" = "hands-on/iot-hands-on.md" },
     { "Dashboard Hands-on" = "hands-on/dashboard-hands-on.md" },
     { "MQTT Hands-on" = "hands-on/mqtt-hands-on.md" },
     { "RAG sederhana" = "hands-on/rag-simple.md" },
     { "RAG lanjutan dengan HyDE + Browse Tool" = "hands-on/rag-advanced.md" },
+  ] },
+  { "Lab Interaktif" = [
+    { "Semua Lab" = "labs/overview.md" },
+    { "IoT - Lab Pin" = "labs/iot-pin.md" },
+    { "Backend - Async vs Sync" = "labs/async-vs-sync.md" },
+    { "AI - Lab Neural Network" = "labs/neuron-training.md" },
+    { "AI - Workflow RAG" = "labs/rag-workflow.md" },
+    { "AI - Simulasi LoRA/QLoRA" = "labs/qlora-simulator.md" },
+    { "AI - Demo LLM Gemma 4" = "labs/llm-gemma.md" },
   ] },
   { "Contribute" = "guide.md" },
 ]
