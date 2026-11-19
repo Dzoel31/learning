@@ -30,10 +30,10 @@ jobs:
         run: uv python install 3.14
 
       - name: Install dependencies
-        run: uv sync --python 3.14 --locked
+        run: uv sync --python 3.14
 
       - name: Build documentation
-        run: uv run --python 3.14 --locked zensical build --clean
+        run: uv run --python 3.14 zensical build --clean
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
