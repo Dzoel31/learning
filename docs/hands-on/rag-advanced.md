@@ -8,6 +8,8 @@ Pada modul RAG ini, kita akan mempelajari penerapan RAG tingkat lanjut yang meli
 
 Pada modul ini juga memuat beberapa eksperimen pada fase retrieval untuk membandingkan satu teknik dengan teknik yang lain.
 
+[Buka notebook RAG Lanjutan di Google Colab](https://colab.research.google.com/drive/1heAkQ1-nkqvbTYblwkGDx6ZlXYSZSEQc){ .md-button }
+
 Library tambahaan yang digunakan adalah: `rank-bm25` untuk lexical search dan `ddgs` untuk DuckDuckGo Search (tool yang digunakan untuk web search).
 
 Kalian bisa menggunakan code yang ada di modul RAG sederhana dengan melakukan perubahan pada proses instalasi library dan proses retrieval.

@@ -2,6 +2,8 @@
 
 Pada hands-on ini, kita akan membuat sistem RAG sederhana yang dapat menjawab pertanyaan pengguna berdasarkan knowledge base yang telah disiapkan. Sistem ini akan menggunakan LLM untuk menghasilkan jawaban berdasarkan konteks yang diberikan. Meskipun pada contoh ini menggunakan 1 dokumen dan LLM lokal, prinsip yang sama dapat diterapkan pada sistem RAG yang lebih kompleks dengan banyak dokumen dan LLM eksternal.
 
+[Buka notebook RAG Sederhana di Google Colab](https://colab.research.google.com/drive/1WZCNIX31mV20j97pVuPzmvPntbcP8Tdn){ .md-button }
+
 !!! info
 
     Kalian diperbolehkan untuk menambahkan dokumen lain, menyesuaikan prompt, atau mengubah LLM yang digunakan. Selamat eksplorasi!
