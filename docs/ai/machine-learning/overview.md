@@ -21,6 +21,8 @@ Mulai dari masalah, data, target, batas waktu, dan penerima output. Pilihan algo
 
 Siapkan Python dan pahami cara membaca tabel. Contoh di [Preprocessing](preprocessing.md#contoh-pemisahan-berdasarkan-waktu) menunjukkan pembagian data menurut waktu dan fitur dari pembacaan sebelumnya.
 
+Contoh kode memakai scikit-learn. Di project Python-mu, pasang dengan `uv add scikit-learn`. Contoh XGBoost dan CatBoost bersifat opsional; pasang `uv add xgboost` atau `uv add catboost` hanya jika ingin menjalankan contoh library tersebut.
+
 
 ## Urutan Materi
 

@@ -16,6 +16,8 @@ Nilai negatif menjadi nol, sedangkan nilai positif diteruskan. ReLU sederhana da
 
 Fungsi aktivasi ReLu memiliki kelemahan pada input negatif. Neuron yang menerima input negatif akan selalu menghasilkan nol, sehingga perubahan nilai gradien saat training tidak akan memengaruhi bobot neuron tersebut. Hal ini dapat menyebabkan beberapa neuron menjadi "mati" dan tidak berkontribusi pada pembelajaran.
 
+**Rujukan riset:** [Nair & Hinton, “Rectified Linear Units Improve Restricted Boltzmann Machines” (2010), *Proceedings of ICML*](https://icml.cc/2010/papers/432.pdf). Makalah konferensi ini membahas unit rectifier dalam pembelajaran jaringan.
+
 ## Leaky ReLU
 
 Leaky ReLU mempertahankan kemiringan kecil saat masukan negatif:
@@ -27,6 +29,8 @@ $$
 Untuk masukan negatif, keluarannya adalah $\alpha z$ dan turunannya $\alpha$, bukan nol. Grafik memakai $\alpha = 0.1$ agar kemiringannya terlihat; lab neuron memakai $\alpha = 0.01$.
 
 ![Perbandingan ReLU dan Leaky ReLU dengan kemiringan negatif alpha 0,1](../../assets/images/activation-leaky-relu.svg)
+
+**Rujukan riset:** [Xu et al., “Empirical Evaluation of Rectified Activations in Convolutional Network” (2015), arXiv:1505.00853](https://arxiv.org/abs/1505.00853). Makalah ini membandingkan ReLU, Leaky ReLU, PReLU, dan RReLU; sumbernya preprint, bukan artikel jurnal.
 
 ## Sigmoid
 
@@ -65,6 +69,8 @@ Gunakan softmax pada output klasifikasi multi-kelas, misalnya kondisi tanaman `s
 Pada contoh logits `[2, 1, 0]`, softmax menghasilkan probabilitas sekitar `[0.67, 0.24, 0.09]`. Jumlahnya mendekati 1. Nilai itu menunjukkan pembagian skor relatif antarkelas; probabilitas tersebut belum tentu terkalibrasi sebagai tingkat keyakinan nyata.
 
 ![Contoh skor tiga kelas yang diubah menjadi probabilitas dengan softmax](../../assets/images/activation-softmax.svg)
+
+**Rujukan riset:** [Bridle, “Probabilistic Interpretation of Feedforward Classification Network Outputs, with Relationships to Statistical Pattern Recognition” (1990), *Neurocomputing*](https://doi.org/10.1016/B978-0-444-88714-2.50015-8), membahas interpretasi probabilistik output jaringan klasifikasi.
 
 ```mermaid
 flowchart LR

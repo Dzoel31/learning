@@ -22,6 +22,8 @@ $$
 
 Jika suhu `30 °C`, rata-rata data training `28 °C`, dan standar deviasinya `2 °C`, hasil standardisasi adalah `(30−28)/2 = 1`. Hitung `μ` dan `σ` dari data training saja, lalu pakai nilai yang sama pada validation, test, dan inference.
 
+Standardisasi adalah transformasi statistik umum, bukan algoritma yang memiliki satu makalah asal tunggal. Dokumentasi [scikit-learn: StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) menjelaskan bentuk implementasi dan aturan fit pada data training.
+
 Contoh ringkas data sebelum dan sesudah penanganan nilai kosong:
 
 | Waktu | Suhu mentah | Setelah isi nilai kosong dengan pembacaan terakhir |

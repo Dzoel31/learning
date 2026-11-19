@@ -6,6 +6,8 @@ Multilayer Perceptron atau MLP menerima data berbentuk vektor. MLP cocok sebagai
 
 ## Bentuk Data
 
+**Rujukan riset:** [Rumelhart, Hinton & Williams, “Learning Representations by Back-propagating Errors” (1986), *Nature*](https://doi.org/10.1038/323533a0), salah satu karya berpengaruh tentang training jaringan berlapis dengan backpropagation.
+
 Jika terdapat `N` baris data dan `F` fitur, input biasanya berbentuk matriks:
 
 $$

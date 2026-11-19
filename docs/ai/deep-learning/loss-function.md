@@ -2,6 +2,8 @@
 
 Loss function mengukur perbedaan antara prediksi model dan target. Optimizer menggunakan nilai ini untuk menentukan perubahan parameter selama training. Loss bukan pengganti metrik bisnis atau metrik keselamatan sistem.
 
+MSE, MAE, dan cross entropy di bawah adalah definisi objective statistik yang umum; tidak ada satu artikel riset tunggal yang menjadi sumber semua bentuk tersebut. Rumus cross entropy untuk klasifikasi terkait dengan estimasi probabilitas pada [Cox, “The Regression Analysis of Binary Sequences” (1958), *Journal of the Royal Statistical Society: Series B*](https://doi.org/10.1111/j.2517-6161.1958.tb00292.x).
+
 ## Mean Squared Error
 
 MSE cocok untuk regresi ketika kesalahan besar perlu diberi penalti lebih kuat:

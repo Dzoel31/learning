@@ -1,6 +1,6 @@
 # Forward Pass dan Backward Pass
 
-[Buka Lab Pelatihan Neural Network](lab-neuron.md){ .md-button }
+[Buka Lab Pelatihan Neural Network](../../labs/neuron-training.md){ .md-button }
 
 Forward pass menghitung prediksi dari input. Backward pass menghitung turunan loss terhadap parameter. Optimizer memakai turunan itu untuk memperbarui parameter.
 
@@ -30,6 +30,8 @@ $$
 Output `a` menjadi input bagi layer berikutnya. Pada akhir forward pass, model menghasilkan prediksi yang dibandingkan dengan target.
 
 ## Backward Pass
+
+**Rujukan riset:** [Rumelhart, Hinton & Williams, “Learning Representations by Back-propagating Errors” (1986), *Nature*](https://doi.org/10.1038/323533a0). Artikel ini menjabarkan propagasi error untuk memperbarui bobot jaringan berlapis.
 
 Backward pass menggunakan aturan rantai untuk menghitung turunan loss terhadap setiap parameter. Jika `L` adalah loss dan `w` adalah weight, gradient ditulis sebagai:
 

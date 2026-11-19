@@ -14,6 +14,8 @@ $$
 
 ![Satu neuron mengalikan input dengan bobot, menambahkan bias, lalu menerapkan fungsi aktivasi](../../assets/images/dl-neuron.svg)
 
+**Rujukan riset:** [Rosenblatt, “The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain” (1958), *Psychological Review*](https://doi.org/10.1037/h0042519). Persamaan neuron di atas adalah bentuk modern ringkas dari unit berbobot.
+
 $x_i$ adalah input, $w_i$ adalah weight, $b$ adalah bias, dan $f$ adalah fungsi aktivasi. Model belajar dengan mengubah weight dan bias agar hasilnya mendekati target.
 
 ```mermaid

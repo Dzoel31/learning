@@ -8,6 +8,8 @@ Contoh kode pada halaman ini memakai Keras. Jika istilah framework masih baru, b
 
 ## Convolution
 
+**Rujukan riset:** [LeCun et al., “Gradient-Based Learning Applied to Document Recognition” (1998), *Proceedings of the IEEE*](https://doi.org/10.1109/5.726791). Artikel jurnal ini menjelaskan CNN untuk pengenalan pola gambar.
+
 Pada satu dimensi, filter menghitung gabungan berbobot dari beberapa nilai yang berdekatan:
 
 $$

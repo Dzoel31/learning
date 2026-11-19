@@ -16,6 +16,8 @@ flowchart LR
 
 ## Hyperparameter Utama
 
+**Rujukan riset untuk optimizer:** [Robbins & Monro, “A Stochastic Approximation Method” (1951), *The Annals of Mathematical Statistics*](https://doi.org/10.1214/aoms/1177729586) untuk dasar stochastic approximation; [Duchi, Hazan & Singer, “Adaptive Subgradient Methods for Online Learning and Stochastic Optimization” (2011), *Journal of Machine Learning Research*](https://jmlr.org/papers/v12/duchi11a.html) untuk AdaGrad; [Kingma & Ba, “Adam: A Method for Stochastic Optimization” (2015), ICLR](https://arxiv.org/abs/1412.6980) untuk Adam.
+
 - **Batch size** menentukan jumlah contoh yang diproses sebelum update parameter.
 - **Epoch** menentukan berapa kali model melihat seluruh data training.
 - **Learning rate** menentukan besar perubahan parameter.
