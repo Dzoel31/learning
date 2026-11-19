@@ -1,6 +1,6 @@
 # LLM (Large Language Model)
 
-[Buka demo interaktif Cara Kerja LLM · Gemma 4](https://gemma.ai/learn/how-llms-work/){ .md-button }
+[Buka Lab Demo Cara Kerja LLM · Gemma 4](../../labs/llm-gemma.md){ .md-button .llm-demo-button }
 
 ## Konsep Dasar
 
@@ -9,6 +9,8 @@
 LLM (Large Language Model) adalah bagian dari pengembangan Deep Learning yang fokus pada pemrosesan bahasa alami (Natural Language Processing/NLP). LLM dilatih menggunakan dataset teks yang sangat besar untuk memahami konteks dan semantik bahasa. Dengan kemampuan ini, LLM dapat melakukan berbagai tugas NLP seperti penerjemahan bahasa, menjawab pertanyaan, dan menghasilkan teks.
 
 LLM menghasilkan teks dengan memprediksi token berikutnya berdasarkan token yang sudah dibaca. Token dapat berupa kata, bagian kata, tanda baca, atau karakter tertentu. Karena model memproses urutan token, susunan input dan konteks memengaruhi output yang dihasilkan.
+
+**Rujukan riset:** [Vaswani et al., “Attention Is All You Need” (2017), *Advances in Neural Information Processing Systems*](https://proceedings.neurips.cc/paper/7181--attention-is-all-you-need.pdf), memperkenalkan arsitektur Transformer berbasis attention yang menjadi dasar banyak LLM modern.
 
 ### Language model dan probabilitas token
 

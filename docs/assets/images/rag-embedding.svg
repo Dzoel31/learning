@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 570" role="img" aria-labelledby="title desc">
+  <title id="title">Alur embedding chunk ke vector database</title>
+  <desc id="desc">Teks dari satu chunk masuk ke model embedding dan menjadi vektor angka. Vector database menyimpan vektor bersama teks asli dan metadata. Diagram bawah mengilustrasikan bahwa teks yang mirip maknanya dapat berdekatan pada ruang embedding, tetapi gambar dua dimensi ini hanya proyeksi.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#60758b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="570" rx="20" fill="#f1f6fc"/>
+  <text x="34" y="44" fill="#12345a" font-family="Arial,sans-serif" font-size="23" font-weight="700">Dari teks chunk menjadi embedding yang bisa dicari</text>
+  <text x="34" y="72" fill="#52677f" font-family="Arial,sans-serif" font-size="14">Setiap chunk diubah menjadi vektor, lalu disimpan bersama teks asal dan metadata.</text>
+
+  <rect x="34" y="104" width="226" height="150" rx="14" fill="#fff" stroke="#5286b3" stroke-width="2"/>
+  <text x="52" y="132" fill="#245577" font-family="Arial,sans-serif" font-size="13" font-weight="700">CHUNK · DOC-03-02</text>
+  <text x="52" y="163" fill="#18334c" font-family="Arial,sans-serif" font-size="14">
+    <tspan x="52" dy="0">Daun pakcoy tampak layu.</tspan>
+    <tspan x="52" dy="21">Periksa kelembapan tanah</tspan>
+    <tspan x="52" dy="21">sebelum menambah air.</tspan>
+  </text>
+  <text x="52" y="234" fill="#64748b" font-family="Arial,sans-serif" font-size="12">manual-tanaman.pdf · hlm. 4</text>
+
+  <path d="M260 179H296" fill="none" stroke="#60758b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="305" y="120" width="190" height="118" rx="14" fill="#dbeafe" stroke="#2876b8" stroke-width="2"/>
+  <text x="400" y="158" text-anchor="middle" fill="#12345a" font-family="Arial,sans-serif" font-size="16" font-weight="700">Model embedding</text>
+  <text x="400" y="184" text-anchor="middle" fill="#1e3a5f" font-family="Arial,sans-serif" font-size="13">mempelajari representasi</text>
+  <text x="400" y="207" text-anchor="middle" fill="#1e3a5f" font-family="Arial,sans-serif" font-size="13">teks → angka</text>
+
+  <path d="M495 179H531" fill="none" stroke="#60758b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="540" y="120" width="230" height="118" rx="14" fill="#fff4d6" stroke="#d89a1d" stroke-width="2"/>
+  <text x="655" y="151" text-anchor="middle" fill="#704600" font-family="Arial,sans-serif" font-size="16" font-weight="700">Embedding vector</text>
+  <text x="655" y="184" text-anchor="middle" fill="#513c1d" font-family="Consolas,monospace" font-size="14">[-0.12, 0.38, 0.07,</text>
+  <text x="655" y="207" text-anchor="middle" fill="#513c1d" font-family="Consolas,monospace" font-size="14">… , 0.51]</text>
+  <text x="655" y="228" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="11">d angka; contoh dipersingkat</text>
+
+  <path d="M770 179H806" fill="none" stroke="#60758b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="815" y="104" width="271" height="150" rx="14" fill="#dcf3e8" stroke="#29966b" stroke-width="2"/>
+  <text x="835" y="132" fill="#17623f" font-family="Arial,sans-serif" font-size="15" font-weight="700">Record di vector store</text>
+  <text x="835" y="161" fill="#174a36" font-family="Consolas,monospace" font-size="12">id: doc-03-chunk-02</text>
+  <text x="835" y="184" fill="#174a36" font-family="Consolas,monospace" font-size="12">vector: [-0.12, 0.38, …]</text>
+  <text x="835" y="207" fill="#174a36" font-family="Consolas,monospace" font-size="12">text: "Daun pakcoy tampak…"</text>
+  <text x="835" y="230" fill="#174a36" font-family="Consolas,monospace" font-size="12">source: manual.pdf · hlm. 4</text>
+
+  <rect x="34" y="282" width="518" height="248" rx="16" fill="#fff" stroke="#c5d4e2" stroke-width="1.5"/>
+  <text x="56" y="313" fill="#12345a" font-family="Arial,sans-serif" font-size="16" font-weight="700">Kedekatan makna · proyeksi ilustratif 2D</text>
+  <path d="M100 478V349M100 478H510" fill="none" stroke="#8798aa" stroke-width="1.5"/>
+  <text x="300" y="506" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="12">dimensi ilustrasi 1</text>
+  <text x="73" y="415" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="12" transform="rotate(-90 73 415)">dimensi ilustrasi 2</text>
+  <circle cx="218" cy="402" r="9" fill="#1683c4"/>
+  <text x="234" y="398" fill="#245577" font-family="Arial,sans-serif" font-size="12">“daun layu”</text>
+  <circle cx="251" cy="427" r="8" fill="#6a5bd2"/>
+  <text x="267" y="432" fill="#4c438e" font-family="Arial,sans-serif" font-size="12">query soal kekurangan air</text>
+  <circle cx="422" cy="373" r="8" fill="#e28a13"/>
+  <text x="438" y="378" fill="#84520d" font-family="Arial,sans-serif" font-size="12">“harga pupuk”</text>
+  <text x="290" y="493" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="10">Letak titik hanya contoh, bukan koordinat embedding nyata.</text>
+
+  <rect x="576" y="282" width="510" height="248" rx="16" fill="#e9f1fb" stroke="#b6c8dc" stroke-width="1.5"/>
+  <text x="600" y="316" fill="#12345a" font-family="Arial,sans-serif" font-size="16" font-weight="700">Yang perlu diingat</text>
+  <circle cx="608" cy="354" r="12" fill="#2876b8"/><text x="608" y="359" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="12" font-weight="700">1</text>
+  <text x="630" y="359" fill="#243b53" font-family="Arial,sans-serif" font-size="13">Vektor berisi banyak angka; contoh di atas dipersingkat.</text>
+  <circle cx="608" cy="393" r="12" fill="#2876b8"/><text x="608" y="398" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="12" font-weight="700">2</text>
+  <text x="630" y="398" fill="#243b53" font-family="Arial,sans-serif" font-size="13">Makna kedekatan bergantung pada model embedding.</text>
+  <circle cx="608" cy="432" r="12" fill="#2876b8"/><text x="608" y="437" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="12" font-weight="700">3</text>
+  <text x="630" y="437" fill="#243b53" font-family="Arial,sans-serif" font-size="13">Saat query masuk, query dibuat jadi vektor dengan model yang sama.</text>
+  <circle cx="608" cy="471" r="12" fill="#2876b8"/><text x="608" y="476" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="12" font-weight="700">4</text>
+  <text x="630" y="476" fill="#243b53" font-family="Arial,sans-serif" font-size="13">Index mencari chunk terdekat; teks asli lalu dipakai sebagai konteks.</text>
+  <text x="831" y="510" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="11">Vektor asli berdimensi tinggi; gambar ini hanya menyederhanakan idenya.</text>
+</svg>

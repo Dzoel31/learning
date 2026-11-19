@@ -19,6 +19,8 @@ Full fine-tuning memperbarui semua parameter model. Fleksibilitasnya tinggi, tet
 
 ### Angka presisi dan quantization
 
+**Rujukan riset:** [Dettmers et al., “QLoRA: Efficient Finetuning of Quantized LLMs” (2023), *Advances in Neural Information Processing Systems*](https://proceedings.neurips.cc/paper_files/paper/2023/file/1feb87871436031bdc0f2beaa62a049b-Paper-Conference.pdf). Makalah ini menjelaskan NF4, double quantization, dan paged optimizers pada QLoRA.
+
 Floating point menyimpan nilai dengan bagian tanda (*sign*), eksponen (*exponent*), dan mantisa (*mantissa*). *Quantization* menyimpan bobot dengan lebih sedikit bit untuk mengurangi kebutuhan memori.
 
 | Format | Bit per nilai | Komponen / representasi | Catatan penggunaan |
@@ -45,33 +47,41 @@ LoRA (*Low-Rank Adaptation*) membekukan bobot model dasar dan menambahkan dua ma
 
 ![Ilustrasi bobot dasar beku dan adapter LoRA](../../assets/images/lora-matrix-illustration.png)
 
+**Rujukan riset:** [Hu et al., “LoRA: Low-Rank Adaptation of Large Language Models” (2022), *International Conference on Learning Representations*](https://openreview.net/pdf?id=nZeVKeeFYf9). Persamaan \(\Delta W = BA\) dengan faktor skala adalah parameterisasi adapter yang menjadi dasar ilustrasi ini.
+
 Saat training LoRA, optimizer memperbarui A dan B; bobot dasar tetap. Hyperparameter penting mencakup **rank (r)**, **alpha** sebagai skala kontribusi adapter, dan **target modules** yang dipasangi adapter. Modul yang umum pada attention ialah `q_proj`, `k_proj`, `v_proj`, `o_proj`; pada feed-forward antara lain `gate_proj`, `up_proj`, dan `down_proj`.
 
 ## QLoRA
 
 QLoRA menggabungkan bobot dasar yang dikuantisasi dengan pelatihan adapter LoRA. Bobot dasar dapat disimpan dalam 4-bit NF4, sementara komputasi menggunakan representasi presisi lebih tinggi seperti BF16. Bobot dasar dibekukan; adapter menjadi parameter yang dilatih. Ini mengurangi kebutuhan memori dibanding full fine-tuning, tetapi tidak menghilangkan kebutuhan GPU maupun evaluasi kualitas.
 
+**Rujukan riset:** [Dettmers et al., “QLoRA: Efficient Finetuning of Quantized LLMs” (2023), *Advances in Neural Information Processing Systems*](https://proceedings.neurips.cc/paper_files/paper/2023/file/1feb87871436031bdc0f2beaa62a049b-Paper-Conference.pdf). Ini prosiding konferensi yang memperkenalkan metode QLoRA.
+
 ## Simulator QLoRA
 
-Pilih ukuran model, GPU, panjang sequence, dan micro-batch untuk melihat estimasi VRAM. Estimator menampilkan kebutuhan per GPU; pada Kaggle T4 × 2 kapasitas tiap perangkat tetap 16 GB. Ketersediaan GPU Colab berubah, jadi cocokkan perkiraan dengan runtime yang benar-benar didapat.
-
-Di bawahnya, jalankan simulasi numerik kecil secara manual atau otomatis. Matriks \(W_0\) tetap beku; langkah SGD hanya memperbarui A dan B. Setiap langkah menghitung \(Ax\), \(W_0x\), \(\Delta y\), prediksi, MSE, dan nilai matriks baru.
-
-<div class="ai-tour" data-ai-tour="lora">
-  <noscript>Simulator memerlukan JavaScript. LoRA memperbarui matriks adapter A dan B, sementara bobot dasar tetap beku.</noscript>
-</div>
-
-Estimator VRAM menggunakan bentuk model dan aktivasi pendekatan, bukan pengukuran runtime. Matriks training hanya demonstrasi matematika 2 × 2; simulasi ini tidak melatih model LLM sungguhan.
+Gunakan [Kalkulator VRAM dan Simulasi LoRA/QLoRA](../../labs/qlora-simulator.md){ .md-button } untuk membandingkan kebutuhan memori GPU dan menelusuri pembaruan matriks adapter langkah demi langkah.
 
 ### Knowledge distillation
 
 Knowledge distillation melatih *student model* agar meniru sebagian perilaku *teacher model* yang lebih besar. Sinyal yang dipindahkan dapat berupa keluaran atau probabilitas (*response-based*), representasi layer internal (*feature-based*), atau relasi antarfitur (*relation-based*). Bila logits teacher tersedia, student dapat belajar dari distribusi logits. Bila tidak, keluaran teacher dapat digunakan untuk membentuk data sintetis.
 
+![Alur knowledge distillation: teacher beku menghasilkan soft target untuk melatih student](../../assets/images/ai-knowledge-distillation.svg)
+
+**Rujukan riset:** [Hinton, Vinyals & Dean, “Distilling the Knowledge in a Neural Network” (2015)](https://arxiv.org/abs/1503.02531). Naskah ini beredar sebagai paper arXiv dan NIPS Deep Learning and Representation Learning Workshop.
+
 ### Alignment dan reinforcement learning
+
+**Rujukan riset:** [Ouyang et al., “Training language models to follow instructions with human feedback” (2022), *Advances in Neural Information Processing Systems*](https://proceedings.neurips.cc/paper_files/paper/2022/hash/b1efde53be364a73914f58805a001731-Abstract.html), menjelaskan resep InstructGPT dengan supervised fine-tuning dan umpan balik manusia.
 
 Alignment menyesuaikan perilaku model dengan tujuan dan preferensi yang ditetapkan. RLHF (*Reinforcement Learning from Human Feedback*) memakai umpan balik manusia dan model reward. PPO (*Proximal Policy Optimization*) biasanya melibatkan empat model/komponen: actor menghasilkan jawaban, reference model menjadi pembanding yang dibekukan, reward model memberi skor, dan critic memperkirakan nilai. Prosesnya menghasilkan beberapa jawaban, memberi reward, menghitung penalti KL terhadap reference, memperkirakan advantage, lalu memperbarui policy.
 
+**Rujukan riset:** [Schulman et al., “Proximal Policy Optimization Algorithms” (2017), arXiv:1707.06347](https://arxiv.org/abs/1707.06347), sumber algoritma PPO.
+
 GRPO (*Group Relative Policy Optimization*) membandingkan beberapa keluaran untuk satu masukan dan menghitung skor relatif antar keluaran. Alur umumnya menghasilkan beberapa jawaban, memberi reward, lalu menghitung advantage relatif dalam kelompok. Pendekatan ini tidak menggunakan critic terpisah seperti PPO, meski tetap memiliki kebutuhan komputasi dan rancangan reward yang perlu diperhitungkan.
+
+![Diagram dua alur alignment: PPO memakai critic untuk menghitung advantage, sedangkan GRPO menormalkan reward dalam kelompok tanpa critic terpisah](../../assets/images/ai-alignment-ppo-grpo.svg)
+
+**Rujukan riset:** [Shao et al., “DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models” (2024), arXiv:2402.03300](https://arxiv.org/abs/2402.03300), memperkenalkan GRPO. Sumber ini adalah preprint.
 
 ## Referensi lanjutan
 

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-labelledby="title desc">
+  <title id="title">Alur knowledge distillation dari teacher ke student</title>
+  <desc id="desc">Input yang sama diproses oleh teacher model beku dan student model. Teacher menghasilkan distribusi probabilitas, student belajar mendekati distribusi itu dengan loss distillation, lalu student dievaluasi dan digunakan.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="430" rx="20" fill="#f1f5f9"/>
+  <text x="36" y="48" fill="#12345a" font-family="Arial,sans-serif" font-size="24" font-weight="700">Knowledge distillation</text>
+  <text x="36" y="76" fill="#52677f" font-family="Arial,sans-serif" font-size="15">Student belajar meniru keluaran teacher pada input yang sama.</text>
+
+  <rect x="40" y="155" width="145" height="84" rx="14" fill="#fff" stroke="#64748b" stroke-width="2"/>
+  <text x="112" y="188" text-anchor="middle" fill="#12345a" font-family="Arial,sans-serif" font-size="16" font-weight="700">Input</text>
+  <text x="112" y="214" text-anchor="middle" fill="#52677f" font-family="Arial,sans-serif" font-size="13">prompt / contoh x</text>
+
+  <path d="M185 197H240V143H282" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/><path d="M240 197V300H282" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <rect x="290" y="102" width="235" height="98" rx="14" fill="#dbeafe" stroke="#2563a5" stroke-width="2"/>
+  <text x="407" y="135" text-anchor="middle" fill="#12345a" font-family="Arial,sans-serif" font-size="17" font-weight="700">Teacher model</text>
+  <text x="407" y="160" text-anchor="middle" fill="#1e3a5f" font-family="Arial,sans-serif" font-size="14">parameter dibekukan</text>
+  <text x="407" y="182" text-anchor="middle" fill="#1e3a5f" font-family="Arial,sans-serif" font-size="13">menghasilkan logits / distribusi</text>
+
+  <rect x="290" y="255" width="235" height="98" rx="14" fill="#fef3c7" stroke="#d49316" stroke-width="2"/>
+  <text x="407" y="289" text-anchor="middle" fill="#704600" font-family="Arial,sans-serif" font-size="17" font-weight="700">Student model</text>
+  <text x="407" y="314" text-anchor="middle" fill="#704600" font-family="Arial,sans-serif" font-size="14">parameter diperbarui</text>
+  <text x="407" y="336" text-anchor="middle" fill="#704600" font-family="Arial,sans-serif" font-size="13">memprediksi distribusi sendiri</text>
+
+  <path d="M525 151H600V191H638" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/><path d="M525 304H600V264H638" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="646" y="178" width="190" height="96" rx="14" fill="#fff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="741" y="210" text-anchor="middle" fill="#4c1d95" font-family="Arial,sans-serif" font-size="16" font-weight="700">Bandingkan</text>
+  <text x="741" y="236" text-anchor="middle" fill="#4c1d95" font-family="Arial,sans-serif" font-size="15">loss distillation</text>
+  <text x="741" y="258" text-anchor="middle" fill="#52677f" font-family="Arial,sans-serif" font-size="13">KL divergence / objective lain</text>
+
+  <path d="M836 226H886" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="893" y="178" width="90" height="96" rx="14" fill="#dcfce7" stroke="#22a06b" stroke-width="2"/>
+  <text x="938" y="214" text-anchor="middle" fill="#14532d" font-family="Arial,sans-serif" font-size="14" font-weight="700">Student</text>
+  <text x="938" y="237" text-anchor="middle" fill="#14532d" font-family="Arial,sans-serif" font-size="14">terlatih</text>
+  <text x="938" y="258" text-anchor="middle" fill="#14532d" font-family="Arial,sans-serif" font-size="12">evaluasi</text>
+
+  <text x="500" y="383" text-anchor="middle" fill="#52677f" font-family="Arial,sans-serif" font-size="13">Soft target membawa informasi tentang kemiripan antar kelas.</text>
+  <text x="500" y="407" text-anchor="middle" fill="#52677f" font-family="Arial,sans-serif" font-size="13">Label asli dapat ditambahkan sebagai hard-target loss.</text>
+</svg>

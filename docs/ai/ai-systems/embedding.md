@@ -34,6 +34,8 @@ flowchart LR
 
 Similarity dapat digunakan untuk mencari dokumen yang relevan, mencocokkan pertanyaan dengan jawaban, memberi rekomendasi, atau mengelompokkan data. Sistem perlu menguji threshold dengan data nyata karena skor similarity tidak memiliki arti universal di semua model.
 
+**Rujukan riset:** [Reimers & Gurevych, “Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks” (2019), *Proceedings of EMNLP-IJCNLP*](https://aclanthology.org/D19-1410/). Makalah ini membentuk embedding kalimat yang dapat dibandingkan dengan cosine similarity.
+
 ## Embedding dalam Sistem AI
 
 Pada semantic search, sistem mengubah query menjadi vector lalu mencari vector dokumen yang paling dekat. Similarity matching membandingkan item yang memiliki karakteristik serupa. Recommendation menggunakan kedekatan vector untuk menemukan item yang mungkin sesuai dengan minat pengguna.
