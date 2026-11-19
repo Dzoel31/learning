@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v1.14.2 (2026-11-19)
+
+### Bug Fixes
+
+- **docs**: Correct RAG hands-on references
+  ([`de70f6b`](https://github.com/ksm-aiot-upnvj/learning/commit/de70f6b7e4223babc48932e4e32b7212ca95c761))
+
+### Documentation
+
+- Organize interactive labs into dedicated section
+  ([`633b586`](https://github.com/ksm-aiot-upnvj/learning/commit/633b58623e0a90185a63cb638ee1c69e5fe1d0db))
+
+- **ai**: Expand machine and deep learning lessons
+  ([`c3a84de`](https://github.com/ksm-aiot-upnvj/learning/commit/c3a84de93e152c3e0a7607172a0225301f9f063b))
+
+- **ai**: Expand RAG and fine-tuning lessons
+  ([`4d5198a`](https://github.com/ksm-aiot-upnvj/learning/commit/4d5198a93d95f837e82571f9bd4b1d1b2dc9ca58))
+
+
 ## v1.14.1 (2026-11-17)
 
 
