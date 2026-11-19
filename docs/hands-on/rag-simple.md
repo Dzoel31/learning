@@ -11,7 +11,7 @@ Beberapa model yang digunakan adalah:
 - LLM: `gpt-oss-120b` via groq atau `gemma-4-E2B-it-qat-mobile-transformers` via library transformer pada Python secara lokal (pemilihan model lokal disesuaikan dengan kemampuan device masing-masing).
 - Embedding: `google/embeddinggemma-2` via SentenceTransformers
 
-Tahapan pada hands-on ini akan mengikuti alur RAG yang telah dijelaskan pada [RAG Pipeline](../../ai/ai-systems/rag.md#rag-pipeline). Berikut adalah tahapan-tahapan yang akan dilakukan:
+Tahapan pada hands-on ini akan mengikuti alur RAG yang telah dijelaskan pada [RAG Pipeline](../ai/ai-systems/rag.md#rag-pipeline). Berikut adalah tahapan-tahapan yang akan dilakukan:
 
 - Text Extraction: Mengekstrak konten dari dokumen yang telah disiapkan.
 - Chunking: Memecah konten dokumen menjadi potongan-potongan kecil (chunk) agar dapat diproses lebih lanjut.
@@ -308,7 +308,7 @@ print(f"Berhasil menyimpan {len(ids)} chunk ke ChromaDB.")
 
 Setelah chunk tersimpan, kita dapat masuk ke fase retrieval untuk mengambil informasi yang relevan dari knowledge base berdasarkan query pengguna.
 
-## [Retrieval](../../ai/ai-systems/rag.md#retrieval)
+## [Retrieval](../ai/ai-systems/rag.md#retrieval)
 
 ```python
 query_text = "tanaman pakcoy butuh target PH dan target PPM berapa"
@@ -356,7 +356,7 @@ for i, (doc, meta, distance) in enumerate(
     print(f"Isi Teks :\n{doc}\n")
 ```
 
-## [Augmentation](../../ai/ai-systems/rag.md#augmentation)
+## [Augmentation](../ai/ai-systems/rag.md#augmentation)
 
 fase augmentation bertujuan untuk membangun konteks yang akan diberikan kepada LLM.
 
@@ -377,7 +377,7 @@ def augmented(query, retrieved_docs):
 
 ```
 
-## [Generation](../../ai/ai-systems/rag.md#generation)
+## [Generation](../ai/ai-systems/rag.md#generation)
 
 Pada tahap ini, LLM akan menghasilkan jawaban berdasarkan konteks yang telah dibangun pada fase augmentation. Kita akan menggunakan model LLM yang telah disiapkan sebelumnya untuk menghasilkan jawaban.
 
