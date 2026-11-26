@@ -2,6 +2,69 @@
 
 <!-- version list -->
 
+## v1.15.0 (2026-11-26)
+
+### Bug Fixes
+
+- **rag**: Correct benchmark calls and reported Hit@5
+  ([`7fd8714`](https://github.com/ksm-aiot-upnvj/learning/commit/7fd87144e8b8fa968fe5b67ac6220130ab4a3cc9))
+
+- **site**: Update footer attribution and copyright year
+  ([`0331e05`](https://github.com/ksm-aiot-upnvj/learning/commit/0331e0560bb9fc5de52fcae899cd96339720c8a7))
+
+### Documentation
+
+- Improve cross-platform learning modules
+  ([`dc15ff0`](https://github.com/ksm-aiot-upnvj/learning/commit/dc15ff0333b2d4d8a6110a710ff90b625f79141f))
+
+- **agents**: Add general-to-specific writing guidance
+  ([`bdfa7cf`](https://github.com/ksm-aiot-upnvj/learning/commit/bdfa7cfdd63203110cca62071373f48cbe49f0ef))
+
+- **ai**: Expand curriculum and add interactive practice
+  ([`20d38a1`](https://github.com/ksm-aiot-upnvj/learning/commit/20d38a175fecc7f32aa46a08ae50995402f77c46))
+
+- **ai**: Guide learning with next-step cards
+  ([`f65d0e7`](https://github.com/ksm-aiot-upnvj/learning/commit/f65d0e784bbf6a48775a03bceb28eeeff807d8a0))
+
+- **backend**: Add PostgreSQL and MongoDB practice demos
+  ([`17bb829`](https://github.com/ksm-aiot-upnvj/learning/commit/17bb829f745bc59ceadc678ede646b1572fa3024))
+
+- **contribute**: Update the GitHub fork screenshot
+  ([`f71d269`](https://github.com/ksm-aiot-upnvj/learning/commit/f71d269ef90e0ae9d232030390d6a0c31cb15769))
+
+- **demos**: Align PostgreSQL and MongoDB packages with tutorials
+  ([`7b0002a`](https://github.com/ksm-aiot-upnvj/learning/commit/7b0002aeecb9e98c337d528388277977edcdf4c8))
+
+- **deployment**: Add sensor deployment and optional monitoring labs
+  ([`8a03c4e`](https://github.com/ksm-aiot-upnvj/learning/commit/8a03c4e1a3d0f1e69d43dd007bb3b99d00ffd70e))
+
+- **frontend**: Split JavaScript and TypeScript lessons
+  ([`5831860`](https://github.com/ksm-aiot-upnvj/learning/commit/5831860f291d501cf5283d5201d3a998298e0d16))
+
+- **git**: Teach local workflows and fork contributions
+  ([`03eb86b`](https://github.com/ksm-aiot-upnvj/learning/commit/03eb86bbab193f87b68c5d7c924f274d2525a96a))
+
+- **hands-on**: Group exercises by learning scope
+  ([`ead9650`](https://github.com/ksm-aiot-upnvj/learning/commit/ead965068a5effc9001d372e42297979e91f5d5f))
+
+- **learning**: Connect Express PostgreSQL and Vue practice
+  ([`405d32f`](https://github.com/ksm-aiot-upnvj/learning/commit/405d32f271570faa2b8149c5ecf9794b5dfb2d93))
+
+- **mcp**: Teach SSE server setup and transport compatibility
+  ([`b874590`](https://github.com/ksm-aiot-upnvj/learning/commit/b8745908d8adb9abb9427ea560707a6dd1d05358))
+
+- **protocol**: Expand IoT learning paths and protocol examples
+  ([`4f8d04d`](https://github.com/ksm-aiot-upnvj/learning/commit/4f8d04dbd5abd9e94c9e9f455b05d8ce46512dbc))
+
+- **repo**: Define learning module writing standards
+  ([`535a974`](https://github.com/ksm-aiot-upnvj/learning/commit/535a974339126d9933ae9f74322a6f108e44d22f))
+
+### Features
+
+- **hands-on**: Add MongoDB CRUD frontend and Python basics
+  ([`da04246`](https://github.com/ksm-aiot-upnvj/learning/commit/da04246e18fe2036e7dcb71792e8cb21ca908773))
+
+
 ## v1.14.3 (2026-11-19)
 
 ### Documentation
