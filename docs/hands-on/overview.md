@@ -47,5 +47,5 @@ Ikuti latihan RAG untuk melihat bagaimana jawaban memakai konteks dokumen. Pada 
 | --- | --- |
 | [RAG sederhana](rag-simple.md) | Periksa potongan dokumen yang ditemukan dan jawaban yang dihasilkan dari konteks itu. |
 | [RAG lanjutan dengan HyDE + Browse Tool](rag-advanced.md) | Bandingkan hasil retrieval dari beberapa teknik menggunakan Hit@5. |
-| [MCP dengan Data Sensor PostgreSQL](mcp-sensor.md) | Cocokkan pembacaan terakhir dan ringkasan sensor dari tool MCP dengan hasil query SQL. |
+| [Chat MCP dengan Data Sensor PostgreSQL](mcp-sensor.md) | Ikuti pertanyaan dari UI Streamlit atau Gradio ke tool MCP, lalu cocokkan hasilnya dengan PostgreSQL. |
 | [Deteksi Anomali Sensor pH](sensor-anomaly.md) | Bandingkan waktu munculnya alarm dari dua metode pada satu deret waktu. |

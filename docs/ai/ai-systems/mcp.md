@@ -160,13 +160,13 @@ Smart Hydroponic memasang transport SSE lewat `mcp.sse_app()`. Gunakan alur Post
 
 ## Praktik dengan riwayat sensor
 
-Contoh `baca_ph` memberi satu nilai tetap sehingga panggilan tool mudah diperiksa. Di [Praktik MCP dengan Data Sensor PostgreSQL](../../hands-on/mcp-sensor.md), hasil tool mengikuti data yang benar-benar ada di tabel. Praktik tersebut mencakup seeding dengan `uv`, pemanggilan tool di Inspector, dan pembandingan hasil dengan SQL.
+Contoh `baca_ph` memberi satu nilai tetap sehingga panggilan tool mudah diperiksa. Di [Praktik MCP dengan Chat Sensor PostgreSQL](../../hands-on/mcp-sensor.md), chat Streamlit atau Gradio memakai tool FastMCP SSE untuk membaca tabel PostgreSQL. Praktik tersebut mengikuti alur dari seeding, percakapan, hingga pencocokan jawaban dengan query SQL.
 
 ## What's next
 
 <div class="ai-resource-grid ai-practice-grid" markdown="1">
 
-[<span class="ai-practice-icon" aria-hidden="true">:lucide-database:</span> **Praktik MCP dengan PostgreSQL** <span class="ai-practice-description">Isi database latihan dengan data sensor. Cocokkan hasil tool MCP dengan query SQL.</span>](../../hands-on/mcp-sensor.md){ .ai-practice-start }
+[<span class="ai-practice-icon" aria-hidden="true">:lucide-database:</span> **Chat MCP dengan PostgreSQL** <span class="ai-practice-description">Hubungkan chat Streamlit ke tool MCP dan cocokkan jawabannya dengan query SQL.</span>](../../hands-on/mcp-sensor.md){ .ai-practice-start }
 
 [<span class="ai-practice-icon" aria-hidden="true">:lucide-workflow:</span> **AI Agents** <span class="ai-practice-description">Jika sudah memahami satu panggilan tool, ikuti cara agent memakai hasilnya dan berhenti saat tugas selesai atau waktu habis.</span>](ai-agent.md)
 

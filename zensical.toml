@@ -183,6 +183,7 @@ extra_javascript = [
   "assets/javascripts/neuron-lab.mjs",
   "assets/javascripts/async-guide.mjs",
   "assets/javascripts/pin-lab.mjs",
+  "assets/javascripts/mcp-demo-zip.mjs",
   "assets/javascripts/mathjax.js",
   "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
   "assets/javascripts/mermaid-icons.mjs",
